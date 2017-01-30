@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+      xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <item android:id="@+id/beta"
+          android:title="@string/join_beta"
+          app:showAsAction="never" />
+
+    <item android:id="@+id/email"
+        android:title="@string/send_email_to_developer"
+        app:showAsAction="never" />
+</menu>

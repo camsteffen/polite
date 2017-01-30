@@ -1,0 +1,19 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:id="@+id/match_all"
+        android:title="@string/all_events" />
+
+    <item
+        android:id="@+id/match_by_title"
+        android:title="@string/match_by_title" />
+
+    <item
+        android:id="@+id/match_by_desc"
+        android:title="@string/match_by_desc" />
+
+    <item
+        android:id="@+id/match_by_title_desc"
+        android:title="@string/match_by_title_desc" />
+
+</menu>

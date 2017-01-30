@@ -1,0 +1,18 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+      xmlns:app="http://schemas.android.com/apk/res-auto"
+      xmlns:tools="http://schemas.android.com/tools"
+      tools:context=".MainActivity">
+
+    <item android:id="@+id/share"
+          android:title="@string/share"
+          app:showAsAction="ifRoom" />
+
+    <item android:id="@+id/settings"
+          android:title="@string/settings"
+          app:showAsAction="never"/>
+
+    <item android:id="@+id/help"
+          android:title="@string/help"
+          app:showAsAction="never" />
+
+</menu>

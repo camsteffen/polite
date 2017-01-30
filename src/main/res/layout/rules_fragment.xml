@@ -1,0 +1,47 @@
+<me.camsteffen.polite.AnimateFrame
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <TextView
+            android:id="@+id/disabled_notice"
+            android:elevation="4dp"
+            android:text="@string/disabled_notice"
+            android:textSize="16sp"
+            android:textStyle="bold"
+            android:background="@color/red"
+            android:textColor="@android:color/white"
+            android:padding="16dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"/>
+
+        <TextView
+            android:id="@+id/no_rules"
+            tools:visibility="visible"
+            android:visibility="gone"
+            android:text="@string/no_rules"
+            android:textSize="20sp"
+            android:textStyle="italic"
+            android:lineSpacingMultiplier="1.4"
+            android:layout_below="@id/disabled_notice"
+            android:gravity="center"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+
+        <me.camsteffen.polite.MyRecyclerView
+            android:id="@+id/rules_view"
+            tools:listitem="@layout/rule_list_item"
+            android:layout_below="@id/disabled_notice"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:paddingBottom="88dp"
+            android:clipToPadding="false"/>
+
+    </RelativeLayout>
+
+</me.camsteffen.polite.AnimateFrame>

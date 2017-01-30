@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Polite Help</title>
+    <style>
+        body {
+            font-family: sans-serif;
+            line-height: 1.3;
+        }
+        h2 {
+            border-bottom: 1px solid black;
+            padding: .1em 0;
+            margin: 1em 0 .5em 0;
+        }
+        h3 {
+            margin: 1em 0 .5em 0;
+        }
+        p, li {
+            margin: .6em 0;
+        }
+        li {
+            margin: .5em 0;
+        }
+    </style>
+</head>
+<body>
+<h2>Contents</h2>
+<ul>
+    <li><a href="#what">What is Polite?</a></li>
+    <li><a href="#schedule">Schedule Rules</a></li>
+    <li><a href="#calendar">Calendar Rules</a></li>
+    <li><a href="#settings">Settings</a></li>
+    <li><a href="#priority_mode">Priority Mode</a></li>
+    <li><a href="#tips">Tips</a></li>
+</ul>
+<h2 id="what">What is Polite?</h2>
+<p>Polite enables you to automatically silence your phone at the right times. To do this, you need to create rules so that Polite knows when to silence your phone. There are currently two types of rules: <a href="schedule">Schedule Rules</a> and <a href="calendar">Calendar Rules</a>. For every rule, you can choose to enable vibrate mode instead of silent mode. If multiple rules apply at the same time, Polite will give precedence to rules without vibrate.</p>
+<h2 id="schedule">Schedule Rules</h2>
+<p>Schedule Rules allow you to silence your phone at a specific time on specific days of the week. This works well if you have a weekly event or work schedule where you want your phone to be in vibrate mode or silent mode.
+<p>If you select an end time that is before the start time, then the end time will be on the following day. For instance, if you make a rule for Friday 10pm - 6am, then Polite will activate on 10pm on Friday and deactivate on Saturday at 6am.</p>
+<h2 id="calendar">Calendar Rules</h2>
+<p>Calendar Rules allow you to silence your phone during calendar events saved in your calendar app.</p>
+<h3>Calendars</h3>
+<p>Select specific calendars to look for events or just use "All" calendars.</p>
+<h3>Events</h3>
+<p>Select the method used to match calendar events. You can simply match "All Events" or match events by keyword in the event title, description or both.</p>
+<h3>Keywords</h3>
+<p>When using keywords, Polite will activate for events that contain any one of the keywords in a rule. Keywords are not case-sensitive. A keyword can have multiple words. Partial word matches do count.</p>
+<p>Examples:</p>
+<ul>
+    <li>"dinner" matches "Meet Suzie for dinner"</li>
+    <li>"tray" matches "Betrayal On Elm Street"</li>
+    <li>"meeting" matches "MANAGER MEETING"</li>
+    <li>"mat 100" matches "MAT 100 - Adding and Subtracting"</li>
+    <li>"bob lunch" does <strong>not</strong> match "Meet Bob for lunch"</li>
+</ul>
+<h3>Inverse Match</h3>
+<p>By enabling Inverse Match, Polite will activate for rules that DO NOT contain keywords. The rule still only applies to events in the calendars you have selected.</p>
+<h2 id="settings">Settings</h2>
+<h3>Notifications</h3>
+<p>When enabled, you will see a notification whenever Polite is active.</p>
+<h3>Activation</h3>
+<p>Activate Polite a specified amount of time before an event starts</p>
+<h3>Deactivation</h3>
+<p>Deactivate Polite a specified amount of time after an event ends</p>
+<h2 id="priority_mode">Priority Mode</h2>
+<p>If you have Android 5.0 or higher, your phone will use Priority Mode instead of Silent Mode. This does not apply to rules where Vibrate is enabled. In Priority Mode, "priority interruptions" will still be able to ring or vibrate. You can change what qualifies as a priority interruption by going to Settings -> <a href="help://sound_settings">Sound &amp; notification</a> -> Interruptions.</p>
+<h2 id="tips">Tips</h2>
+<p>You can use a unique tag (such as #vibrate) as a keyword and then put that tag in your event descriptions where you want to apply the rule.</p>
+<p>You can create a separate calendar for your Polite schedule and create a rule to match all events in that calendar. Then you can hide the calendar in your calendar app if you want to avoid clutter.</p>
+</body>
+</html>

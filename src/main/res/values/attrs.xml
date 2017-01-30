@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <attr name="colorRuleListItemBackground" format="color"/>
+    <attr name="colorAccentBackground" format="color"/>
+    <attr name="dayStateList" format="reference"/>
+    <attr name="label" format="reference"/>
+    <declare-styleable name="CaptionOption">
+        <attr name="label"/>
+    </declare-styleable>
+    <declare-styleable name="SwitchOption">
+        <attr name="label"/>
+    </declare-styleable>
+    <declare-styleable name="ValueOption">
+        <attr name="label"/>
+    </declare-styleable>
+</resources>

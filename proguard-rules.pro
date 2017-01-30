@@ -1,0 +1,3 @@
+-printmapping mapping.txt
+-renamesourcefileattribute SourceFile
+-keepattributes SourceFile,LineNumberTable,EnclosingMethod
