@@ -1,0 +1,134 @@
+<resources xmlns:xliff="http://schemas.android.com/tools">
+    <plurals name="minutes_after_event">
+        <item quantity="one">%d minute after event</item>
+        <item quantity="other">%d minutes after event</item>
+    </plurals>
+    <plurals name="minutes_before_event">
+        <item quantity="one">%d minute before event</item>
+        <item quantity="other">%d minutes before event</item>
+    </plurals>
+    <string name="activation">Activation</string>
+    <string name="add">Add</string>
+    <string name="add_keyword_hint">Add a keyword</string>
+    <string name="all">All</string>
+    <string name="all_events">All Events</string>
+    <string name="app_name">Polite</string>
+    <string name="calendar_permission_explain">Polite needs permission to read your calendar events for Calendar Rules to work. Your calendar data will not be stored or shared with anyone.</string>
+    <string name="calendar_permission_required">Calendar Permission Required</string>
+    <string name="calendar_rule">Calendar Rule</string>
+    <string name="calendar_rule_desc">Silence your phone during calendar events</string>
+    <string name="calendar_rules">Calendar Rules</string>
+    <string name="calendars">Calendars</string>
+    <string name="create_a_rule">Create A Rule</string>
+    <string name="continue_">Continue</string>
+    <string name="day_abbreviation_sunday">Sun</string>
+    <string name="day_abbreviation_monday">Mon</string>
+    <string name="day_abbreviation_tuesday">Tue</string>
+    <string name="day_abbreviation_wednesday">Wed</string>
+    <string name="day_abbreviation_thursday">Thu</string>
+    <string name="day_abbreviation_friday">Fri</string>
+    <string name="day_abbreviation_saturday">Sat</string>
+    <string name="day_symbol_sunday">S</string>
+    <string name="day_symbol_monday">M</string>
+    <string name="day_symbol_tuesday">T</string>
+    <string name="day_symbol_wednesday">W</string>
+    <string name="day_symbol_thursday">T</string>
+    <string name="day_symbol_friday">F</string>
+    <string name="day_symbol_saturday">S</string>
+    <string name="days">Days</string>
+    <string name="deactivation">Deactivation</string>
+    <string name="delete">Delete</string>
+    <string name="delete_rule_confirm">Are you sure?</string>
+    <string name="delete_rule_title">Delete Rule</string>
+    <string name="disable">Disable</string>
+    <string name="disabled">Disabled</string>
+    <string name="disable_polite">Disable Polite</string>
+    <string name="disabled_notice">Polite is disabled</string>
+    <string name="duration">Duration</string>
+    <string name="duration_format">%1$dh %2$dm</string>
+    <string name="duration_format_minutes">%dm</string>
+    <string name="enable">Enable</string>
+    <string name="enabled">Enabled</string>
+    <string name="enable_polite">Enable Polite</string>
+    <string name="end_time">End Time</string>
+    <string name="error_open_play_store">Unable to open Play Store</string>
+    <string name="error_read_calendars">Unable to read calendars</string>
+    <string name="events">Events</string>
+    <string name="every_day">Every day</string>
+    <string name="go_back">Go Back</string>
+    <string name="google_plus_community">Google+ Community</string>
+    <string name="google_plus_community_url"><xliff:g id="url">https://plus.google.com/communities/114753327737625029623</xliff:g></string>
+    <string name="help">Help</string>
+    <string name="help_email"><xliff:g id="email">politebycam@gmail.com</xliff:g></string>
+    <string name="help_email_subject"><xliff:g id="help_email_subject">Polite Help</xliff:g></string>
+    <string name="inverse_match">Inverse Match</string>
+    <string name="inverse_match_message">Activate for events that DO NOT contain keywords</string>
+    <string name="join_beta">Join Beta Testing</string>
+    <string name="join_beta_url"><xliff:g id="url">https://play.google.com/apps/testing/me.camsteffen.polite</xliff:g></string>
+    <string name="keywords">Keywords</string>
+    <string name="market_url"><xliff:g id="url">market://details?id=me.camsteffen.polite</xliff:g></string>
+    <string name="match_by_desc">Match by Description</string>
+    <string name="match_by_title">Match by Title</string>
+    <string name="match_by_title_desc">Match by Title or Description</string>
+    <string name="minutes">minutes</string>
+    <string name="new_feature">New Feature!</string>
+    <string name="new_feature_schedule_desc">Now you can create Schedule Rules to silence your phone at a certain time</string>
+    <string name="n_selected">%d selected</string>
+    <string name="no">No</string>
+    <string name="no_calendars_found">No calendars found</string>
+    <string name="no_days_selected">No days are selected</string>
+    <string name="no_rules">You can\'t be polite\nif you don\'t have any rules</string>
+    <string name="notification_policy_access_explain">Polite needs access to Do Not Disturb settings</string>
+    <string name="notification_policy_access_required">Do Not Disturb Access Required</string>
+    <string name="notifications">Notifications</string>
+    <string name="open_app_settings">Open App Settings</string>
+    <string name="polite_active">Polite is Active</string>
+    <string name="preference_activation"><xliff:g id="preference_key">activation</xliff:g></string>
+    <string name="preference_deactivation"><xliff:g id="preference_key">deactivation</xliff:g></string>
+    <string name="preference_enable"><xliff:g id="preference_key">enable</xliff:g></string>
+    <string name="preference_notifications"><xliff:g id="preference_key">notifications</xliff:g></string>
+    <string name="preference_theme"><xliff:g id="preference_key">theme</xliff:g></string>
+    <string name="quit">Quit</string>
+    <string name="rate_app_message">Will you take a second to give an honest rating on the Play Store? I won\'t bother you again. Thanks!</string>
+    <string name="rate_app_title">High five!</string>
+    <string name="remove_keyword_hint">Tap a keyword to remove it</string>
+    <string name="rename">Rename</string>
+    <string name="rename_rule">Rename Rule</string>
+    <string name="rule_default_name">Unnamed Rule</string>
+    <string name="schedule_rule">Schedule Rule</string>
+    <string name="schedule_rule_desc">Silence your phone at a certain time</string>
+    <string name="schedule_rules">Schedule Rules</string>
+    <string name="select_calendars">Select Calendars</string>
+    <string name="send_email_to_developer">Send Feedback</string>
+    <string name="settings">Settings</string>
+    <string name="share">Share</string>
+    <string name="share_polite">Share Polite</string>
+    <string name="share_text">Check out the Polite app!\n\n<xliff:g id="url">https://play.google.com/store/apps/details?id=me.camsteffen.polite</xliff:g></string>
+    <string name="start_time">Start Time</string>
+    <string name="theme">Theme</string>
+    <string name="theme_dark">Dark</string>
+    <string name="theme_light">Light</string>
+    <string name="unsaved_keyword_message">You typed in the keyword \"%s\" but did not add it to the rule.</string>
+    <string name="unsaved_keyword_title">Continue without saving keyword?</string>
+    <string name="vibrate">Vibrate</string>
+    <string name="word_already_added">\"%s\" is already added</string>
+    <string name="yes">Yes</string>
+    <string-array name="day_symbols">
+        <item>@string/day_symbol_sunday</item>
+        <item>@string/day_symbol_monday</item>
+        <item>@string/day_symbol_tuesday</item>
+        <item>@string/day_symbol_wednesday</item>
+        <item>@string/day_symbol_thursday</item>
+        <item>@string/day_symbol_friday</item>
+        <item>@string/day_symbol_saturday</item>
+    </string-array>
+    <string-array name="day_abbreviations">
+        <item>@string/day_abbreviation_sunday</item>
+        <item>@string/day_abbreviation_monday</item>
+        <item>@string/day_abbreviation_tuesday</item>
+        <item>@string/day_abbreviation_wednesday</item>
+        <item>@string/day_abbreviation_thursday</item>
+        <item>@string/day_abbreviation_friday</item>
+        <item>@string/day_abbreviation_saturday</item>
+    </string-array>
+</resources>
