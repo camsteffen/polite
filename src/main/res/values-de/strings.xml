@@ -13,14 +13,14 @@
     <string name="all">Alle</string>
     <string name="all_events">Alle Einträge</string>
     <string name="app_name">Polite</string>
-    <string name="calendar_permission_explain">Polite benötigt Berechtigungen um Ihre Kalender Einträge zu lesen, damit Kalender Regeln funktionieren. Ihre Kalenderdaten werden nicht gespeichert oder mit Anderen geteilt.</string>
+    <string name="calendar_permission_explain">Polite benötigt Berechtigungen um deine Kalender Einträge zu lesen, damit Kalender Regeln funktionieren. Deine Kalenderdaten werden nicht gespeichert oder mit Anderen geteilt.</string>
     <string name="calendar_permission_required">Kalender Berechtigung benötigt</string>
     <string name="calendar_rule">Kalender Regel</string>
     <string name="calendar_rule_desc">Lautlos schalten des Telefons während eines Kalendereintrages.</string>
     <string name="calendar_rules">Kalender Regeln</string>
     <string name="calendars">Kalender</string>
     <string name="create_a_rule">Neue Regel erstellen</string>
-    <string name="continue_">Weiter</string>
+    <string name="continue_">Weiter</string> <!-- Alternatively: "Fortfahren" -->
     <string name="day_abbreviation_sunday">So</string>
     <string name="day_abbreviation_monday">Mo</string>
     <string name="day_abbreviation_tuesday">Di</string>
@@ -38,7 +38,7 @@
     <string name="days">Tage</string>
     <string name="deactivation">Deaktivierung</string>
     <string name="delete">Löschen</string>
-    <string name="delete_rule_confirm">Sind Sie sicher?</string>
+    <string name="delete_rule_confirm">Bist Du sicher?</string>
     <string name="delete_rule_title">Regel löschen</string>
     <string name="disable">deaktivieren</string>
     <string name="disabled">deaktiviert</string>
@@ -61,26 +61,26 @@
     <string name="help">Hilfe</string>
     <string name="help_email"><xliff:g id="email">politebycam@gmail.com</xliff:g></string>
     <string name="help_email_subject"><xliff:g id="help_email_subject">Polite Help</xliff:g></string>
-    <string name="inverse_match">Inverse Match</string>
-    <string name="inverse_match_message">Activate for events that DO NOT contain keywords</string>
-    <string name="join_beta">Join Beta Testing</string>
+    <string name="inverse_match">Umgekehrt Erkennen</string> <!-- Don't know what it actually is - need to know where it is in the app -->
+    <string name="inverse_match_message">Für Einträge aktivieren, welche die Stichworte NICHT enthalten.</string>
+    <string name="join_beta">Beta Tester werden</string>
     <string name="join_beta_url"><xliff:g id="url">https://play.google.com/apps/testing/me.camsteffen.polite</xliff:g></string>
     <string name="keywords">Stichworte</string>
     <string name="market_url"><xliff:g id="url">market://details?id=me.camsteffen.polite</xliff:g></string>
-    <string name="match_by_desc">Match by Description</string>
-    <string name="match_by_title">Match by Title</string>
-    <string name="match_by_title_desc">Match by Title or Description</string>
-    <string name="minutes">minutes</string>
-    <string name="new_feature">New Feature!</string>
-    <string name="new_feature_schedule_desc">Now you can create Schedule Rules to silence your phone at a certain time</string>
-    <string name="n_selected">%d selected</string>
-    <string name="no">No</string>
+    <string name="match_by_desc">Erkennen an der Beschreibung</string>                      <!-- needs rework... -->
+    <string name="match_by_title">Erkennen am Titel</string>                                <!-- needs rework... -->
+    <string name="match_by_title_desc">Erkennen am Titel oder der Beschreibung</string>     <!-- needs rework... -->
+    <string name="minutes">Minuten</string>
+    <string name="new_feature">Neues Feature!</string>                                      <!-- needs rework... -->
+    <string name="new_feature_schedule_desc">Du kannst jetzt Regeln erstellen, welche dein Telefon ruhig schalten zu bestimmten Zeiten</string>
+    <string name="n_selected">%d ausgewählt</string>
+    <string name="no">Nein</string>         <!-- maybe it could be "kein" as well, as if "No" in "no calendar found" -->
     <string name="no_calendars_found">Keine Kalender gefunden</string>
     <string name="no_days_selected">Keine Tage ausgewählt</string>
     <string name="no_rules">You can\'t be polite\nif you don\'t have any rules</string>
-    <string name="notification_policy_access_explain">Polite needs access to Do Not Disturb settings</string>
-    <string name="notification_policy_access_required">Do Not Disturb Access Required</string>
-    <string name="notifications">Notifications</string>
+    <string name="notification_policy_access_explain">Polite benötigt Zugriff auf die "Nicht stören" - Einstellungen</string>
+    <string name="notification_policy_access_required">"Nicht stören" Zugriff benötigt</string>
+    <string name="notifications">Benachrichtigungen</string>
     <string name="open_app_settings">App Einstellungen öffnen</string>
     <string name="polite_active">Polite ist aktiv</string>
     <string name="preference_activation"><xliff:g id="preference_key">activation</xliff:g></string>
@@ -89,30 +89,30 @@
     <string name="preference_notifications"><xliff:g id="preference_key">notifications</xliff:g></string>
     <string name="preference_theme"><xliff:g id="preference_key">theme</xliff:g></string>
     <string name="quit">Quit</string>
-    <string name="rate_app_message">Will you take a second to give an honest rating on the Play Store? I won\'t bother you again. Thanks!</string>
-    <string name="rate_app_title">High five!</string>
-    <string name="remove_keyword_hint">Tap a keyword to remove it</string>
-    <string name="rename">Rename</string>
-    <string name="rename_rule">Rename Rule</string>
-    <string name="rule_default_name">Unnamed Rule</string>
-    <string name="schedule_rule">Schedule Rule</string>
-    <string name="schedule_rule_desc">Silence your phone at a certain time</string>
-    <string name="schedule_rules">Schedule Rules</string>
-    <string name="select_calendars">Select Calendars</string>
-    <string name="send_email_to_developer">Send Feedback</string>
-    <string name="settings">Settings</string>
-    <string name="share">Share</string>
-    <string name="share_polite">Share Polite</string>
-    <string name="share_text">Check out the Polite app!\n\n<xliff:g id="url">https://play.google.com/store/apps/details?id=me.camsteffen.polite</xliff:g></string>
-    <string name="start_time">Start Time</string>
+    <string name="rate_app_message">Nimmst du dir kurz Zeit, eine ehrliche Bewertung im Play Store zu hinterlassen? Ich werde dich nicht weiter stören. Danke!</string>     <!-- needs rework... -->
+    <string name="rate_app_title">High five!</string>                                       <!-- we say this in german as well -->
+    <string name="remove_keyword_hint">Klicke auf ein Stichwort um es zu entfernen</string>
+    <string name="rename">Umbennen</string>
+    <string name="rename_rule">Regel umbennen</string>
+    <string name="rule_default_name">unbenannte Regel</string>
+    <string name="schedule_rule">Zeitregel</string>
+    <string name="schedule_rule_desc">Schalte dein Telefon zu einer bestimmten Zeit stumm</string>
+    <string name="schedule_rules">Zeitregeln</string>
+    <string name="select_calendars">Kalender auswählen</string>
+    <string name="send_email_to_developer">Feedback senden</string>
+    <string name="settings">Einstellungen</string>
+    <string name="share">Teilen</string>
+    <string name="share_polite">Teile Polite</string>
+    <string name="share_text">Sieh dir die Polite App an!\n\n<xliff:g id="url">https://play.google.com/store/apps/details?id=me.camsteffen.polite</xliff:g></string>
+    <string name="start_time">Startzeit</string>
     <string name="theme">Theme</string>
-    <string name="theme_dark">Dark</string>
-    <string name="theme_light">Light</string>
-    <string name="unsaved_keyword_message">You typed in the keyword \"%s\" but did not add it to the rule.</string>
+    <string name="theme_dark">Dunkel</string>
+    <string name="theme_light">Hell</string>
+    <string name="unsaved_keyword_message">Du hast das Stichwort \"%s\" eingetippt aber nicht zur Regel hinzugefügt.</string>
     <string name="unsaved_keyword_title">Continue without saving keyword?</string>
-    <string name="vibrate">Vibrate</string>
-    <string name="word_already_added">\"%s\" is already added</string>
-    <string name="yes">Yes</string>
+    <string name="vibrate">Vibrieren</string>
+    <string name="word_already_added">\"%s\" ist bereits in der Liste</string>
+    <string name="yes">Ja</string>
     <string-array name="day_symbols">
         <item>@string/day_symbol_sunday</item>
         <item>@string/day_symbol_monday</item>
