@@ -75,14 +75,14 @@
     <string name="new_feature_schedule_desc">Now you can create Schedule Rules to silence your phone at a certain time</string>
     <string name="n_selected">%d selected</string>
     <string name="no">No</string>
-    <string name="no_calendars_found">No calendars found</string>
-    <string name="no_days_selected">No days are selected</string>
+    <string name="no_calendars_found">Keine Kalender gefunden</string>
+    <string name="no_days_selected">Keine Tage ausgewählt</string>
     <string name="no_rules">You can\'t be polite\nif you don\'t have any rules</string>
     <string name="notification_policy_access_explain">Polite needs access to Do Not Disturb settings</string>
     <string name="notification_policy_access_required">Do Not Disturb Access Required</string>
     <string name="notifications">Notifications</string>
-    <string name="open_app_settings">Open App Settings</string>
-    <string name="polite_active">Polite is Active</string>
+    <string name="open_app_settings">App Einstellungen öffnen</string>
+    <string name="polite_active">Polite ist aktiv</string>
     <string name="preference_activation"><xliff:g id="preference_key">activation</xliff:g></string>
     <string name="preference_deactivation"><xliff:g id="preference_key">deactivation</xliff:g></string>
     <string name="preference_enable"><xliff:g id="preference_key">enable</xliff:g></string>
