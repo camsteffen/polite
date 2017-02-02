@@ -13,7 +13,7 @@
     <string name="all">Alle</string>
     <string name="all_events">Alle Einträge</string>
     <string name="app_name">Polite</string>
-    <string name="calendar_permission_explain">Polite benötigt Berechtigungen um deine Kalender Einträge zu lesen, damit Kalender Regeln funktionieren. Deine Kalenderdaten werden nicht gespeichert oder mit Anderen geteilt.</string>
+    <string name="calendar_permission_explain">Polite benötigt Berechtigungen um Ihre Kalendereinträge zu lesen, damit Kalender Regeln funktionieren. Ihre Kalenderdaten werden nicht gespeichert oder mit Anderen geteilt.</string>
     <string name="calendar_permission_required">Kalender Berechtigung benötigt</string>
     <string name="calendar_rule">Kalender Regel</string>
     <string name="calendar_rule_desc">Lautlos schalten des Telefons während eines Kalendereintrages.</string>
@@ -38,7 +38,7 @@
     <string name="days">Tage</string>
     <string name="deactivation">Deaktivierung</string>
     <string name="delete">Löschen</string>
-    <string name="delete_rule_confirm">Bist Du sicher?</string>
+    <string name="delete_rule_confirm">Sind Sie sicher?</string>
     <string name="delete_rule_title">Regel löschen</string>
     <string name="disable">deaktivieren</string>
     <string name="disabled">deaktiviert</string>
@@ -72,7 +72,7 @@
     <string name="match_by_title_desc">Erkennen am Titel oder der Beschreibung</string>     <!-- needs rework... -->
     <string name="minutes">Minuten</string>
     <string name="new_feature">Neues Feature!</string>                                      <!-- needs rework... -->
-    <string name="new_feature_schedule_desc">Du kannst jetzt Regeln erstellen, welche dein Telefon ruhig schalten zu bestimmten Zeiten</string>
+    <string name="new_feature_schedule_desc">Sie können jetzt Regeln erstellen, welche Ihr Telefon stumm schalten zu bestimmten Zeiten</string>
     <string name="n_selected">%d ausgewählt</string>
     <string name="no">Nein</string>         <!-- maybe it could be "kein" as well, as if "No" in "no calendar found" -->
     <string name="no_calendars_found">Keine Kalender gefunden</string>
@@ -89,14 +89,14 @@
     <string name="preference_notifications"><xliff:g id="preference_key">notifications</xliff:g></string>
     <string name="preference_theme"><xliff:g id="preference_key">theme</xliff:g></string>
     <string name="quit">Quit</string>
-    <string name="rate_app_message">Nimmst du dir kurz Zeit, eine ehrliche Bewertung im Play Store zu hinterlassen? Ich werde dich nicht weiter stören. Danke!</string>     <!-- needs rework... -->
+    <string name="rate_app_message">Würden Sie sich kurz Zeit nehmen, um eine ehrliche Bewertung im Play Store zu hinterlassen? Das ist das Einzige, um was ich Sie bitte. Danke!</string>     <!-- needs rework... -->
     <string name="rate_app_title">High five!</string>                                       <!-- we say this in german as well -->
     <string name="remove_keyword_hint">Klicke auf ein Stichwort um es zu entfernen</string>
     <string name="rename">Umbennen</string>
     <string name="rename_rule">Regel umbennen</string>
     <string name="rule_default_name">unbenannte Regel</string>
     <string name="schedule_rule">Zeitregel</string>
-    <string name="schedule_rule_desc">Schalte dein Telefon zu einer bestimmten Zeit stumm</string>
+    <string name="schedule_rule_desc">Schalten Sie Ihr Telefon zu einer bestimmten Zeit stumm</string>
     <string name="schedule_rules">Zeitregeln</string>
     <string name="select_calendars">Kalender auswählen</string>
     <string name="send_email_to_developer">Feedback senden</string>
@@ -108,8 +108,8 @@
     <string name="theme">Theme</string>
     <string name="theme_dark">Dunkel</string>
     <string name="theme_light">Hell</string>
-    <string name="unsaved_keyword_message">Du hast das Stichwort \"%s\" eingetippt aber nicht zur Regel hinzugefügt.</string>
-    <string name="unsaved_keyword_title">Continue without saving keyword?</string>
+    <string name="unsaved_keyword_message">Sie haben das Stichwort \"%s\" eingetippt aber nicht zur Regel hinzugefügt.</string>
+    <string name="unsaved_keyword_title">Fortfahren ohne das Stichwort zu speichern?</string>
     <string name="vibrate">Vibrieren</string>
     <string name="word_already_added">\"%s\" ist bereits in der Liste</string>
     <string name="yes">Ja</string>
