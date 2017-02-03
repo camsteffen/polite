@@ -61,15 +61,15 @@
     <string name="help">Hilfe</string>
     <string name="help_email"><xliff:g id="email">politebycam@gmail.com</xliff:g></string>
     <string name="help_email_subject"><xliff:g id="help_email_subject">Polite Help</xliff:g></string>
-    <string name="inverse_match">Umgekehrt Erkennen</string> <!-- Don't know what it actually is - need to know where it is in the app -->
+    <string name="inverse_match">Umgekehrte Logik</string> <!-- Don't know what it actually is - need to know where it is in the app -->
     <string name="inverse_match_message">Für Einträge aktivieren, welche die Stichworte NICHT enthalten.</string>
     <string name="join_beta">Beta Tester werden</string>
     <string name="join_beta_url"><xliff:g id="url">https://play.google.com/apps/testing/me.camsteffen.polite</xliff:g></string>
     <string name="keywords">Stichworte</string>
     <string name="market_url"><xliff:g id="url">market://details?id=me.camsteffen.polite</xliff:g></string>
-    <string name="match_by_desc">Erkennen an der Beschreibung</string>                      <!-- needs rework... -->
-    <string name="match_by_title">Erkennen am Titel</string>                                <!-- needs rework... -->
-    <string name="match_by_title_desc">Erkennen am Titel oder der Beschreibung</string>     <!-- needs rework... -->
+    <string name="match_by_desc">Beinhaltet in der Beschreibung</string>
+    <string name="match_by_title">Beinhaltet im Titel</string>
+    <string name="match_by_title_desc">Beinhaltet im Titel oder in der Beschreibung</string>
     <string name="minutes">Minuten</string>
     <string name="new_feature">Neues Feature!</string>                                      <!-- needs rework... -->
     <string name="new_feature_schedule_desc">Sie können jetzt Regeln erstellen, welche Ihr Telefon stumm schalten zu bestimmten Zeiten</string>
@@ -89,7 +89,7 @@
     <string name="preference_notifications"><xliff:g id="preference_key">notifications</xliff:g></string>
     <string name="preference_theme"><xliff:g id="preference_key">theme</xliff:g></string>
     <string name="quit">Quit</string>
-    <string name="rate_app_message">Würden Sie sich kurz Zeit nehmen, um eine ehrliche Bewertung im Play Store zu hinterlassen? Das ist das Einzige, um was ich Sie bitte. Danke!</string>     <!-- needs rework... -->
+    <string name="rate_app_message">Würden Sie sich kurz Zeit nehmen, um eine ehrliche Bewertung im Play Store zu hinterlassen? Ich werde Sie auch nicht weiter stören. Danke!</string>     <!-- needs rework... -->
     <string name="rate_app_title">High five!</string>                                       <!-- we say this in german as well -->
     <string name="remove_keyword_hint">Klicke auf ein Stichwort um es zu entfernen</string>
     <string name="rename">Umbennen</string>
