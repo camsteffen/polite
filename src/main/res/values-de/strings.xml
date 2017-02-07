@@ -113,22 +113,4 @@
     <string name="vibrate">Vibrieren</string>
     <string name="word_already_added">\"%s\" ist bereits in der Liste</string>
     <string name="yes">Ja</string>
-    <string-array name="day_symbols">
-        <item>@string/day_symbol_sunday</item>
-        <item>@string/day_symbol_monday</item>
-        <item>@string/day_symbol_tuesday</item>
-        <item>@string/day_symbol_wednesday</item>
-        <item>@string/day_symbol_thursday</item>
-        <item>@string/day_symbol_friday</item>
-        <item>@string/day_symbol_saturday</item>
-    </string-array>
-    <string-array name="day_abbreviations">
-        <item>@string/day_abbreviation_sunday</item>
-        <item>@string/day_abbreviation_monday</item>
-        <item>@string/day_abbreviation_tuesday</item>
-        <item>@string/day_abbreviation_wednesday</item>
-        <item>@string/day_abbreviation_thursday</item>
-        <item>@string/day_abbreviation_friday</item>
-        <item>@string/day_abbreviation_saturday</item>
-    </string-array>
 </resources>
