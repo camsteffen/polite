@@ -16,7 +16,7 @@
     <string name="calendar_permission_explain">Polite benötigt Berechtigungen um Ihre Kalendereinträge zu lesen, damit Kalender Regeln funktionieren. Ihre Kalenderdaten werden nicht gespeichert oder mit Anderen geteilt.</string>
     <string name="calendar_permission_required">Kalender Berechtigung benötigt</string>
     <string name="calendar_rule">Kalenderregel</string>
-    <string name="calendar_rule_desc">Schalten Sie ihr Telefon während eines Kalendereintrages stumm.</string>
+    <string name="calendar_rule_desc">Schalten Sie Ihr Telefon während eines Kalendereintrages stumm.</string>
     <string name="calendar_rules">Kalenderregeln</string>
     <string name="calendars">Kalender</string>
     <string name="create_a_rule">Neue Regel erstellen</string>
@@ -71,10 +71,10 @@
     <string name="match_by_title">Beinhaltet im Titel</string>
     <string name="match_by_title_desc">Beinhaltet im Titel oder in der Beschreibung</string>
     <string name="minutes">Minuten</string>
-    <string name="new_feature">Neues Feature!</string>                                      <!-- needs rework... -->
-    <string name="new_feature_schedule_desc">Sie können jetzt Regeln erstellen, welche Ihr Telefon stumm schalten zu bestimmten Zeiten</string>
+    <string name="new_feature">Neues Feature!</string>
+    <string name="new_feature_schedule_desc">Sie können jetzt Regeln erstellen, welche Ihr Telefon zu bestimmten Zeiten stumm schalten.</string>
     <string name="n_selected">%d ausgewählt</string>
-    <string name="no">Nein</string>         <!-- maybe it could be "kein" as well, as if "No" in "no calendar found" -->
+    <string name="no">Nein</string>
     <string name="no_calendars_found">Keine Kalender gefunden</string>
     <string name="no_days_selected">Keine Tage ausgewählt</string>
     <string name="no_rules">You can\'t be polite\nif you don\'t have any rules</string>
@@ -90,13 +90,13 @@
     <string name="preference_theme"><xliff:g id="preference_key">theme</xliff:g></string>
     <string name="quit">Quit</string>
     <string name="rate_app_message">Würden Sie sich kurz Zeit nehmen, um eine ehrliche Bewertung im Play Store zu hinterlassen? Ich werde Sie auch nicht weiter stören. Danke!</string>     <!-- needs rework... -->
-    <string name="rate_app_title">High five!</string>                                       <!-- we say this in german as well -->
+    <string name="rate_app_title">High five!</string>
     <string name="remove_keyword_hint">Klicke auf ein Stichwort um es zu entfernen</string>
     <string name="rename">Umbennen</string>
     <string name="rename_rule">Regel umbennen</string>
     <string name="rule_default_name">unbenannte Regel</string>
     <string name="schedule_rule">Zeitregel</string>
-    <string name="schedule_rule_desc">Schalten Sie Ihr Telefon zu einer bestimmten Zeit stumm</string>
+    <string name="schedule_rule_desc">Schalten Sie Ihr Telefon zu einer bestimmten Zeit stumm.</string>
     <string name="schedule_rules">Zeitregeln</string>
     <string name="select_calendars">Kalender auswählen</string>
     <string name="send_email_to_developer">Feedback senden</string>
