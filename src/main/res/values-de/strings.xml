@@ -15,9 +15,9 @@
     <string name="app_name">Polite</string>
     <string name="calendar_permission_explain">Polite benötigt Berechtigungen um Ihre Kalendereinträge zu lesen, damit Kalender Regeln funktionieren. Ihre Kalenderdaten werden nicht gespeichert oder mit Anderen geteilt.</string>
     <string name="calendar_permission_required">Kalender Berechtigung benötigt</string>
-    <string name="calendar_rule">Kalender Regel</string>
-    <string name="calendar_rule_desc">Lautlos schalten des Telefons während eines Kalendereintrages.</string>
-    <string name="calendar_rules">Kalender Regeln</string>
+    <string name="calendar_rule">Kalenderregel</string>
+    <string name="calendar_rule_desc">Schalten Sie ihr Telefon während eines Kalendereintrages stumm.</string>
+    <string name="calendar_rules">Kalenderregeln</string>
     <string name="calendars">Kalender</string>
     <string name="create_a_rule">Neue Regel erstellen</string>
     <string name="continue_">Weiter</string> <!-- Alternatively: "Fortfahren" -->
@@ -47,7 +47,7 @@
     <string name="duration">Dauer</string>
     <string name="duration_format">%1$dh %2$dm</string>
     <string name="duration_format_minutes">%dm</string>
-    <string name="enable">Aktiviere</string>
+    <string name="enable">Aktivieren</string>
     <string name="enabled">Aktiviert</string>
     <string name="enable_polite">Aktiviere Polite</string>
     <string name="end_time">Endzeit</string>
@@ -61,7 +61,7 @@
     <string name="help">Hilfe</string>
     <string name="help_email"><xliff:g id="email">politebycam@gmail.com</xliff:g></string>
     <string name="help_email_subject"><xliff:g id="help_email_subject">Polite Help</xliff:g></string>
-    <string name="inverse_match">Umgekehrte Logik</string> <!-- Don't know what it actually is - need to know where it is in the app -->
+    <string name="inverse_match">Umgekehrte Logik</string>
     <string name="inverse_match_message">Für Einträge aktivieren, welche die Stichworte NICHT enthalten.</string>
     <string name="join_beta">Beta Tester werden</string>
     <string name="join_beta_url"><xliff:g id="url">https://play.google.com/apps/testing/me.camsteffen.polite</xliff:g></string>
