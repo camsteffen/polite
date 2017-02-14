@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Polite Hilfe</title>
+    <style>
+        body {
+            font-family: sans-serif;
+            line-height: 1.3;
+        }
+        h2 {
+            border-bottom: 1px solid black;
+            padding: .1em 0;
+            margin: 1em 0 .5em 0;
+        }
+        h3 {
+            margin: 1em 0 .5em 0;
+        }
+        p, li {
+            margin: .6em 0;
+        }
+        li {
+            margin: .5em 0;
+        }
+    </style>
+</head>
+<body>
+<h2>Inhalt</h2>
+<ul>
+    <li><a href="#what">Was ist Polite?</a></li>
+    <li><a href="#schedule">Zeitregeln</a></li>
+    <li><a href="#calendar">Kalenderregeln</a></li>
+    <li><a href="#settings">Einstellungen</a></li>
+    <li><a href="#priority_mode">Prioritätsmodus</a></li>
+    <li><a href="#tips">Tipps</a></li>
+</ul>
+<h2 id="what">Was ist Polite?</h2>
+<p>Polite enables you to automatically silence your phone at the right times. To do this, you need to create rules so that Polite knows when to silence your phone. There are currently two types of rules: <a href="schedule">Schedule Rules</a> and <a href="calendar">Calendar Rules</a>. For every rule, you can choose to enable vibrate mode instead of silent mode. If multiple rules apply at the same time, Polite will give precedence to rules without vibrate.</p>
+<h2 id="schedule">Zeitregeln</h2>
+<p>Schedule Rules allow you to silence your phone at a specific time on specific days of the week. This works well if you have a weekly event or work schedule where you want your phone to be in vibrate mode or silent mode.
+<p>If you select an end time that is before the start time, then the end time will be on the following day. For instance, if you make a rule for Friday 10pm - 6am, then Polite will activate on 10pm on Friday and deactivate on Saturday at 6am.</p>
+<h2 id="calendar">Kalenderregeln</h2>
+<p>Calendar Rules allow you to silence your phone during calendar events saved in your calendar app.</p>
+<h3>Kalender</h3>
+<p>Select specific calendars to look for events or just use "All" calendars.</p>
+<h3>Einträge</h3>
+<p>Select the method used to match calendar events. You can simply match "All Events" or match events by keyword in the event title, description or both.</p>
+<h3>Stichworte</h3>
+<p>When using keywords, Polite will activate for events that contain any one of the keywords in a rule. Keywords are not case-sensitive. A keyword can have multiple words. Partial word matches do count.</p>
+<p>Beispiele:</p>
+<ul>
+    <li>"Abendessen" trifft auf "Abendessen mit Susy" zu</li>
+    <li>"der" trifft auf "Mörderische Träume in der Elm Strasse" zu</li>
+    <li>"meeting" trifft auf "MEETING MIT VORGESETZEM" zu</li>
+    <li>"mat 100" trifft auf "MAT 100 - Addieren und Subtrahieren" zu</li>
+    <li>"bob essen" trifft <strong>nicht</strong> auf "Bob zum essen treffen" zu</li>
+</ul>
+<h3>Umgekehrte Logik</h3>
+<p>Wenn die umgekehrte Logik aktiviert ist, wird Polite das Mobiltelefon ruhig schalten, welche die Stichworte NICHT beinhaltet. Die Regel ist immer noch nur für die Kalender aktiv, welche ausgewählt wurden.</p>
+<h2 id="settings">Einstellungen</h2>
+<h3>Benachrichtigungen</h3>
+<p>Falls aktiviert, wird jedesmal wenn Polite aktiv ist eine Benachrichtigung angezeigt.</p>
+<h3>Aktivieren</h3>
+<p>Aktiviert Polite eine bestimmte festgelegte Zeit bevor ein Kalendereintrag startet.</p>
+<h3>Deaktivieren</h3>
+<p>Deaktiviert Polite eine bestimmte festgelegte Zeit nachdem ein Kalendereintrag geendet hat.</p>
+<h2 id="priority_mode">Prioritätsmodus</h2>
+<p>Falls Sie Android 5.0 oder höcher benutzen, wird Ihr Mobiltelefon den Prioritätsmodus verwenden anstatt des Lautlosmodus. Dies ist nur für die Regeln gültig, bei welchem vibrieren nicht eingeschaltet ist. Im Prioritätsmodous können "wichtige Unterbrechungen" immer noch einen Ton oder eine Vibration auslösen. Um einzustellen, was wichtige Unterbrechungen sind, gehen Sie zu Einstellungen -> <a href="help://sound_settings">Ton &amp; Benachrichtigungen</a> -> Stummschaltmodus (Android 5.0)/Nicht stören (Android 6.0).</p>
+<h2 id="tips">Tipps</h2>
+<p>Sie können ein einzigartiges Stichwort (wie zum Beispiel #vibrieren) setzen und diesen in die Kalenderbeschreibung hinzufügen, wo die Regel aktiviert werden soll.</p>
+<p>Sie können einen separaten Kalender erstellen, welcher als Zeitplan für Polite dient. Dazu kreiieren Sie eine neue Regel welche bei allen Einträgen stummschaltet. Anschliessend kann der Kalender in der Kalenderapp ausgeblendet werden, damit es übersichtlich bleibt.</p>
+</body>
+</html>
