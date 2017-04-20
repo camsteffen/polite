@@ -14,9 +14,13 @@ Automatically silence your phone at the right times
 * Schedule Rules will silence your phone at a specific time in your weekly schedule
 * Calendar Rules will silence your phone during calendar events
 * Match all events in your calendar or match specific events based on keywords in the event title or description
-* Tiny and efficient
-* Simple Material Design
-* No ads, no nonsense
+
+**Free. Open Source. No ads**
+
+## Translations
+
+* English
+* German (Lukas Marchesi)
 
 ## License
 
