@@ -2,6 +2,7 @@ package me.camsteffen.polite
 
 import android.content.Intent
 import android.net.Uri
+import android.os.Build
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuInflater
@@ -11,6 +12,8 @@ import android.webkit.WebResourceRequest
 import android.webkit.WebView
 import android.webkit.WebViewClient
 import android.webkit.WebViewFragment
+import java.io.IOException
+import java.io.InputStream
 
 class HelpFragment : WebViewFragment() {
 
@@ -29,7 +32,13 @@ class HelpFragment : WebViewFragment() {
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
-        webView.loadUrl("file:///android_asset/help.html")
+        val language = getCurrentLanguage()
+        var path = "help-$language.html"
+        if(!assetExists(path)) {
+            path = "help.html"
+        }
+        val url = "file:///android_asset/$path"
+        webView.loadUrl(url)
         webView.setWebViewClient(webViewClient)
     }
 
@@ -78,4 +87,25 @@ class HelpFragment : WebViewFragment() {
             return false
         }
     }
+
+    fun getCurrentLanguage(): String {
+        val locale = if (Build.VERSION.SDK_INT < Build.VERSION_CODES.N) {
+            resources.configuration.locale
+        } else {
+            resources.configuration.locales.get(0)
+        }
+        return locale.language
+    }
+
+    fun assetExists(path: String): Boolean {
+        val inputStream: InputStream
+        try {
+            inputStream = resources.assets.open(path)
+        } catch (ex: IOException) {
+            return false
+        }
+        inputStream.close()
+        return true
+    }
+
 }

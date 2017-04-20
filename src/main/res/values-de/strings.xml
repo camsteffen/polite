@@ -1,0 +1,116 @@
+<resources xmlns:xliff="http://schemas.android.com/tools">
+    <plurals name="minutes_after_event">
+        <item quantity="one">%d Minute nach dem Eintrag</item>
+        <item quantity="other">%d Minuten nach dem Eintrag</item>
+    </plurals>
+    <plurals name="minutes_before_event">
+        <item quantity="one">%d Minute vor dem Eintrag</item>
+        <item quantity="other">%d Minuten vor dem Eintrag</item>
+    </plurals>
+    <string name="activation">Aktivieren</string>
+    <string name="add">Hinzufügen</string>
+    <string name="add_keyword_hint">Stichwort hinzufügen</string>
+    <string name="all">Alle</string>
+    <string name="all_events">Alle Einträge</string>
+    <string name="app_name">Polite</string>
+    <string name="calendar_permission_explain">Polite benötigt Berechtigungen um Ihre Kalendereinträge zu lesen, damit Kalender Regeln funktionieren. Ihre Kalenderdaten werden nicht gespeichert oder mit Anderen geteilt.</string>
+    <string name="calendar_permission_required">Kalender Berechtigung benötigt</string>
+    <string name="calendar_rule">Kalenderregel</string>
+    <string name="calendar_rule_desc">Schalten Sie Ihr Telefon während eines Kalendereintrages stumm.</string>
+    <string name="calendar_rules">Kalenderregeln</string>
+    <string name="calendars">Kalender</string>
+    <string name="create_a_rule">Neue Regel erstellen</string>
+    <string name="continue_">Weiter</string> <!-- Alternatively: "Fortfahren" -->
+    <string name="day_abbreviation_sunday">So</string>
+    <string name="day_abbreviation_monday">Mo</string>
+    <string name="day_abbreviation_tuesday">Di</string>
+    <string name="day_abbreviation_wednesday">Mi</string>
+    <string name="day_abbreviation_thursday">Do</string>
+    <string name="day_abbreviation_friday">Fr</string>
+    <string name="day_abbreviation_saturday">Sa</string>
+    <string name="day_symbol_sunday">S</string>
+    <string name="day_symbol_monday">M</string>
+    <string name="day_symbol_tuesday">D</string>
+    <string name="day_symbol_wednesday">M</string>
+    <string name="day_symbol_thursday">D</string>
+    <string name="day_symbol_friday">F</string>
+    <string name="day_symbol_saturday">S</string>
+    <string name="days">Tage</string>
+    <string name="deactivation">Deaktivierung</string>
+    <string name="delete">Löschen</string>
+    <string name="delete_rule_confirm">Sind Sie sicher?</string>
+    <string name="delete_rule_title">Regel löschen</string>
+    <string name="disable">deaktivieren</string>
+    <string name="disabled">deaktiviert</string>
+    <string name="disable_polite">Polite deaktivieren</string>
+    <string name="disabled_notice">Polite ist deaktiviert</string>
+    <string name="duration">Dauer</string>
+    <string name="duration_format">%1$dh %2$dm</string>
+    <string name="duration_format_minutes">%dm</string>
+    <string name="enable">Aktivieren</string>
+    <string name="enabled">Aktiviert</string>
+    <string name="enable_polite">Aktiviere Polite</string>
+    <string name="end_time">Endzeit</string>
+    <string name="error_open_play_store">Unmöglich den Play Store zu öffnen</string>
+    <string name="error_read_calendars">Unmöglich die Kalender zu lesen</string>
+    <string name="events">Eintrag</string>
+    <string name="every_day">Jeden Tag</string>
+    <string name="go_back">Zurück</string>
+    <string name="google_plus_community">Google+ Community</string>
+    <string name="google_plus_community_url"><xliff:g id="url">https://plus.google.com/communities/114753327737625029623</xliff:g></string>
+    <string name="help">Hilfe</string>
+    <string name="help_email"><xliff:g id="email">politebycam@gmail.com</xliff:g></string>
+    <string name="help_email_subject"><xliff:g id="help_email_subject">Polite Help</xliff:g></string>
+    <string name="inverse_match">Umgekehrte Logik</string>
+    <string name="inverse_match_message">Für Einträge aktivieren, welche die Stichworte NICHT enthalten.</string>
+    <string name="join_beta">Beta Tester werden</string>
+    <string name="join_beta_url"><xliff:g id="url">https://play.google.com/apps/testing/me.camsteffen.polite</xliff:g></string>
+    <string name="keywords">Stichworte</string>
+    <string name="market_url"><xliff:g id="url">market://details?id=me.camsteffen.polite</xliff:g></string>
+    <string name="match_by_desc">Beinhaltet in der Beschreibung</string>
+    <string name="match_by_title">Beinhaltet im Titel</string>
+    <string name="match_by_title_desc">Beinhaltet im Titel oder in der Beschreibung</string>
+    <string name="minutes">Minuten</string>
+    <string name="new_feature">Neues Feature!</string>
+    <string name="new_feature_schedule_desc">Sie können jetzt Regeln erstellen, welche Ihr Telefon zu bestimmten Zeiten stumm schalten.</string>
+    <string name="n_selected">%d ausgewählt</string>
+    <string name="no">Nein</string>
+    <string name="no_calendars_found">Keine Kalender gefunden</string>
+    <string name="no_days_selected">Keine Tage ausgewählt</string>
+    <string name="no_rules">You can\'t be polite\nif you don\'t have any rules</string>
+    <string name="notification_policy_access_explain">Polite benötigt Zugriff auf die "Nicht stören" - Einstellungen</string>
+    <string name="notification_policy_access_required">"Nicht stören" Zugriff benötigt</string>
+    <string name="notifications">Benachrichtigungen</string>
+    <string name="open_app_settings">App Einstellungen öffnen</string>
+    <string name="polite_active">Polite ist aktiv</string>
+    <string name="preference_activation"><xliff:g id="preference_key">activation</xliff:g></string>
+    <string name="preference_deactivation"><xliff:g id="preference_key">deactivation</xliff:g></string>
+    <string name="preference_enable"><xliff:g id="preference_key">enable</xliff:g></string>
+    <string name="preference_notifications"><xliff:g id="preference_key">notifications</xliff:g></string>
+    <string name="preference_theme"><xliff:g id="preference_key">theme</xliff:g></string>
+    <string name="quit">Quit</string>
+    <string name="rate_app_message">Würden Sie sich kurz Zeit nehmen, um eine ehrliche Bewertung im Play Store zu hinterlassen? Ich werde Sie auch nicht weiter stören. Danke!</string>     <!-- needs rework... -->
+    <string name="rate_app_title">High five!</string>
+    <string name="remove_keyword_hint">Klicke auf ein Stichwort um es zu entfernen</string>
+    <string name="rename">Umbennen</string>
+    <string name="rename_rule">Regel umbennen</string>
+    <string name="rule_default_name">unbenannte Regel</string>
+    <string name="schedule_rule">Zeitregel</string>
+    <string name="schedule_rule_desc">Schalten Sie Ihr Telefon zu einer bestimmten Zeit stumm.</string>
+    <string name="schedule_rules">Zeitregeln</string>
+    <string name="select_calendars">Kalender auswählen</string>
+    <string name="send_email_to_developer">Feedback senden</string>
+    <string name="settings">Einstellungen</string>
+    <string name="share">Teilen</string>
+    <string name="share_polite">Teile Polite</string>
+    <string name="share_text">Sieh dir die Polite App an!\n\n<xliff:g id="url">https://play.google.com/store/apps/details?id=me.camsteffen.polite</xliff:g></string>
+    <string name="start_time">Startzeit</string>
+    <string name="theme">Theme</string>
+    <string name="theme_dark">Dunkel</string>
+    <string name="theme_light">Hell</string>
+    <string name="unsaved_keyword_message">Sie haben das Stichwort \"%s\" eingetippt aber nicht zur Regel hinzugefügt.</string>
+    <string name="unsaved_keyword_title">Fortfahren ohne das Stichwort zu speichern?</string>
+    <string name="vibrate">Vibrieren</string>
+    <string name="word_already_added">\"%s\" ist bereits in der Liste</string>
+    <string name="yes">Ja</string>
+</resources>
