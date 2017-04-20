@@ -66,7 +66,7 @@ abstract class EditRuleFragment<RuleType : Rule> : Fragment() {
                 AlertDialog.Builder(activity)
                         .setTitle(R.string.delete_rule_title)
                         .setMessage(R.string.delete_rule_confirm)
-                        .setPositiveButton(R.string.yes) { dialog, which ->
+                        .setPositiveButton(R.string.yes) { _, _ ->
                             fragmentManager.popBackStack()
                             if (rule.id != Rule.NEW_RULE)
                                 rulesFragment.deleteRule(rule.id, rulesFragment.openRulePosition)
@@ -97,12 +97,12 @@ abstract class EditRuleFragment<RuleType : Rule> : Fragment() {
         vibrateSwitch.isChecked = rule.vibrate
 
         // Enable Switch
-        enableSwitch.setOnCheckedChangeListener { buttonView, isChecked ->
+        enableSwitch.setOnCheckedChangeListener { _, isChecked ->
             rule.enabled = isChecked
         }
 
         // Vibrate Switch
-        vibrateSwitch.setOnCheckedChangeListener { buttonView, isChecked ->
+        vibrateSwitch.setOnCheckedChangeListener { _, isChecked ->
             rule.vibrate = isChecked
         }
     }

@@ -49,13 +49,13 @@ class EditCalendarRuleFragment : EditRuleFragment<CalendarRule>() {
             selectEventMatch(view)
         }
 
-        inverseMatch.setOnClickListener { view ->
+        inverseMatch.setOnClickListener {
             setInverseMatch()
         }
 
         // Keywords
         val addKeywordEditText = addKeywordEditText
-        addKeywordEditText.setOnEditorActionListener(TextView.OnEditorActionListener { view, actionId, event ->
+        addKeywordEditText.setOnEditorActionListener(TextView.OnEditorActionListener { _, actionId, _ ->
             when (actionId) {
                 100 -> addKeyword()
                 else -> return@OnEditorActionListener false
@@ -165,14 +165,14 @@ class EditCalendarRuleFragment : EditRuleFragment<CalendarRule>() {
 
         AlertDialog.Builder(activity)
                 .setTitle(R.string.select_calendars)
-                .setMultiChoiceItems(calNames, checked) { dialog, which, isChecked ->
+                .setMultiChoiceItems(calNames, checked) { _, which, isChecked ->
                     checked[which] = isChecked
                 }
-                .setNeutralButton(R.string.all) { dialog, which ->
+                .setNeutralButton(R.string.all) { _, _ ->
                     rule.calendars.clear()
                     onUpdateCalendars()
                 }
-                .setPositiveButton(android.R.string.ok) { dialog, which ->
+                .setPositiveButton(android.R.string.ok) { _, _ ->
                     rule.calendars.clear()
                     checked.indices
                             .filter { checked[it] }
@@ -221,11 +221,11 @@ class EditCalendarRuleFragment : EditRuleFragment<CalendarRule>() {
         AlertDialog.Builder(activity)
                 .setTitle(R.string.inverse_match)
                 .setMessage(R.string.inverse_match_message)
-                .setNegativeButton(R.string.disable, { dialogInterface, i ->
+                .setNegativeButton(R.string.disable, { _, _ ->
                     rule.inverseMatch = false
                     onUpdateInverseMatch()
                 })
-                .setPositiveButton(R.string.enable, { dialogInterface, i ->
+                .setPositiveButton(R.string.enable, { _, _ ->
                     rule.inverseMatch = true
                     onUpdateInverseMatch()
                 })
@@ -267,7 +267,7 @@ class EditCalendarRuleFragment : EditRuleFragment<CalendarRule>() {
             AlertDialog.Builder(activity)
                     .setTitle(R.string.unsaved_keyword_title)
                     .setMessage(getString(R.string.unsaved_keyword_message, word))
-                    .setPositiveButton(R.string.continue_, { dialogInterface, i ->
+                    .setPositiveButton(R.string.continue_, { _, _ ->
                         saveClose()
                     })
                     .setNegativeButton(R.string.go_back, null)

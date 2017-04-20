@@ -87,7 +87,7 @@ class MainActivity : AppCompatActivity(), FragmentManager.OnBackStackChangedList
         setSupportActionBar(findViewById(R.id.toolbar) as Toolbar)
         setHomeAsUp()
 
-        titleET.setOnEditorActionListener { v, actionId, event ->
+        titleET.setOnEditorActionListener { _, actionId, _ ->
             if (actionId == EditorInfo.IME_ACTION_DONE) {
                 hideKeyboard()
                 titleET.clearFocus()
@@ -154,12 +154,12 @@ class MainActivity : AppCompatActivity(), FragmentManager.OnBackStackChangedList
                     val alertBuilder = AlertDialog.Builder(this)
                             .setTitle(R.string.calendar_permission_required)
                             .setMessage(R.string.calendar_permission_explain)
-                            .setNegativeButton(android.R.string.no) { dialog, which ->
+                            .setNegativeButton(android.R.string.no) { dialog, _ ->
                                 dialog.dismiss()
                                 val rulesFragment = rulesFragment
                                 rulesFragment?.adapter!!.rules.forEachIndexed { i, item ->
                                     if (item is CalendarRule && item.enabled) {
-                                        rulesFragment!!.ruleSetEnabled(i, false)
+                                        rulesFragment.ruleSetEnabled(i, false)
                                     }
                                 }
                                 notificationManager.cancel(Polite.NOTIFY_ID_CALENDAR_PERMISSION)
@@ -167,11 +167,11 @@ class MainActivity : AppCompatActivity(), FragmentManager.OnBackStackChangedList
 
                     // request calendar permission or open settings directly
                     if (shouldShowRequestPermissionRationale(Manifest.permission.READ_CALENDAR)) {
-                        alertBuilder.setPositiveButton(android.R.string.ok) { dialog, which ->
+                        alertBuilder.setPositiveButton(android.R.string.ok) { _, _ ->
                             requestPermissions(permissions, requestCode)
                         }
                     } else {
-                        alertBuilder.setPositiveButton(R.string.open_app_settings) { dialog, which ->
+                        alertBuilder.setPositiveButton(R.string.open_app_settings) { _, _ ->
                             val intent = Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS)
                             intent.data = Uri.fromParts("package", polite.packageName, null)
                             startActivityForResult(intent, ACTIVITY_CALENDAR_PERMISSION)
