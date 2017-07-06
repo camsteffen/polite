@@ -240,7 +240,7 @@ class EditCalendarRuleFragment : EditRuleFragment<CalendarRule>() {
             CalendarRule.MATCH_TITLE -> R.string.match_by_title
             CalendarRule.MATCH_DESCRIPTION -> R.string.match_by_desc
             CalendarRule.MATCH_TITLE or CalendarRule.MATCH_DESCRIPTION -> R.string.match_by_title_desc
-            else -> throw IllegalStateException("illegal rule match value: " + rule.match)
+            else -> throw IllegalStateException("illegal rule match value: ${rule.match}")
         }
         val events = view.findViewById(R.id.events) as CaptionOption
         events.caption.text = getString(stringId)

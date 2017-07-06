@@ -156,18 +156,18 @@ object DBActions {
     }
 
     fun deleteRule(db: SQLiteDatabase, id: Long) {
-        db.delete(DB.Rule.TABLE_NAME, BaseColumns._ID + "=?", arrayOf(id.toString()))
+        db.delete(DB.Rule.TABLE_NAME, "${BaseColumns._ID}=?", arrayOf(id.toString()))
     }
 
     private fun renameRule(db: SQLiteDatabase, id: Long, name: String) {
         val values = ContentValues()
         values.put(DB.Rule.COLUMN_NAME, name)
-        db.update(DB.Rule.TABLE_NAME, values, BaseColumns._ID + "=?", arrayOf(id.toString()))
+        db.update(DB.Rule.TABLE_NAME, values, "${BaseColumns._ID}=?", arrayOf(id.toString()))
     }
 
     private fun ruleSetEnabled(db: SQLiteDatabase, id: Long, isChecked: Boolean) {
         val values = ContentValues()
         values.put(DB.Rule.COLUMN_ENABLE, isChecked)
-        db.update(DB.Rule.TABLE_NAME, values, BaseColumns._ID + "=?", arrayOf(java.lang.Long.toString(id)))
+        db.update(DB.Rule.TABLE_NAME, values, "${BaseColumns._ID}=?", arrayOf(java.lang.Long.toString(id)))
     }
 }

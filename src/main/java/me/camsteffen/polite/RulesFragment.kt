@@ -287,8 +287,8 @@ class RulesFragment : Fragment() {
 
         override fun doInBackground(vararg params: Void?): LoadRulesResult {
             val db = Polite.db!!.readableDatabase
-            val scheduleRules = ScheduleRule.queryList(db, null, null, DB.Rule.COLUMN_NAME + " ASC")
-            val calendarRules = CalendarRule.queryList(db, null, null, DB.Rule.COLUMN_NAME + " ASC")
+            val scheduleRules = ScheduleRule.queryList(db, null, null, "${DB.Rule.COLUMN_NAME} ASC")
+            val calendarRules = CalendarRule.queryList(db, null, null, "${DB.Rule.COLUMN_NAME} ASC")
             return LoadRulesResult(scheduleRules, calendarRules)
         }
 

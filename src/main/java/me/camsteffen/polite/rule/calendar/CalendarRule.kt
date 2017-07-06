@@ -85,7 +85,7 @@ class CalendarRule : Rule {
         val it = keywords.iterator()
         val builder = StringBuilder(it.next())
         for (word in it) {
-            builder.append(", " + word)
+            builder.append(", $word")
         }
         return builder.toString()
     }
@@ -168,7 +168,7 @@ class CalendarRule : Rule {
                 val vibrate = ruleCursor.getInt(INDEX_VIBRATE) != 0
                 val calendarCursor = db.query(DB.CalendarRuleCalendar.TABLE_NAME,
                         arrayOf(DB.CalendarRuleCalendar.COLUMN_CALENDAR_ID),
-                        DB.CalendarRuleCalendar.COLUMN_RULE + "=?",
+                        "${DB.CalendarRuleCalendar.COLUMN_RULE}=?",
                         arrayOf(java.lang.Long.toString(id)),
                         null,
                         null,
@@ -193,7 +193,7 @@ class CalendarRule : Rule {
 
                 val keywordCursor = db.query(DB.CalendarRuleKeyword.TABLE_NAME,
                         arrayOf(DB.CalendarRuleKeyword.COLUMN_WORD),
-                        DB.CalendarRuleKeyword.COLUMN_RULE + "=?",
+                        "${DB.CalendarRuleKeyword.COLUMN_RULE}=?",
                         arrayOf(java.lang.Long.toString(id)),
                         null,
                         null,

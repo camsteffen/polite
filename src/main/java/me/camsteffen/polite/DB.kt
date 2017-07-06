@@ -127,7 +127,7 @@ class DB(val context: Context) : SQLiteOpenHelper(context, DB.NAME, null, DB.VER
         }
         inStr.close()
         if(sb.isNotBlank()) {
-            throw IllegalStateException("unexpected EOF in " + filename)
+            throw IllegalStateException("unexpected EOF in $filename")
         }
     }
 

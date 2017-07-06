@@ -66,12 +66,12 @@ class ScheduleRule : Rule {
         } else if (count > 0) {
             ranges.add(Pair(days.size-count, count))
         }
-        for (range in ranges) {
-            val last = range.first + range.second - 1
-            if (range.second > 2) {
-                atoms.add(days[range.first] + " - " + days[last])
+        for ((first, second) in ranges) {
+            val last = first + second - 1
+            if (second > 2) {
+                atoms.add("${days[first]} - ${days[last]}")
             } else {
-                (range.first..last).mapTo(atoms) { days[it] }
+                (first..last).mapTo(atoms) { days[it] }
             }
         }
         if (atoms.isEmpty())
@@ -79,9 +79,9 @@ class ScheduleRule : Rule {
         val it = atoms.iterator()
         val builder = StringBuilder(it.next())
         for (atom in it) {
-            builder.append(", " + atom)
+            builder.append(", $atom")
         }
-        builder.append("  " + begin.toString(context) + " - " + end.toString(context))
+        builder.append("  ${begin.toString(context)} - ${end.toString(context)}")
         return builder
     }
 
@@ -92,9 +92,7 @@ class ScheduleRule : Rule {
         dest.writeBooleanArray(days)
     }
 
-    override fun describeContents(): Int {
-        return 0
-    }
+    override fun describeContents(): Int = 0
 
     companion object {
         const val SUNDAY = 0

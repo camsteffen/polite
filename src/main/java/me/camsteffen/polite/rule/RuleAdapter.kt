@@ -68,35 +68,35 @@ class RuleAdapter(val rulesFragment: RulesFragment, val rules: RuleList = RuleLi
         val item = rules[position]
         when(item) {
             is RuleList.Subhead -> {
-                val holder_ = holder as SubheadViewHolder
+                holder as SubheadViewHolder
                 val drawable = DrawableCompat.wrap(ContextCompat.getDrawable(context, item.drawableId)).mutate()
                 val attribute = TypedValue()
                 context.theme.resolveAttribute(android.R.attr.textColorSecondary, attribute, true)
                 val tint = ContextCompat.getColor(context, attribute.resourceId)
                 DrawableCompat.setTint(drawable, tint)
-                holder_.textView.setCompoundDrawablesWithIntrinsicBounds(drawable, null, null, null)
-                holder_.textView.setText(item.textId)
+                holder.textView.setCompoundDrawablesWithIntrinsicBounds(drawable, null, null, null)
+                holder.textView.setText(item.textId)
             }
             is Rule -> {
-                val holder_ = holder as RuleViewHolder
-                holder_.rule = item
-                holder_.nameTV.text = item.name
-                holder_.caption.text = item.getCaption(context)
-                holder_.enableSwitch.isChecked = item.enabled
+                holder as RuleViewHolder
+                holder.rule = item
+                holder.nameTV.text = item.name
+                holder.caption.text = item.getCaption(context)
+                holder.enableSwitch.isChecked = item.enabled
                 val textAppearance: Int
-                val paintFlags = holder_.nameTV.paintFlags
+                val paintFlags = holder.nameTV.paintFlags
                 if(item.enabled) {
                     textAppearance = R.style.EnabledRuleName
-                    holder_.nameTV.paintFlags = paintFlags and Paint.STRIKE_THRU_TEXT_FLAG.inv()
+                    holder.nameTV.paintFlags = paintFlags and Paint.STRIKE_THRU_TEXT_FLAG.inv()
                 } else {
                     textAppearance = R.style.DisabledRuleName
-                    holder_.nameTV.paintFlags = paintFlags or Paint.STRIKE_THRU_TEXT_FLAG
+                    holder.nameTV.paintFlags = paintFlags or Paint.STRIKE_THRU_TEXT_FLAG
                 }
                 @Suppress("DEPRECATION")
                 if(Build.VERSION.SDK_INT < Build.VERSION_CODES.M)
-                    holder_.nameTV.setTextAppearance(context, textAppearance)
+                    holder.nameTV.setTextAppearance(context, textAppearance)
                 else
-                    holder_.nameTV.setTextAppearance(textAppearance)
+                    holder.nameTV.setTextAppearance(textAppearance)
             }
         }
     }

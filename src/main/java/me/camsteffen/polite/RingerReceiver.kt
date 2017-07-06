@@ -145,7 +145,7 @@ class RingerReceiver : BroadcastReceiver() {
 
         // get enabled rules
         val db = Polite.db!!.readableDatabase
-        val selection = DB.Rule.COLUMN_ENABLE + "=1"
+        val selection = "${DB.Rule.COLUMN_ENABLE}=1"
         val calendarRules = CalendarRule.queryList(db, selection)
         var scheduleRules = ScheduleRule.queryList(db, selection)
 
@@ -408,8 +408,8 @@ class RingerReceiver : BroadcastReceiver() {
                 CalendarContract.Instances.DESCRIPTION,
                 CalendarContract.Instances.BEGIN,
                 CalendarContract.Instances.END)
-        val EVENT_SELECTION = CalendarContract.Instances.ALL_DAY + "=0"
-        val EVENT_SORT = CalendarContract.Instances.BEGIN + " ASC"
+        val EVENT_SELECTION = "${CalendarContract.Instances.ALL_DAY}=0"
+        val EVENT_SORT = "${CalendarContract.Instances.BEGIN} ASC"
         const val INDEX_ID = 0
         const val INDEX_CALENDAR_ID = 1
         const val INDEX_TITLE = 2
