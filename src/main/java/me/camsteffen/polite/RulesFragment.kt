@@ -100,11 +100,11 @@ class RulesFragment : Fragment() {
             AlertDialog.Builder(activity)
                     .setTitle(R.string.notification_policy_access_required)
                     .setMessage(R.string.notification_policy_access_explain)
-                    .setNegativeButton(R.string.disable_polite) { dialog, which ->
+                    .setNegativeButton(R.string.disable_polite) { dialog, _ ->
                         dialog.dismiss()
                         Polite.preferences.edit().putBoolean(getString(R.string.preference_enable), false).apply()
                     }
-                    .setPositiveButton(android.R.string.ok) { dialog, which ->
+                    .setPositiveButton(android.R.string.ok) { _, _ ->
                         val intent = Intent(android.provider.Settings.ACTION_NOTIFICATION_POLICY_ACCESS_SETTINGS)
                         startActivity(intent)
                     }

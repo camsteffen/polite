@@ -42,7 +42,7 @@ class RuleAdapter(val rulesFragment: RulesFragment, val rules: RuleList = RuleLi
             view.setOnClickListener {
                 rulesFragment.openRule(rule!!, adapterPosition)
             }
-            enableSwitch.setOnCheckedChangeListener(CompoundButton.OnCheckedChangeListener { switch, isChecked ->
+            enableSwitch.setOnCheckedChangeListener(CompoundButton.OnCheckedChangeListener { _, isChecked ->
                 if (rule!!.enabled == isChecked)
                     return@OnCheckedChangeListener
                 if (isChecked && rule!! is CalendarRule)

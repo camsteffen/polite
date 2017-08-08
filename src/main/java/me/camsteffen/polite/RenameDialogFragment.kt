@@ -34,7 +34,7 @@ class RenameDialogFragment : DialogFragment() {
                 .setTitle(R.string.rename_rule)
                 .setView(view)
                 .setNegativeButton(android.R.string.cancel, null)
-                .setPositiveButton(android.R.string.ok, { dialogInterface, which ->
+                .setPositiveButton(android.R.string.ok, { _, _ ->
                     val newName = editText.text.toString()
                     val rulesFragment = fragmentManager.findFragmentByTag(RulesFragment.FRAGMENT_TAG) as RulesFragment
                     rulesFragment.renameRule(id, position, newName)
