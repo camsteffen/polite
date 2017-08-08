@@ -45,8 +45,8 @@ class EditCalendarRuleFragment : EditRuleFragment<CalendarRule>() {
         }
 
         // Match
-        eventsMatch.setOnClickListener { view ->
-            selectEventMatch(view)
+        eventsMatch.setOnClickListener { v ->
+            selectEventMatch(v)
         }
 
         inverseMatch.setOnClickListener {
