@@ -22,7 +22,7 @@ object DBActions {
         }
 
         override fun doInBackground(vararg params: Void?): Long {
-            val db = Polite.db!!.writableDatabase
+            val db = Polite.db.writableDatabase
             db.beginTransaction()
             val id = modify(db)
             db.setTransactionSuccessful()

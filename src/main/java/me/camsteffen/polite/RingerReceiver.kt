@@ -144,7 +144,7 @@ class RingerReceiver : BroadcastReceiver() {
         var nextRunTime = Long.MAX_VALUE
 
         // get enabled rules
-        val db = Polite.db!!.readableDatabase
+        val db = Polite.db.readableDatabase
         val selection = "${DB.Rule.COLUMN_ENABLE}=1"
         val calendarRules = CalendarRule.queryList(db, selection)
         var scheduleRules = ScheduleRule.queryList(db, selection)

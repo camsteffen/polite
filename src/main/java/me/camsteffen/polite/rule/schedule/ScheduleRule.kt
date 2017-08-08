@@ -116,7 +116,7 @@ class ScheduleRule : Rule {
         }
 
         fun query(
-                db: SQLiteDatabase = Polite.db!!.readableDatabase,
+                db: SQLiteDatabase = Polite.db.readableDatabase,
                 selection: String? = null,
                 selectionArgs: Array<String>? = null,
                 orderBy: String? = null): Cursor {
@@ -145,7 +145,7 @@ class ScheduleRule : Rule {
         }
 
         fun queryList(
-                db: SQLiteDatabase = Polite.db!!.readableDatabase,
+                db: SQLiteDatabase = Polite.db.readableDatabase,
                 selection: String? = null,
                 selectionArgs: Array<String>? = null,
                 orderBy: String? = null): List<ScheduleRule> {

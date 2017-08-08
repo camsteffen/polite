@@ -124,7 +124,7 @@ class CalendarRule : Rule {
         }
 
         fun query(
-                db: SQLiteDatabase = Polite.db!!.readableDatabase,
+                db: SQLiteDatabase = Polite.db.readableDatabase,
                 selection: String? = null,
                 selectionArgs: Array<String>? = null,
                 orderBy: String? = null): Cursor {
@@ -155,7 +155,7 @@ class CalendarRule : Rule {
         const val INDEX_INVERSE_MATCH = 7
 
         fun queryList(
-                db: SQLiteDatabase = Polite.db!!.readableDatabase,
+                db: SQLiteDatabase = Polite.db.readableDatabase,
                 selection: String? = null,
                 selectionArgs: Array<String>? = null,
                 orderBy: String? = null): List<CalendarRule> {

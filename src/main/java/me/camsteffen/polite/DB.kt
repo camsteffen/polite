@@ -5,12 +5,10 @@ import android.database.sqlite.SQLiteDatabase
 import android.database.sqlite.SQLiteOpenHelper
 import android.provider.BaseColumns
 
-class DB(val context: Context) : SQLiteOpenHelper(context, DB.NAME, null, DB.VERSION) {
+private const val VERSION = 3
+private const val NAME = "Polite.db"
 
-    companion object {
-        private const val VERSION = 3
-        private const val NAME = "Polite.db"
-    }
+class DB(val context: Context) : SQLiteOpenHelper(context, NAME, null, VERSION) {
 
     object Rule {
         const val TABLE_NAME = "Rule"
