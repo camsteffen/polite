@@ -8,6 +8,10 @@ import android.view.View
 import android.widget.NumberPicker
 import me.camsteffen.polite.R
 
+private val DEFAULT_VALUE = 0
+private val MAX_VALUE = 15
+private val MIN_VALUE = 0
+
 internal abstract class RelativeTimePicker(context: Context, attrs: AttributeSet) : DialogPreference(context, attrs), Preference.OnPreferenceChangeListener {
 
     private var picker: NumberPicker? = null
@@ -45,11 +49,5 @@ internal abstract class RelativeTimePicker(context: Context, attrs: AttributeSet
     override fun onPreferenceChange(preference: Preference, newValue: Any): Boolean {
         summary = summary
         return true
-    }
-
-    companion object {
-        private val DEFAULT_VALUE = 0
-        private val MAX_VALUE = 15
-        private val MIN_VALUE = 0
     }
 }

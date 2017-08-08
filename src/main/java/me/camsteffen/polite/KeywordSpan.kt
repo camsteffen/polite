@@ -6,6 +6,8 @@ import android.graphics.Paint
 import android.graphics.RectF
 import android.text.style.ReplacementSpan
 
+private const val padding = 10
+
 class KeywordSpan(context: Context) : ReplacementSpan() {
 
     val bgColor: Int
@@ -19,20 +21,16 @@ class KeywordSpan(context: Context) : ReplacementSpan() {
         values.recycle()
     }
 
-    companion object {
-        const val mPadding = 10
-    }
-
     override fun getSize(paint: Paint, text: CharSequence, start: Int, end: Int, fm: Paint.FontMetricsInt?): Int {
-        return (paint.measureText(text.subSequence(start, end).toString()) + 2 * mPadding).toInt()
+        return (paint.measureText(text.subSequence(start, end).toString()) + 2 * padding).toInt()
     }
 
     override fun draw(canvas: Canvas, text: CharSequence, start: Int, end: Int, x: Float, top: Int, y: Int, bottom: Int, paint: Paint) {
         val width = paint.measureText(text.subSequence(start, end).toString())
-        val rect = RectF(x, y + paint.ascent(), x + width + (2 * mPadding).toFloat(), y + paint.descent())
+        val rect = RectF(x, y + paint.ascent(), x + width + (2 * padding).toFloat(), y + paint.descent())
         paint.color = bgColor
-        canvas.drawRoundRect(rect, mPadding.toFloat(), mPadding.toFloat(), paint)
+        canvas.drawRoundRect(rect, padding.toFloat(), padding.toFloat(), paint)
         paint.color = textColor
-        canvas.drawText(text, start, end, x + mPadding, y.toFloat(), paint)
+        canvas.drawText(text, start, end, x + padding, y.toFloat(), paint)
     }
 }

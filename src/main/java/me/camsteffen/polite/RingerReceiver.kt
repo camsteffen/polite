@@ -17,7 +17,58 @@ import me.camsteffen.polite.rule.schedule.ScheduleRule
 import java.util.*
 import java.util.concurrent.TimeUnit
 
+private val TOLERANCE = TimeUnit.SECONDS.toMillis(8)
+private val WINDOW_START = TimeUnit.HOURS.toMillis(4)
+private val WINDOW_LENGTH = TimeUnit.HOURS.toMillis(25)
+private val INTERVAL = TimeUnit.HOURS.toMillis(29)
+private val LOOK_AHEAD = TimeUnit.HOURS.toMillis(30)
+
+private val EVENT_PROJECTION = arrayOf(
+        CalendarContract.Instances._ID,
+        CalendarContract.Instances.CALENDAR_ID,
+        CalendarContract.Instances.TITLE,
+        CalendarContract.Instances.DESCRIPTION,
+        CalendarContract.Instances.BEGIN,
+        CalendarContract.Instances.END)
+private val EVENT_SELECTION = "${CalendarContract.Instances.ALL_DAY}=0"
+private val EVENT_SORT = "${CalendarContract.Instances.BEGIN} ASC"
+private const val INDEX_ID = 0
+private const val INDEX_CALENDAR_ID = 1
+private const val INDEX_TITLE = 2
+private const val INDEX_DESCRIPTION = 3
+private const val INDEX_BEGIN = 4
+private const val INDEX_END = 5
+
+private fun eventMatchesRule(eventCur: Cursor, rule: CalendarRule): Boolean {
+    if (rule.calendars.isNotEmpty() && !rule.calendars.contains(eventCur.getLong(INDEX_CALENDAR_ID))) {
+        return false
+    }
+    if (rule.matchAll) {
+        return true
+    }
+    var match = false
+    if (rule.matchTitle) {
+        val title = eventCur.getString(INDEX_TITLE).toLowerCase()
+        match = rule.keywords.any { title.contains(it) }
+    }
+    if (!match && rule.matchDescription) {
+        var desc = eventCur.getString(INDEX_DESCRIPTION)
+        if(desc != null) {
+            desc = desc.toLowerCase()
+            match = rule.keywords.any { desc.contains(it) }
+        }
+    }
+    return match.xor(rule.inverseMatch)
+}
+
 class RingerReceiver : BroadcastReceiver() {
+
+    companion object {
+        const val ACTION_CANCEL = "cancel"
+        const val ACTION_REFRESH = "refresh"
+
+        const val MODIFIED_RULE_ID = "modified_rule_id"
+    }
 
     var previousRingerMode = 0
     lateinit var preferences: SharedPreferences
@@ -358,7 +409,7 @@ class RingerReceiver : BroadcastReceiver() {
         // schedule next task
         val alarmManager = context.getSystemService(Context.ALARM_SERVICE) as AlarmManager
         val pendingIntent = PendingIntent.getBroadcast(context, 0, Intent(context, RingerReceiver::class.java)
-                .setAction(RingerReceiver.ACTION_REFRESH), 0)
+                .setAction(ACTION_REFRESH), 0)
         if (nextRunTime == Long.MAX_VALUE) {
             if (Build.VERSION.SDK_INT < Build.VERSION_CODES.KITKAT) {
                 alarmManager.set(AlarmManager.RTC_WAKEUP, now + INTERVAL, pendingIntent)
@@ -386,57 +437,6 @@ class RingerReceiver : BroadcastReceiver() {
                 || previousRingerMode == AudioManager.RINGER_MODE_VIBRATE
                 && audioManager.ringerMode == AudioManager.RINGER_MODE_SILENT) {
             audioManager.ringerMode = previousRingerMode
-        }
-    }
-
-    companion object {
-
-        const val MODIFIED_RULE_ID = "modified_rule_id"
-        const val ACTION_REFRESH = "refresh"
-        const val ACTION_CANCEL = "cancel"
-
-        val TOLERANCE = TimeUnit.SECONDS.toMillis(8)
-        val WINDOW_START = TimeUnit.HOURS.toMillis(4)
-        val WINDOW_LENGTH = TimeUnit.HOURS.toMillis(25)
-        val INTERVAL = TimeUnit.HOURS.toMillis(29)
-        val LOOK_AHEAD = TimeUnit.HOURS.toMillis(30)
-
-        val EVENT_PROJECTION = arrayOf(
-                CalendarContract.Instances._ID,
-                CalendarContract.Instances.CALENDAR_ID,
-                CalendarContract.Instances.TITLE,
-                CalendarContract.Instances.DESCRIPTION,
-                CalendarContract.Instances.BEGIN,
-                CalendarContract.Instances.END)
-        val EVENT_SELECTION = "${CalendarContract.Instances.ALL_DAY}=0"
-        val EVENT_SORT = "${CalendarContract.Instances.BEGIN} ASC"
-        const val INDEX_ID = 0
-        const val INDEX_CALENDAR_ID = 1
-        const val INDEX_TITLE = 2
-        const val INDEX_DESCRIPTION = 3
-        const val INDEX_BEGIN = 4
-        const val INDEX_END = 5
-
-        private fun eventMatchesRule(eventCur: Cursor, rule: CalendarRule): Boolean {
-            if (rule.calendars.isNotEmpty() && !rule.calendars.contains(eventCur.getLong(INDEX_CALENDAR_ID))) {
-                return false
-            }
-            if (rule.matchAll) {
-                return true
-            }
-            var match = false
-            if (rule.matchTitle) {
-                val title = eventCur.getString(INDEX_TITLE).toLowerCase()
-                match = rule.keywords.any { title.contains(it) }
-            }
-            if (!match && rule.matchDescription) {
-                var desc = eventCur.getString(INDEX_DESCRIPTION)
-                if(desc != null) {
-                    desc = desc.toLowerCase()
-                    match = rule.keywords.any { desc.contains(it) }
-                }
-            }
-            return match.xor(rule.inverseMatch)
         }
     }
 

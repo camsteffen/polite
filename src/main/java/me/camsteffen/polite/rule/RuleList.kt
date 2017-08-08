@@ -7,6 +7,9 @@ import me.camsteffen.polite.rule.calendar.CalendarRule
 import me.camsteffen.polite.rule.schedule.ScheduleRule
 import java.util.*
 
+private const val SCHEDULE_RULES_HEADING = -1L
+private const val CALENDAR_RULES_HEADING = -2L
+
 class RuleList : ArrayList<RuleList.RuleListItem>(), Parcelable {
 
     interface RuleListItem {
@@ -96,9 +99,6 @@ class RuleList : ArrayList<RuleList.RuleListItem>(), Parcelable {
     override fun describeContents() = 0
 
     companion object {
-        const val SCHEDULE_RULES_HEADING = -1L
-        const val CALENDAR_RULES_HEADING = -2L
-
         @Suppress("unused") // required by Parcelable
         @JvmField val CREATOR = object : Parcelable.Creator<RuleList> {
 

@@ -19,6 +19,9 @@ import me.camsteffen.polite.rule.schedule.EditScheduleRuleFragment
 import me.camsteffen.polite.rule.schedule.ScheduleRule
 import me.camsteffen.polite.settings.SettingsFragment
 
+private const val RULE_LIST = "RuleList"
+private const val OPEN_RULE_POS = "openRulePos"
+
 class RulesFragment : Fragment() {
 
     val polite: Polite
@@ -303,7 +306,5 @@ class RulesFragment : Fragment() {
 
     companion object {
         const val FRAGMENT_TAG = "rules"
-        const val RULE_LIST = "RuleList"
-        const val OPEN_RULE_POS = "openRulePos"
     }
 }

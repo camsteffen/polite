@@ -15,12 +15,10 @@ import me.camsteffen.polite.TimePickerDialogFragment
 import me.camsteffen.polite.widget.ValueOption
 import java.util.concurrent.TimeUnit
 
-class EditScheduleRuleFragment : EditRuleFragment<ScheduleRule>(), TimePickerDialogFragment.OnTimeSetListener {
+private const val BEGIN = 0
+private const val END = 1
 
-    companion object {
-        const val BEGIN = 0
-        const val END = 1
-    }
+class EditScheduleRuleFragment : EditRuleFragment<ScheduleRule>(), TimePickerDialogFragment.OnTimeSetListener {
 
     val beginTime : ValueOption
         get() = view.findViewById(R.id.start_time) as ValueOption

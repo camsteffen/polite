@@ -17,13 +17,11 @@ import me.camsteffen.polite.RulesFragment
 import me.camsteffen.polite.rule.calendar.CalendarRule
 import me.camsteffen.polite.rule.schedule.ScheduleRule
 
-class RuleAdapter(val rulesFragment: RulesFragment, val rules: RuleList = RuleList()) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
+private const val SUBHEAD = 0
+private const val CALENDAR_RULE = 1
+private const val SCHEDULE_RULE = 2
 
-    companion object {
-        const val SUBHEAD = 0
-        const val CALENDAR_RULE = 1
-        const val SCHEDULE_RULE = 2
-    }
+class RuleAdapter(val rulesFragment: RulesFragment, val rules: RuleList = RuleList()) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
     init {
         setHasStableIds(true)

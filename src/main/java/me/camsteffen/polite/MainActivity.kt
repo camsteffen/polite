@@ -30,11 +30,11 @@ import android.view.inputmethod.InputMethodManager
 import android.widget.EditText
 import me.camsteffen.polite.rule.calendar.CalendarRule
 
+private const val ACTIVITY_CALENDAR_PERMISSION = 1
+
 class MainActivity : AppCompatActivity(), FragmentManager.OnBackStackChangedListener, ActivityCompat.OnRequestPermissionsResultCallback {
 
     companion object {
-        const val ACTIVITY_CALENDAR_PERMISSION = 1
-
         const val REQUEST_PERMISSION_CALENDAR = 0
         const val REQUEST_PERMISSION_CREATE_CALENDAR_RULE = 1
 

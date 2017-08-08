@@ -7,6 +7,9 @@ import android.support.v7.app.AlertDialog
 import android.widget.Toast
 import java.util.concurrent.TimeUnit
 
+private const val MIN_LAUNCHES = 12
+private const val MIN_DAYS_INSTALLED = 22
+
 class RateAppPrompt(polite: Polite) {
 
     val preferences = Polite.preferences
@@ -48,10 +51,5 @@ class RateAppPrompt(polite: Polite) {
                 .create()
                 .show()
         askedToRate = true
-    }
-
-    companion object {
-        const val MIN_LAUNCHES = 12
-        const val MIN_DAYS_INSTALLED = 22
     }
 }
