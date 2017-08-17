@@ -43,8 +43,6 @@ class MainActivity : AppCompatActivity(), FragmentManager.OnBackStackChangedList
         }
     }
 
-    val polite: Polite
-        get() = application as Polite
     private lateinit var receiverThread: HandlerThread
     private lateinit var ringerReceiver: RingerReceiver
     lateinit var rateAppPrompt: RateAppPrompt
@@ -79,7 +77,7 @@ class MainActivity : AppCompatActivity(), FragmentManager.OnBackStackChangedList
         val receiverHandler = Handler(receiverThread.looper)
         ringerReceiver = RingerReceiver()
         registerReceiver(ringerReceiver, IntentFilter(RingerReceiver.ACTION_REFRESH), null, receiverHandler)
-        rateAppPrompt = RateAppPrompt(polite)
+        rateAppPrompt = RateAppPrompt(this)
         rateAppPrompt.launchCount++
 
         fragmentManager.addOnBackStackChangedListener(this)
@@ -173,7 +171,7 @@ class MainActivity : AppCompatActivity(), FragmentManager.OnBackStackChangedList
                     } else {
                         alertBuilder.setPositiveButton(R.string.open_app_settings) { _, _ ->
                             val intent = Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS)
-                            intent.data = Uri.fromParts("package", polite.packageName, null)
+                            intent.data = Uri.fromParts("package", packageName, null)
                             startActivityForResult(intent, ACTIVITY_CALENDAR_PERMISSION)
                         }
                     }

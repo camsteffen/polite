@@ -1,6 +1,7 @@
 package me.camsteffen.polite
 
 import android.app.Activity
+import android.content.Context
 import android.content.Intent
 import android.net.Uri
 import android.support.v7.app.AlertDialog
@@ -10,10 +11,10 @@ import java.util.concurrent.TimeUnit
 private const val MIN_LAUNCHES = 12
 private const val MIN_DAYS_INSTALLED = 22
 
-class RateAppPrompt(polite: Polite) {
+class RateAppPrompt(context: Context) {
 
     private val preferences = Polite.preferences
-    private val timeInstalled = polite.packageManager.getPackageInfo(polite.packageName, 0).firstInstallTime
+    private val timeInstalled = context.packageManager.getPackageInfo(context.packageName, 0).firstInstallTime
     var launchCount = preferences.getInt(AppPreferences.LAUNCH_COUNT, 0)
         set(value) {
             field = value
