@@ -12,8 +12,8 @@ private const val MIN_DAYS_INSTALLED = 22
 
 class RateAppPrompt(polite: Polite) {
 
-    val preferences = Polite.preferences
-    val timeInstalled = polite.packageManager.getPackageInfo(polite.packageName, 0).firstInstallTime
+    private val preferences = Polite.preferences
+    private val timeInstalled = polite.packageManager.getPackageInfo(polite.packageName, 0).firstInstallTime
     var launchCount = preferences.getInt(AppPreferences.LAUNCH_COUNT, 0)
         set(value) {
             field = value
@@ -21,7 +21,7 @@ class RateAppPrompt(polite: Polite) {
                     .putInt(AppPreferences.LAUNCH_COUNT, value)
                     .apply()
         }
-    var askedToRate = preferences.getBoolean(AppPreferences.ASKED_TO_RATE, false)
+    private var askedToRate = preferences.getBoolean(AppPreferences.ASKED_TO_RATE, false)
         set(value) {
             field = value
             preferences.edit()

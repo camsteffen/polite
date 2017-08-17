@@ -70,14 +70,14 @@ class RingerReceiver : BroadcastReceiver() {
         const val MODIFIED_RULE_ID = "modified_rule_id"
     }
 
-    var previousRingerMode = 0
-    lateinit var preferences: SharedPreferences
-    lateinit var activeEventsPreferences: SharedPreferences
-    lateinit var activeScheduleRulesPreferences: SharedPreferences
-    lateinit var cancelledEventsPreferences: SharedPreferences
-    lateinit var cancelledScheduleRulesPreferences: SharedPreferences
-    lateinit var audioManager: AudioManager
-    lateinit var notificationManager: NotificationManager
+    private var previousRingerMode = 0
+    private lateinit var preferences: SharedPreferences
+    private lateinit var activeEventsPreferences: SharedPreferences
+    private lateinit var activeScheduleRulesPreferences: SharedPreferences
+    private lateinit var cancelledEventsPreferences: SharedPreferences
+    private lateinit var cancelledScheduleRulesPreferences: SharedPreferences
+    private lateinit var audioManager: AudioManager
+    private lateinit var notificationManager: NotificationManager
 
     override fun onReceive(context: Context, intent: Intent) {
         preferences = Polite.preferences
@@ -101,7 +101,7 @@ class RingerReceiver : BroadcastReceiver() {
         }
     }
 
-    fun cancel() {
+    private fun cancel() {
         // save cancelled schedule rules
         val cancelledScheduleRules = cancelledScheduleRulesPreferences.all.entries
                 .associateBy({ it.key }, { it.value as Long }).toSortedMap()
@@ -128,7 +128,7 @@ class RingerReceiver : BroadcastReceiver() {
         deactivate()
     }
 
-    fun refresh(context: Context, modifiedRuleId: Long) {
+    private fun refresh(context: Context, modifiedRuleId: Long) {
         // new feature notification
         if (preferences.getInt(AppPreferences.LAST_OPENED_VERSION, -1) < 36 &&
                 !preferences.getBoolean(AppPreferences.SCHEDULE_FEATURE_NOTIFICATION_SHOWN, false)) {

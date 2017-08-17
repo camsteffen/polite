@@ -45,16 +45,16 @@ class MainActivity : AppCompatActivity(), FragmentManager.OnBackStackChangedList
 
     val polite: Polite
         get() = application as Polite
-    lateinit var receiverThread: HandlerThread
-    lateinit var ringerReceiver: RingerReceiver
+    private lateinit var receiverThread: HandlerThread
+    private lateinit var ringerReceiver: RingerReceiver
     lateinit var rateAppPrompt: RateAppPrompt
     val notificationManager: NotificationManager
         get() = getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
     val titleET: EditText
         get() = findViewById(R.id.title) as EditText
-    val rulesFragment: RulesFragment?
+    private val rulesFragment: RulesFragment?
         get() = fragmentManager.findFragmentByTag(RulesFragment.FRAGMENT_TAG) as RulesFragment?
-    val editRuleFragment: EditRuleFragment<*>?
+    private val editRuleFragment: EditRuleFragment<*>?
         get() = fragmentManager.findFragmentByTag(EditRuleFragment.FRAGMENT_TAG) as EditRuleFragment<*>?
 
     override fun onCreate(savedInstanceState: Bundle?) {

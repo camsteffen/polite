@@ -14,7 +14,7 @@ object DBActions {
 
     abstract class ModifyRule(val context: Context): AsyncTask<Void, Void, Long>() {
 
-        var uiFunction: ((id: Long) -> Unit)? = null
+        private var uiFunction: ((id: Long) -> Unit)? = null
 
         fun start(f: (id: Long) -> Unit) {
             uiFunction = f
@@ -96,7 +96,7 @@ object DBActions {
         }
     }
 
-    fun insertRuleBase(db: SQLiteDatabase, rule: Rule) : Long {
+    private fun insertRuleBase(db: SQLiteDatabase, rule: Rule) : Long {
         val values = ContentValues()
         if (rule.id != Rule.NEW_RULE) {
             values.put(BaseColumns._ID, rule.id)

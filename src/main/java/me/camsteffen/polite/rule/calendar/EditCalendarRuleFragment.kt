@@ -18,14 +18,14 @@ import me.camsteffen.polite.widget.CaptionOption
 
 class EditCalendarRuleFragment : EditRuleFragment<CalendarRule>() {
 
-    val inverseMatch: CaptionOption
+    private val inverseMatch: CaptionOption
         get() = view.findViewById(R.id.inverse) as CaptionOption
-    val keywordsSection: View
+    private val keywordsSection: View
         get() = view.findViewById(R.id.keywords_section)
-    val addKeywordEditText: EditText
+    private val addKeywordEditText: EditText
         get() = view.findViewById(R.id.new_keyword) as EditText
-    var wordsTV: TextView? = null
-    var removeKeywordsTip: TextView? = null
+    private var wordsTV: TextView? = null
+    private var removeKeywordsTip: TextView? = null
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         return inflater.inflate(R.layout.edit_calendar_rule_fragment, container, false)
@@ -217,7 +217,7 @@ class EditCalendarRuleFragment : EditRuleFragment<CalendarRule>() {
         popup.show()
     }
 
-    fun setInverseMatch() {
+    private fun setInverseMatch() {
         AlertDialog.Builder(activity)
                 .setTitle(R.string.inverse_match)
                 .setMessage(R.string.inverse_match_message)
@@ -252,7 +252,7 @@ class EditCalendarRuleFragment : EditRuleFragment<CalendarRule>() {
             View.VISIBLE
     }
 
-    fun onUpdateInverseMatch() {
+    private fun onUpdateInverseMatch() {
         inverseMatch.caption.text = getString(when(rule.inverseMatch) {
             true -> R.string.enabled
             false -> R.string.disabled

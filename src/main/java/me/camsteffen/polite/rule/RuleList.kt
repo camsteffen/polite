@@ -20,8 +20,8 @@ class RuleList : ArrayList<RuleList.RuleListItem>(), Parcelable {
 
     var scheduleRuleCount = 0
     var calendarRuleCount = 0
-    val scheduleRulesSubhead = Subhead(SCHEDULE_RULES_HEADING, R.string.schedule_rules, R.drawable.ic_schedule_rule_black_24dp)
-    val calendarRulesSubhead = Subhead(CALENDAR_RULES_HEADING, R.string.calendar_rules, R.drawable.ic_calendar_rule_black_24dp)
+    private val scheduleRulesSubhead = Subhead(SCHEDULE_RULES_HEADING, R.string.schedule_rules, R.drawable.ic_schedule_rule_black_24dp)
+    private val calendarRulesSubhead = Subhead(CALENDAR_RULES_HEADING, R.string.calendar_rules, R.drawable.ic_calendar_rule_black_24dp)
 
     override fun removeAt(index: Int): RuleListItem {
         val removed = super.removeAt(index)

@@ -20,9 +20,9 @@ private const val END = 1
 
 class EditScheduleRuleFragment : EditRuleFragment<ScheduleRule>(), TimePickerDialogFragment.OnTimeSetListener {
 
-    val beginTime : ValueOption
+    private val beginTime : ValueOption
         get() = view.findViewById(R.id.start_time) as ValueOption
-    val endTime : ValueOption
+    private val endTime : ValueOption
         get() = view.findViewById(R.id.end_time) as ValueOption
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
@@ -69,7 +69,7 @@ class EditScheduleRuleFragment : EditRuleFragment<ScheduleRule>(), TimePickerDia
         rulesFragment.saveRule(mainActivity, rule)
     }
 
-    fun setDuration() {
+    private fun setDuration() {
         val duration = if (rule.begin < rule.end)
             rule.end - rule.begin
         else
@@ -81,7 +81,7 @@ class EditScheduleRuleFragment : EditRuleFragment<ScheduleRule>(), TimePickerDia
             getString(R.string.duration_format, duration / 60, duration % 60)
     }
 
-    fun setTimeListener(code: Int, time: TimeOfDay) = View.OnClickListener {
+    private fun setTimeListener(code: Int, time: TimeOfDay) = View.OnClickListener {
         TimePickerDialogFragment.newInstance(this, code, time)
                 .show(fragmentManager, TimePickerDialogFragment.FRAGMENT_TAG)
     }

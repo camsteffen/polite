@@ -28,17 +28,17 @@ class RulesFragment : Fragment() {
         get() = activity!!.application as Polite
     val mainActivity: MainActivity
         get() = activity as MainActivity
-    val noRulesView: View?
+    private val noRulesView: View?
         get() = view?.findViewById(R.id.no_rules)
-    val fab: FloatingActionButton
+    private val fab: FloatingActionButton
         get() = activity.findViewById(R.id.fab) as FloatingActionButton
     var rulesLoader: LoadRules? = null
 
     lateinit var adapter: RuleAdapter
     var openRulePosition = -1
-    val rulesView: MyRecyclerView?
+    private val rulesView: MyRecyclerView?
         get() = view?.findViewById(R.id.rules_view) as MyRecyclerView?
-    val disabledNotice: TextView?
+    private val disabledNotice: TextView?
         get() = view?.findViewById(R.id.disabled_notice) as TextView?
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -113,7 +113,7 @@ class RulesFragment : Fragment() {
         }
     }
 
-    fun setDisabledNoticeVisibility() {
+    private fun setDisabledNoticeVisibility() {
         disabledNotice?.visibility =
                 if (Polite.preferences.getBoolean(getString(R.string.preference_enable), true))
                     View.GONE
@@ -171,7 +171,7 @@ class RulesFragment : Fragment() {
         return true
     }
 
-    fun openSettings() {
+    private fun openSettings() {
         fragmentManager.beginTransaction()
                 .replace(R.id.fragment_container, SettingsFragment(), SettingsFragment.FRAGMENT_TAG)
                 .addToBackStack(null)
@@ -238,7 +238,7 @@ class RulesFragment : Fragment() {
         adapter.renameRule(position, name)
     }
 
-    val fabOnClick = View.OnClickListener {
+    private val fabOnClick = View.OnClickListener {
         val view = activity.layoutInflater.inflate(R.layout.create_rule, null)
 
         val dialog = AlertDialog.Builder(activity)
@@ -267,7 +267,7 @@ class RulesFragment : Fragment() {
         noRulesView?.visibility = if(adapter.itemCount == 0) View.VISIBLE else View.GONE
     }
 
-    val adapterObserver = object : RecyclerView.AdapterDataObserver() {
+    private val adapterObserver = object : RecyclerView.AdapterDataObserver() {
         override fun onChanged() {
             setNoRulesViewVisibility()
         }

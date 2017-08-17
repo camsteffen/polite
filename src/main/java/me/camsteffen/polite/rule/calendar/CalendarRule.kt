@@ -145,14 +145,14 @@ class CalendarRule : Rule {
             }
             return db.rawQuery(sql, selectionArgs)
         }
-        const val INDEX_ID = 0
-        const val INDEX_NAME = 1
-        const val INDEX_ENABLE = 2
-        const val INDEX_VIBRATE = 3
-        const val INDEX_MATCH_ALL = 4
-        const val INDEX_MATCH_TITLE = 5
-        const val INDEX_MATCH_DESCRIPTION = 6
-        const val INDEX_INVERSE_MATCH = 7
+        private const val INDEX_ID = 0
+        private const val INDEX_NAME = 1
+        private const val INDEX_ENABLE = 2
+        private const val INDEX_VIBRATE = 3
+        private const val INDEX_MATCH_ALL = 4
+        private const val INDEX_MATCH_TITLE = 5
+        private const val INDEX_MATCH_DESCRIPTION = 6
+        private const val INDEX_INVERSE_MATCH = 7
 
         fun queryList(
                 db: SQLiteDatabase = Polite.db.readableDatabase,

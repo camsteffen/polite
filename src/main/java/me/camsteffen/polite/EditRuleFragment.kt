@@ -119,7 +119,7 @@ abstract class EditRuleFragment<RuleType : Rule> : Fragment() {
         fragmentManager.popBackStack()
     }
 
-    val titleListener = object : TextWatcher {
+    private val titleListener = object : TextWatcher {
         override fun beforeTextChanged(s: CharSequence, start: Int, count: Int, after: Int) {
 
         }

@@ -15,7 +15,7 @@ class SettingsFragment : PreferenceFragment(), SharedPreferences.OnSharedPrefere
         const val FRAGMENT_TAG = "settings"
     }
 
-    val mainActivity: MainActivity
+    private val mainActivity: MainActivity
         get() = activity as MainActivity
 
     override fun onCreate(savedInstanceState: Bundle?) {

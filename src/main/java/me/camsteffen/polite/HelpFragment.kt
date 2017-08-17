@@ -17,7 +17,7 @@ import java.io.InputStream
 
 class HelpFragment : WebViewFragment() {
 
-    val mainActivity: MainActivity
+    private val mainActivity: MainActivity
         get() = activity as MainActivity
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -68,7 +68,7 @@ class HelpFragment : WebViewFragment() {
         return true
     }
 
-    val webViewClient = object : WebViewClient() {
+    private val webViewClient = object : WebViewClient() {
 
         override fun shouldOverrideUrlLoading(view: WebView?, request: WebResourceRequest): Boolean {
             @Suppress("DEPRECATION")
@@ -88,7 +88,7 @@ class HelpFragment : WebViewFragment() {
         }
     }
 
-    fun getCurrentLanguage(): String {
+    private fun getCurrentLanguage(): String {
         val locale = if (Build.VERSION.SDK_INT < Build.VERSION_CODES.N) {
             resources.configuration.locale
         } else {
@@ -97,7 +97,7 @@ class HelpFragment : WebViewFragment() {
         return locale.language
     }
 
-    fun assetExists(path: String): Boolean {
+    private fun assetExists(path: String): Boolean {
         val inputStream: InputStream
         try {
             inputStream = resources.assets.open(path)

@@ -10,8 +10,8 @@ private const val padding = 10
 
 class KeywordSpan(context: Context) : ReplacementSpan() {
 
-    val bgColor: Int
-    val textColor: Int
+    private val bgColor: Int
+    private val textColor: Int
 
     init {
         val attributes = intArrayOf(R.attr.colorAccentBackground, android.R.attr.textColorPrimary)
