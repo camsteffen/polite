@@ -70,8 +70,6 @@ abstract class Rule : Parcelable, RuleList.RuleListItem {
     abstract fun saveDBNew(context: Context, callback: (id: Long) -> Unit)
     abstract fun saveDBExisting(context: Context, callback: () -> Unit)
 
-    open fun scrub() {
-
-    }
+    open fun scrub() = Unit
 
 }

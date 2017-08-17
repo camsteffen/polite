@@ -32,7 +32,7 @@ class CalendarRule : Rule {
         match = MATCH_ALL
         inverseMatch = false
         calendars = mutableListOf()
-        keywords = TreeSet<String>()
+        keywords = TreeSet()
     }
 
     constructor(
@@ -114,9 +114,7 @@ class CalendarRule : Rule {
         @Suppress("unused") // required by Parcelable
         @JvmField val CREATOR = object : Parcelable.Creator<CalendarRule> {
 
-            override fun createFromParcel(source: Parcel?): CalendarRule? {
-                return CalendarRule(source!!)
-            }
+            override fun createFromParcel(source: Parcel?): CalendarRule? = CalendarRule(source!!)
 
             override fun newArray(size: Int): Array<out CalendarRule>? {
                 return newArray(size)

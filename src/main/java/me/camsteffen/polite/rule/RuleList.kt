@@ -82,14 +82,14 @@ class RuleList : ArrayList<RuleList.RuleListItem>(), Parcelable {
     override fun writeToParcel(parcel: Parcel?, flags: Int) {
         parcel!!.writeInt(scheduleRuleCount)
         val scheduleRuleArray = if (scheduleRuleCount == 0)
-            emptyList<ScheduleRule>()
+            emptyList()
         else
             subList(1, scheduleRuleCount + 1)
                 .map { it as ScheduleRule }
         parcel.writeTypedList(scheduleRuleArray)
         parcel.writeInt(calendarRuleCount)
         val calendarRuleList = if (calendarRuleCount == 0)
-            emptyList<CalendarRule>()
+            emptyList()
         else
             subList(size - calendarRuleCount, size)
                 .map { it as CalendarRule }

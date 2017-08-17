@@ -61,9 +61,7 @@ class EditScheduleRuleFragment : EditRuleFragment<ScheduleRule>(), TimePickerDia
         setDuration()
     }
 
-    override fun createRule(): ScheduleRule {
-        return ScheduleRule(activity)
-    }
+    override fun createRule(): ScheduleRule = ScheduleRule(activity)
 
     override fun save() {
         rulesFragment.saveRule(mainActivity, rule)

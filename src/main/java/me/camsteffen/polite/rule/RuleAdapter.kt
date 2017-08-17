@@ -109,17 +109,11 @@ class RuleAdapter(val rulesFragment: RulesFragment, val rules: RuleList = RuleLi
         }
     }
 
-    override fun getItemId(position: Int): Long {
-        return rules[position].id
-    }
+    override fun getItemId(position: Int): Long = rules[position].id
 
-    override fun getItemCount(): Int {
-        return rules.size
-    }
+    override fun getItemCount(): Int = rules.size
 
-    fun getRuleAt(position: Int): Rule {
-        return rules[position] as Rule
-    }
+    fun getRuleAt(position: Int): Rule = rules[position] as Rule
 
     fun setRules(scheduleRules: List<ScheduleRule>, calendarRules: List<CalendarRule>) {
         rules.setRules(scheduleRules, calendarRules)

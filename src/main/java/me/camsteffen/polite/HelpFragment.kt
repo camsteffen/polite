@@ -13,7 +13,6 @@ import android.webkit.WebView
 import android.webkit.WebViewClient
 import android.webkit.WebViewFragment
 import java.io.IOException
-import java.io.InputStream
 
 class HelpFragment : WebViewFragment() {
 
@@ -99,9 +98,8 @@ class HelpFragment : WebViewFragment() {
     }
 
     private fun assetExists(path: String): Boolean {
-        val inputStream: InputStream
-        try {
-            inputStream = resources.assets.open(path)
+        val inputStream = try {
+            resources.assets.open(path)
         } catch (ex: IOException) {
             return false
         }

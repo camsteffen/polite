@@ -43,8 +43,7 @@ object DBActions {
     class CreateCalendarRule(context: Context, var rule: CalendarRule) : ModifyRule(context) {
 
         override fun modify(db: SQLiteDatabase): Long {
-            val id = insertRule(db, rule)
-            return id
+            return insertRule(db, rule)
         }
     }
 

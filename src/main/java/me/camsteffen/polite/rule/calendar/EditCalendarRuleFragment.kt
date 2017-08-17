@@ -80,9 +80,7 @@ class EditCalendarRuleFragment : EditRuleFragment<CalendarRule>() {
         onUpdateKeywords()
     }
 
-    override fun createRule(): CalendarRule {
-        return CalendarRule(activity)
-    }
+    override fun createRule(): CalendarRule = CalendarRule(activity)
 
     override fun save() {
         rulesFragment.saveRule(mainActivity, rule)
@@ -154,7 +152,7 @@ class EditCalendarRuleFragment : EditRuleFragment<CalendarRule>() {
         val calNames = arrayOfNulls<String>(count)
         val checked = BooleanArray(count)
 
-        for (i in 0..count - 1) {
+        for (i in 0 until count) {
             calCur.moveToNext()
             val id = calCur.getLong(0)
             calIDs[i] = id

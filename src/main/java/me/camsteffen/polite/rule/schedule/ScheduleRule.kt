@@ -53,7 +53,7 @@ class ScheduleRule : Rule {
         val atoms = ArrayList<String>()
         var count = 0
         val ranges = ArrayList<Pair<Int, Int>>()
-        for (i in 0..days.size - 1) {
+        for (i in 0 until days.size) {
             if (this.days[i]) {
                 ++count
             } else {
@@ -106,9 +106,7 @@ class ScheduleRule : Rule {
         @Suppress("unused") // required by Parcelable
         @JvmField val CREATOR = object : Parcelable.Creator<ScheduleRule> {
 
-            override fun createFromParcel(source: Parcel?): ScheduleRule? {
-                return ScheduleRule(source!!)
-            }
+            override fun createFromParcel(source: Parcel?): ScheduleRule? = ScheduleRule(source!!)
 
             override fun newArray(size: Int): Array<out ScheduleRule>? {
                 return newArray(size)

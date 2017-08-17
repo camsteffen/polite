@@ -28,9 +28,7 @@ class TimeOfDay : Comparable<TimeOfDay> {
         this.minutes = hour * 60 + minute
     }
 
-    operator fun minus(other: TimeOfDay): Int {
-        return minutes - other.minutes
-    }
+    operator fun minus(other: TimeOfDay): Int = minutes - other.minutes
 
     fun set(hours: Int, minutes: Int) {
         this.minutes = hours * 60 + minutes
@@ -48,11 +46,7 @@ class TimeOfDay : Comparable<TimeOfDay> {
         return format.format(cal.time)
     }
 
-    override fun compareTo(other: TimeOfDay): Int {
-        return minutes - other.minutes
-    }
+    override fun compareTo(other: TimeOfDay): Int = minutes - other.minutes
 
-    override fun toString(): String {
-        return String.format("%d:%02d", hour, minute)
-    }
+    override fun toString(): String = String.format("%d:%02d", hour, minute)
 }

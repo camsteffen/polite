@@ -18,9 +18,7 @@ class MyRecyclerView(context: Context, attrs: AttributeSet? = null) : RecyclerVi
 
     private var mContextMenuInfo: RecyclerViewContextMenuInfo? = null
 
-    override fun getContextMenuInfo(): ContextMenu.ContextMenuInfo? {
-        return mContextMenuInfo
-    }
+    override fun getContextMenuInfo(): ContextMenu.ContextMenuInfo? = mContextMenuInfo
 
     override fun showContextMenuForChild(originalView: View): Boolean {
         val position = getChildAdapterPosition(originalView)
