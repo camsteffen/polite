@@ -397,17 +397,17 @@ class RingerReceiver : BroadcastReceiver() {
         val pendingIntent = PendingIntent.getBroadcast(context, 0, Intent(context, RingerReceiver::class.java)
                 .setAction(ACTION_REFRESH), 0)
         if (nextRunTime == Long.MAX_VALUE) {
-            if (Build.VERSION.SDK_INT < Build.VERSION_CODES.KITKAT) {
-                alarmManager.set(AlarmManager.RTC_WAKEUP, now + INTERVAL, pendingIntent)
-            } else {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
                 alarmManager.setWindow(AlarmManager.RTC_WAKEUP, now + WINDOW_START, WINDOW_LENGTH, pendingIntent)
+            } else {
+                alarmManager.set(AlarmManager.RTC_WAKEUP, now + INTERVAL, pendingIntent)
             }
-        } else if (Build.VERSION.SDK_INT < Build.VERSION_CODES.KITKAT) {
-            alarmManager.set(AlarmManager.RTC_WAKEUP, nextRunTime, pendingIntent)
-        } else if (Build.VERSION.SDK_INT < Build.VERSION_CODES.M) {
-            alarmManager.setExact(AlarmManager.RTC_WAKEUP, nextRunTime, pendingIntent)
-        } else {
+        } else if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             alarmManager.setExactAndAllowWhileIdle(AlarmManager.RTC_WAKEUP, nextRunTime, pendingIntent)
+        } else if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
+            alarmManager.setExact(AlarmManager.RTC_WAKEUP, nextRunTime, pendingIntent)
+        } else  {
+            alarmManager.set(AlarmManager.RTC_WAKEUP, nextRunTime, pendingIntent)
         }
     }
 

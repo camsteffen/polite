@@ -83,18 +83,19 @@ class RuleAdapter(val rulesFragment: RulesFragment, val rules: RuleList = RuleLi
                 holder.enableSwitch.isChecked = item.enabled
                 val textAppearance: Int
                 val paintFlags = holder.nameTV.paintFlags
-                if(item.enabled) {
+                if (item.enabled) {
                     textAppearance = R.style.EnabledRuleName
                     holder.nameTV.paintFlags = paintFlags and Paint.STRIKE_THRU_TEXT_FLAG.inv()
                 } else {
                     textAppearance = R.style.DisabledRuleName
                     holder.nameTV.paintFlags = paintFlags or Paint.STRIKE_THRU_TEXT_FLAG
                 }
-                @Suppress("DEPRECATION")
-                if(Build.VERSION.SDK_INT < Build.VERSION_CODES.M)
-                    holder.nameTV.setTextAppearance(context, textAppearance)
-                else
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
                     holder.nameTV.setTextAppearance(textAppearance)
+                } else {
+                    @Suppress("DEPRECATION")
+                    holder.nameTV.setTextAppearance(context, textAppearance)
+                }
             }
         }
     }

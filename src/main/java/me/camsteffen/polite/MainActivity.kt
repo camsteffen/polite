@@ -103,10 +103,10 @@ class MainActivity : AppCompatActivity(), FragmentManager.OnBackStackChangedList
 
     override fun onDestroy() {
         super.onDestroy()
-        if(Build.VERSION.SDK_INT < 18)
-            receiverThread.quit()
-        else
+        if(Build.VERSION.SDK_INT >= 18)
             receiverThread.quitSafely()
+        else
+            receiverThread.quit()
         unregisterReceiver(ringerReceiver)
     }
 
@@ -195,9 +195,9 @@ class MainActivity : AppCompatActivity(), FragmentManager.OnBackStackChangedList
     }
 
     fun checkCalendarPermission(requestCode: Int = REQUEST_PERMISSION_CALENDAR): Boolean {
-        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.M)
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.M) {
             return true
-        if (checkSelfPermission(Manifest.permission.READ_CALENDAR) != PackageManager.PERMISSION_GRANTED) {
+        } else if (checkSelfPermission(Manifest.permission.READ_CALENDAR) != PackageManager.PERMISSION_GRANTED) {
             requestPermissions(arrayOf(Manifest.permission.READ_CALENDAR), requestCode)
             return false
         }
