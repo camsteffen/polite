@@ -71,6 +71,15 @@ class RingerReceiver : BroadcastReceiver() {
     }
 
     private var previousRingerMode = 0
+    private var _notificationPolicyAccess: Boolean? = null
+    private val notificationPolicyAccess: Boolean
+        get() {
+            if (_notificationPolicyAccess == null) {
+                _notificationPolicyAccess = Build.VERSION.SDK_INT < Build.VERSION_CODES.M
+                        || notificationManager.isNotificationPolicyAccessGranted
+            }
+            return _notificationPolicyAccess!!
+        }
     private lateinit var preferences: SharedPreferences
     private lateinit var activeEventsPreferences: SharedPreferences
     private lateinit var activeScheduleRulesPreferences: SharedPreferences
@@ -139,7 +148,7 @@ class RingerReceiver : BroadcastReceiver() {
         }
 
         // check notification policy access
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M && !notificationManager.isNotificationPolicyAccessGranted) {
+        if (!notificationPolicyAccess) {
             val notification = NotificationCompat.Builder(context)
                     .setColor(ContextCompat.getColor(context, R.color.primary))
                     .setContentTitle(context.resources.getString(R.string.notification_policy_access_required))
@@ -410,9 +419,10 @@ class RingerReceiver : BroadcastReceiver() {
         notificationManager.cancel(Polite.NOTIFY_ID_ACTIVE)
 
         // change to previous ringer mode only if louder than current mode
-        if (previousRingerMode == AudioManager.RINGER_MODE_NORMAL
+        if ((previousRingerMode == AudioManager.RINGER_MODE_NORMAL
                 || previousRingerMode == AudioManager.RINGER_MODE_VIBRATE
-                && audioManager.ringerMode == AudioManager.RINGER_MODE_SILENT) {
+                && audioManager.ringerMode == AudioManager.RINGER_MODE_SILENT)
+                && notificationPolicyAccess) {
             audioManager.ringerMode = previousRingerMode
         }
     }
