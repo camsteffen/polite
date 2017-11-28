@@ -71,8 +71,6 @@
     <string name="match_by_title">Match by Title</string>
     <string name="match_by_title_desc">Match by Title or Description</string>
     <string name="minutes">minutes</string>
-    <string name="new_feature">New Feature!</string>
-    <string name="new_feature_schedule_desc">Now you can create Schedule Rules to silence your phone at a certain time</string>
     <string name="n_selected">%d selected</string>
     <string name="no">No</string>
     <string name="no_calendars_found">No calendars found</string>

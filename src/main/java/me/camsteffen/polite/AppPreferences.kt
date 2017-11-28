@@ -10,5 +10,4 @@ object AppPreferences {
     const val LAUNCH_COUNT = "launch_count"
     const val ASKED_TO_RATE = "asked_to_rate"
     const val LAST_OPENED_VERSION = "last_open_ver"
-    const val SCHEDULE_FEATURE_NOTIFICATION_SHOWN = "sched_feat_notif_shown"
 }

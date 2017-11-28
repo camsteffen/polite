@@ -71,8 +71,6 @@
     <string name="match_by_title">Beinhaltet im Titel</string>
     <string name="match_by_title_desc">Beinhaltet im Titel oder in der Beschreibung</string>
     <string name="minutes">Minuten</string>
-    <string name="new_feature">Neues Feature!</string>
-    <string name="new_feature_schedule_desc">Sie können jetzt Regeln erstellen, welche Ihr Telefon zu bestimmten Zeiten stumm schalten.</string>
     <string name="n_selected">%d ausgewählt</string>
     <string name="no">Nein</string>
     <string name="no_calendars_found">Keine Kalender gefunden</string>

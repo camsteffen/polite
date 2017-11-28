@@ -129,29 +129,6 @@ class RingerReceiver : BroadcastReceiver() {
     }
 
     private fun refresh(context: Context, modifiedRuleId: Long) {
-        // new feature notification
-        if (preferences.getInt(AppPreferences.LAST_OPENED_VERSION, -1) < 36 &&
-                !preferences.getBoolean(AppPreferences.SCHEDULE_FEATURE_NOTIFICATION_SHOWN, false)) {
-            val builder = NotificationCompat.Builder(context)
-            val style = NotificationCompat.BigTextStyle(builder)
-            val text = context.resources.getString(R.string.new_feature_schedule_desc)
-            style.bigText(text)
-            val notification = builder
-                    .setColor(ContextCompat.getColor(context, R.color.primary))
-                    .setContentTitle(context.resources.getString(R.string.new_feature))
-                    .setContentText(text)
-                    .setSmallIcon(R.mipmap.notification_icon)
-                    .setContentIntent(PendingIntent.getActivity(context, 0, Intent(context, MainActivity::class.java), 0))
-                    .setAutoCancel(true)
-                    .setStyle(style)
-                    .build()
-            if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-                builder.setVisibility(Notification.VISIBILITY_PUBLIC)
-            }
-            notificationManager.notify(Polite.NOTIFY_ID_SCHEDULE_FEATURE, notification)
-            preferences.edit().putBoolean(AppPreferences.SCHEDULE_FEATURE_NOTIFICATION_SHOWN, true).apply()
-        }
-
         // check enabled setting
         if (!preferences.getBoolean(context.getString(R.string.preference_enable), true)) {
             cancelledEventsPreferences.edit().clear().apply()
