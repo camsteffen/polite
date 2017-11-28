@@ -139,7 +139,7 @@ class RingerReceiver : BroadcastReceiver() {
         }
 
         // check notification policy access
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N && !notificationManager.isNotificationPolicyAccessGranted) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M && !notificationManager.isNotificationPolicyAccessGranted) {
             val notification = NotificationCompat.Builder(context)
                     .setColor(ContextCompat.getColor(context, R.color.primary))
                     .setContentTitle(context.resources.getString(R.string.notification_policy_access_required))
