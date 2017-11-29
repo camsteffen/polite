@@ -75,7 +75,7 @@ class CalendarRule : Rule {
         DBActions.CreateCalendarRule(context, this).start(callback)
     }
 
-    override fun saveDBExisting(context: Context, callback: () -> Unit) {
+    override fun saveDBExisting(context: Context) {
         DBActions.SaveCalendarRule(context, this).execute()
     }
 

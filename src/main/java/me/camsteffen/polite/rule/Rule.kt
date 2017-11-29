@@ -63,12 +63,12 @@ abstract class Rule : Parcelable, RuleList.RuleListItem {
                 callback()
             })
         } else {
-            saveDBExisting(mainActivity, callback)
+            saveDBExisting(mainActivity)
         }
     }
 
     abstract fun saveDBNew(context: Context, callback: (id: Long) -> Unit)
-    abstract fun saveDBExisting(context: Context, callback: () -> Unit)
+    abstract fun saveDBExisting(context: Context)
 
     open fun scrub() = Unit
 

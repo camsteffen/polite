@@ -222,13 +222,8 @@ class RulesFragment : Fragment() {
     }
 
     fun saveRule(mainActivity: MainActivity, rule: Rule) {
-        val newRule = rule.id == Rule.NEW_RULE
         rule.saveDB(mainActivity, {
-            if(newRule) {
-                rule.addToAdapter(adapter)
-            } else {
-                adapter.swapRule(rule, openRulePosition)
-            }
+            rule.addToAdapter(adapter)
         })
         mainActivity.rateAppPrompt.conditionalPrompt(mainActivity)
     }

@@ -44,7 +44,7 @@ class ScheduleRule : Rule {
         DBActions.CreateScheduleRule(context, this).start(callback)
     }
 
-    override fun saveDBExisting(context: Context, callback: () -> Unit) {
+    override fun saveDBExisting(context: Context) {
         DBActions.SaveScheduleRule(context, this).execute()
     }
 
