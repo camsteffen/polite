@@ -107,25 +107,26 @@ class DB(val context: Context) : SQLiteOpenHelper(context, NAME, null, VERSION) 
 
     private fun upgradeToVersion(db: SQLiteDatabase, version: Int) {
         val filename = String.format("upgrade_%d.sql", version)
-        val inStr = context.assets.open(filename)
-        val bufInStr = inStr.buffered()
-        val sb = StringBuilder()
-        while(true) {
-            val i = bufInStr.read()
-            if(i == -1)
-                break
-            val c = i.toChar()
-            if(c == ';') {
-                val str = sb.toString()
-                sb.setLength(0)
-                db.execSQL(str)
-            } else {
-                sb.append(c)
+        context.assets.open(filename).use { inStr ->
+            inStr.buffered().use { bufInStr ->
+                val sb = StringBuilder()
+                while (true) {
+                    val i = bufInStr.read()
+                    if (i == -1)
+                        break
+                    val c = i.toChar()
+                    if (c == ';') {
+                        val str = sb.toString()
+                        sb.setLength(0)
+                        db.execSQL(str)
+                    } else {
+                        sb.append(c)
+                    }
+                }
+                if (sb.isNotBlank()) {
+                    throw IllegalStateException("unexpected EOF in $filename")
+                }
             }
-        }
-        inStr.close()
-        if(sb.isNotBlank()) {
-            throw IllegalStateException("unexpected EOF in $filename")
         }
     }
 

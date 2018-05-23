@@ -171,11 +171,13 @@ class CalendarRule : Rule {
                         null,
                         null,
                         null)
-                val calendars = ArrayList<Long>(calendarCursor.count)
-                while (calendarCursor.moveToNext()) {
-                    calendars.add(calendarCursor.getLong(0))
+                val calendars = calendarCursor.use {
+                    val calendars = ArrayList<Long>(calendarCursor.count)
+                    while (calendarCursor.moveToNext()) {
+                        calendars.add(calendarCursor.getLong(0))
+                    }
+                    calendars
                 }
-                calendarCursor.close()
 
                 var match = 0
                 if (ruleCursor.getInt(INDEX_MATCH_ALL) != 0) {
@@ -196,11 +198,13 @@ class CalendarRule : Rule {
                         null,
                         null,
                         null)
-                val keywords = ArrayList<String>(keywordCursor.count)
-                while (keywordCursor.moveToNext()) {
-                    keywords.add(keywordCursor.getString(0))
+                val keywords = keywordCursor.use {
+                    val keywords = ArrayList<String>(keywordCursor.count)
+                    while (keywordCursor.moveToNext()) {
+                        keywords.add(keywordCursor.getString(0))
+                    }
+                    keywords
                 }
-                keywordCursor.close()
 
                 list.add(CalendarRule(id, name, enabled, vibrate, calendars, match, inverseMatch, keywords))
             }
