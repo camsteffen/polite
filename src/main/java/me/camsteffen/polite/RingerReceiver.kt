@@ -6,7 +6,6 @@ import android.app.NotificationManager
 import android.app.PendingIntent
 import android.content.*
 import android.content.pm.PackageManager
-import android.database.Cursor
 import android.media.AudioManager
 import android.os.Build
 import android.provider.CalendarContract
@@ -39,24 +38,29 @@ private const val INDEX_DESCRIPTION = 3
 private const val INDEX_BEGIN = 4
 private const val INDEX_END = 5
 
-private fun eventMatchesRule(eventCur: Cursor, rule: CalendarRule): Boolean {
-    if (rule.calendars.isNotEmpty() && !rule.calendars.contains(eventCur.getLong(INDEX_CALENDAR_ID))) {
+class Event(
+        val id: Long,
+        val calendarId: Long,
+        val title: String?,
+        val description: String?,
+        val begin: Long,
+        val end: Long)
+
+private fun eventMatchesRule(event: Event, rule: CalendarRule): Boolean {
+    if (rule.calendars.isNotEmpty() && !rule.calendars.contains(event.calendarId)) {
         return false
     }
     if (rule.matchAll) {
         return true
     }
     var match = false
-    if (rule.matchTitle) {
-        val title = eventCur.getString(INDEX_TITLE).toLowerCase()
+    if (rule.matchTitle && event.title != null && event.title.isNotBlank()) {
+        val title = event.title.toLowerCase()
         match = rule.keywords.any { title.contains(it) }
     }
-    if (!match && rule.matchDescription) {
-        var desc = eventCur.getString(INDEX_DESCRIPTION)
-        if(desc != null) {
-            desc = desc.toLowerCase()
-            match = rule.keywords.any { desc.contains(it) }
-        }
+    if (!match && rule.matchDescription && event.description != null && event.description.isNotBlank()) {
+        val desc = event.description.toLowerCase()
+        match = rule.keywords.any { desc.contains(it) }
     }
     return match.xor(rule.inverseMatch)
 }
@@ -288,26 +292,30 @@ class RingerReceiver : BroadcastReceiver() {
             // iterate calendar events
             if (eventCur != null) {
                 while (eventCur.moveToNext()) {
-                    val eventID = eventCur.getLong(INDEX_ID)
-                    val begin = eventCur.getLong(INDEX_BEGIN) - activation
-                    val end = eventCur.getLong(INDEX_END) + deactivation
+                    val event = Event(
+                            id = eventCur.getLong(INDEX_ID),
+                            calendarId = eventCur.getLong(INDEX_CALENDAR_ID),
+                            title = eventCur.getString(INDEX_TITLE),
+                            description = eventCur.getString(INDEX_DESCRIPTION),
+                            begin = eventCur.getLong(INDEX_BEGIN),
+                            end = eventCur.getLong(INDEX_END))
+                    val eventActivation = event.begin - activation
+                    val eventDeactivation = event.end + deactivation
 
-                    // if event ends soon
-                    if (end < now + TOLERANCE) {
+                    if (eventDeactivation < now + TOLERANCE) {
                         continue
                     }
 
-                    val current = begin < now + TOLERANCE
-                    if (!current) {
-                        nextRunTime = Math.min(begin, nextRunTime)
+                    if (eventActivation >= now + TOLERANCE && eventActivation < nextRunTime) {
+                        nextRunTime = eventActivation
                         break
                     }
 
-                    val cancelled = cancelledEvents.contains(eventID)
-                    val matchingRules = calendarRules.filter { eventMatchesRule(eventCur, it) }
+                    val cancelled = cancelledEvents.contains(event.id)
+                    val matchingRules = calendarRules.filter { eventMatchesRule(event, it) }
                     if (cancelled) {
                         if (matchingRules.isNotEmpty()) {
-                            currentCancelledEvents.add(eventID)
+                            currentCancelledEvents.add(event.id)
                         }
                         continue
                     }
@@ -315,15 +323,15 @@ class RingerReceiver : BroadcastReceiver() {
                         continue
 
                     activate = true
-                    currentEvents.add(eventID)
-                    val active = activeEvents.contains(eventID)
+                    currentEvents.add(event.id)
+                    val active = activeEvents.contains(event.id)
                     for (rule in matchingRules) {
                         if (notificationText.isEmpty()) {
-                            notificationText = eventCur.getString(INDEX_TITLE)
+                            notificationText = event.title ?: ""
                         }
                         vibrate = vibrate && rule.vibrate
                         reactivate = reactivate || !active || rule.id == modifiedRuleId
-                        nextRunTime = Math.min(end, nextRunTime)
+                        nextRunTime = Math.min(eventDeactivation, nextRunTime)
                     }
                 }
                 eventCur.close()
