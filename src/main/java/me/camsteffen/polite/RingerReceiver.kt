@@ -306,8 +306,8 @@ class RingerReceiver : BroadcastReceiver() {
                         continue
                     }
 
-                    if (eventActivation >= now + TOLERANCE && eventActivation < nextRunTime) {
-                        nextRunTime = eventActivation
+                    if (eventActivation >= now + TOLERANCE) {
+                        nextRunTime = Math.min(eventActivation, nextRunTime)
                         break
                     }
 
