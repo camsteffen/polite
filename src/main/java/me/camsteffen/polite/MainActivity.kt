@@ -68,10 +68,6 @@ class MainActivity : AppCompatActivity(), FragmentManager.OnBackStackChangedList
             sendBroadcast(Intent(this, RingerReceiver::class.java).setAction(RingerReceiver.ACTION_REFRESH))
         }
 
-        // save last opened version to preferences
-        val versionCode = packageManager.getPackageInfo(packageName, 0).versionCode
-        Polite.preferences.edit().putInt(AppPreferences.LAST_OPENED_VERSION, versionCode).apply()
-
         receiverThread = HandlerThread("RingerReceiver")
         receiverThread.start()
         val receiverHandler = Handler(receiverThread.looper)

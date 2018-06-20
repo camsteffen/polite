@@ -9,5 +9,4 @@ object AppPreferences {
     const val PREVIOUS_RINGER_MODE = "previous_ringer_mode"
     const val LAUNCH_COUNT = "launch_count"
     const val ASKED_TO_RATE = "asked_to_rate"
-    const val LAST_OPENED_VERSION = "last_open_ver"
 }
