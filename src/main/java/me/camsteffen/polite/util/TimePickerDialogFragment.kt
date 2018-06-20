@@ -12,8 +12,8 @@ class TimePickerDialogFragment : DialogFragment(), TimePickerDialog.OnTimeSetLis
 
     companion object {
         const val FRAGMENT_TAG = "TimePickerDialogFragment"
-        const val KEY_TIME = "time"
-        const val KEY_REQUEST_CODE = "request code"
+        private const val KEY_TIME = "time"
+        private const val KEY_REQUEST_CODE = "request code"
 
         fun newInstance(target: Fragment, requestCode: Int, time: TimeOfDay): TimePickerDialogFragment {
             val fragment = TimePickerDialogFragment()

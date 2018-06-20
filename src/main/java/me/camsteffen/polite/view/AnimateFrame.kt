@@ -5,6 +5,7 @@ import android.util.AttributeSet
 import android.widget.FrameLayout
 
 class AnimateFrame(context: Context, attrs: AttributeSet?) : FrameLayout(context, attrs) {
+    @Suppress("unused")
     var xFraction: Float
         get() = x / width
         set(value) {

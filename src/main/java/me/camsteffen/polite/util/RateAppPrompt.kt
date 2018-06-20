@@ -31,14 +31,14 @@ class RateAppPrompt
         AlertDialog.Builder(activity)
                 .setTitle(R.string.rate_app_title)
                 .setMessage(R.string.rate_app_message)
-                .setPositiveButton(android.R.string.ok, { _, _ ->
+                .setPositiveButton(android.R.string.ok) { _, _ ->
                     val intent = Intent(Intent.ACTION_VIEW, Uri.parse(activity.getString(R.string.market_url)))
                     if (activity.packageManager.resolveActivity(intent, 0) != null) {
                         activity.startActivity(intent)
                     } else {
                         Toast.makeText(activity, R.string.error_open_play_store, Toast.LENGTH_LONG).show()
                     }
-                })
+                }
                 .setNegativeButton(R.string.no, null)
                 .create()
                 .show()
