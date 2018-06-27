@@ -74,7 +74,7 @@ abstract class EditRuleFragment<RuleType : Rule> : Fragment() {
                         .setPositiveButton(R.string.yes) { _, _ ->
                             fragmentManager.popBackStack()
                             if (rule.id != Rule.NEW_RULE)
-                                rulesFragment.deleteRule(rule.id, rulesFragment.openRulePosition)
+                                rulesFragment.deleteRule(rule.id)
                         }
                         .setNegativeButton(R.string.no, null)
                         .create()

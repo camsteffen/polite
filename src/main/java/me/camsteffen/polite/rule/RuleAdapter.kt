@@ -41,14 +41,14 @@ class RuleAdapter(val rulesFragment: RulesFragment, val rules: RuleList = RuleLi
 
         init {
             view.setOnClickListener {
-                rulesFragment.openRule(rule!!, adapterPosition)
+                rulesFragment.openRule(rule!!)
             }
             enableSwitch.setOnCheckedChangeListener(CompoundButton.OnCheckedChangeListener { _, isChecked ->
                 if (rule!!.enabled == isChecked)
                     return@OnCheckedChangeListener
                 if (isChecked && rule!! is CalendarRule)
                     rulesFragment.mainActivity.checkCalendarPermission()
-                rulesFragment.ruleSetEnabled(adapterPosition, enableSwitch.isChecked)
+                rulesFragment.ruleSetEnabled(rule!!, enableSwitch.isChecked)
             })
         }
     }
@@ -121,7 +121,11 @@ class RuleAdapter(val rulesFragment: RulesFragment, val rules: RuleList = RuleLi
         notifyDataSetChanged()
     }
 
-    fun deleteRule(position: Int) {
+    fun deleteRule(id: Long): Boolean {
+        val position = rules.indexOfFirst { it is Rule && it.id == id }
+        if (position == -1) {
+            return false
+        }
         val removed = rules.removeAt(position)
         val numRules = when(removed) {
             is ScheduleRule -> rules.scheduleRuleCount
@@ -132,6 +136,7 @@ class RuleAdapter(val rulesFragment: RulesFragment, val rules: RuleList = RuleLi
             notifyItemRangeRemoved(position - 1, 2)
         else
             notifyItemRemoved(position)
+        return true
     }
 
     fun addRule(rule: ScheduleRule) {
@@ -153,8 +158,22 @@ class RuleAdapter(val rulesFragment: RulesFragment, val rules: RuleList = RuleLi
         notifyItemChanged(position)
     }
 
-    fun renameRule(position: Int, name: String) {
+    fun notifyRuleChanged(id: Long): Boolean {
+        val index = rules.indexOfFirst { it is Rule && it.id == id }
+        if (index == -1) {
+            return false
+        }
+        notifyItemChanged(index)
+        return true
+    }
+
+    fun renameRule(id: Long, name: String): Boolean {
+        val position = rules.indexOfFirst { it is Rule && it.id == id }
+        if (position == -1) {
+            return false
+        }
         getRuleAt(position).name = name
         notifyItemChanged(position)
+        return true
     }
 }

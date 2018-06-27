@@ -36,7 +36,6 @@ import me.camsteffen.polite.util.RateAppPrompt
 import javax.inject.Inject
 
 private const val RULE_LIST = "RuleList"
-private const val OPEN_RULE_POS = "openRulePos"
 
 class RulesFragment : DaggerFragment() {
 
@@ -53,7 +52,6 @@ class RulesFragment : DaggerFragment() {
     var rulesLoader: LoadRules? = null
 
     lateinit var adapter: RuleAdapter
-    var openRulePosition = -1
     private val rulesView: MyRecyclerView?
         get() = view?.findViewById(R.id.rules_view) as MyRecyclerView?
     private val disabledNotice: TextView?
@@ -66,7 +64,6 @@ class RulesFragment : DaggerFragment() {
 
         if (savedInstanceState != null) {
             val rules = savedInstanceState.getParcelable<RuleList>(RULE_LIST)
-            openRulePosition = savedInstanceState.getInt(OPEN_RULE_POS)
             adapter = RuleAdapter(this, rules)
         } else {
             adapter = RuleAdapter(this)
@@ -79,7 +76,6 @@ class RulesFragment : DaggerFragment() {
 
     override fun onSaveInstanceState(outState: Bundle) {
         outState.putParcelable(RULE_LIST, adapter.rules)
-        outState.putInt(OPEN_RULE_POS, openRulePosition)
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
@@ -179,11 +175,11 @@ class RulesFragment : DaggerFragment() {
         val info = item!!.menuInfo as MyRecyclerView.RecyclerViewContextMenuInfo
         when(item.itemId) {
             R.id.rename -> {
-                RenameDialogFragment.newInstance(info.id, info.position, adapter.getRuleAt(info.position).name)
+                RenameDialogFragment.newInstance(info.id, adapter.getRuleAt(info.position).name)
                         .show(fragmentManager, RenameDialogFragment.FRAGMENT_TAG)
             }
             R.id.delete -> {
-                deleteRule(info.id, info.position)
+                deleteRule(info.id)
             }
             else -> return false
         }
@@ -198,19 +194,18 @@ class RulesFragment : DaggerFragment() {
         fab.hide()
     }
 
-    fun ruleSetEnabled(position: Int, enable: Boolean) {
-        val rule = adapter.getRuleAt(position)
+    fun ruleSetEnabled(rule: Rule, enable: Boolean) {
         rule.enabled = enable
-        adapter.notifyItemChanged(position)
+        adapter.notifyRuleChanged(rule.id)
         DBActions.RuleSetEnabled(activity.applicationContext, rule.id, enable).execute()
     }
 
-    fun deleteRule(id: Long, position: Int) {
+    fun deleteRule(id: Long) {
         DBActions.DeleteRule(activity.applicationContext, id).execute()
-        adapter.deleteRule(position)
+        adapter.deleteRule(id)
     }
 
-    fun openRule(rule: Rule, position: Int) {
+    fun openRule(rule: Rule) {
         val fragment = when(rule) {
             is CalendarRule -> {
                 if(!mainActivity.checkCalendarPermission())
@@ -219,7 +214,6 @@ class RulesFragment : DaggerFragment() {
             }
             is ScheduleRule -> EditScheduleRuleFragment()
         }
-        openRulePosition = position
         val args = Bundle()
         args.putParcelable(EditRuleFragment.KEY_RULE, rule)
         fragment.arguments = args
@@ -232,11 +226,11 @@ class RulesFragment : DaggerFragment() {
     }
 
     fun openNewCalendarRule() {
-        openRule(CalendarRule(activity), -1)
+        openRule(CalendarRule(activity))
     }
 
     fun openNewScheduleRule() {
-        openRule(ScheduleRule(activity), -1)
+        openRule(ScheduleRule(activity))
     }
 
     fun saveRule(mainActivity: MainActivity, rule: Rule) {
@@ -246,9 +240,9 @@ class RulesFragment : DaggerFragment() {
         rateAppPrompt.conditionalPrompt(mainActivity)
     }
 
-    fun renameRule(id: Long, position: Int, name: String) {
+    fun renameRule(id: Long, name: String) {
         DBActions.RenameRule(activity.applicationContext, id, name).execute()
-        adapter.renameRule(position, name)
+        adapter.renameRule(id, name)
     }
 
     private val fabOnClick = View.OnClickListener {

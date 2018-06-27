@@ -136,9 +136,9 @@ class MainActivity : DaggerAppCompatActivity(), FragmentManager.OnBackStackChang
                             .setNegativeButton(android.R.string.no) { dialog, _ ->
                                 dialog.dismiss()
                                 val rulesFragment = rulesFragment
-                                rulesFragment?.adapter!!.rules.forEachIndexed { i, item ->
-                                    if (item is CalendarRule && item.enabled) {
-                                        rulesFragment.ruleSetEnabled(i, false)
+                                rulesFragment?.adapter!!.rules.forEach {
+                                    if (it is CalendarRule && it.enabled) {
+                                        rulesFragment.ruleSetEnabled(it, false)
                                     }
                                 }
                                 notificationManager.cancel(Polite.NOTIFY_ID_CALENDAR_PERMISSION)
