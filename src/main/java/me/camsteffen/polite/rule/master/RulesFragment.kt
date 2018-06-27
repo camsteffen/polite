@@ -218,7 +218,6 @@ class RulesFragment : DaggerFragment() {
                 EditCalendarRuleFragment()
             }
             is ScheduleRule -> EditScheduleRuleFragment()
-            else -> throw IllegalStateException()
         }
         openRulePosition = position
         val args = Bundle()
