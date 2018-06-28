@@ -2,15 +2,15 @@ package me.camsteffen.polite.state
 
 import android.Manifest
 import android.app.AlarmManager
-import android.content.ContentUris
 import android.content.Context
 import android.content.SharedPreferences
 import android.content.pm.PackageManager
 import android.media.AudioManager
 import android.os.Build
-import android.provider.CalendarContract
 import androidx.core.content.ContextCompat
 import me.camsteffen.polite.AppBroadcastReceiver
+import me.camsteffen.polite.data.CalendarEvent
+import me.camsteffen.polite.data.CalendarFacade
 import me.camsteffen.polite.db.RuleDao
 import me.camsteffen.polite.model.CalendarRule
 import me.camsteffen.polite.settings.AppPreferences
@@ -18,6 +18,7 @@ import me.camsteffen.polite.settings.SharedPreferencesNames
 import me.camsteffen.polite.util.AppNotificationManager
 import org.threeten.bp.DayOfWeek
 import org.threeten.bp.Duration
+import org.threeten.bp.Instant
 import org.threeten.bp.LocalDate
 import org.threeten.bp.LocalTime
 import java.util.Calendar
@@ -32,31 +33,7 @@ private val WINDOW_START = TimeUnit.HOURS.toMillis(4)
 private val WINDOW_LENGTH = TimeUnit.HOURS.toMillis(25)
 private val LOOK_AHEAD = TimeUnit.HOURS.toMillis(30)
 
-private val EVENT_PROJECTION = arrayOf(
-        CalendarContract.Instances._ID,
-        CalendarContract.Instances.CALENDAR_ID,
-        CalendarContract.Instances.TITLE,
-        CalendarContract.Instances.DESCRIPTION,
-        CalendarContract.Instances.BEGIN,
-        CalendarContract.Instances.END)
-private val EVENT_SELECTION = "${CalendarContract.Instances.ALL_DAY}=0"
-private val EVENT_SORT = "${CalendarContract.Instances.BEGIN} ASC"
-private const val INDEX_ID = 0
-private const val INDEX_CALENDAR_ID = 1
-private const val INDEX_TITLE = 2
-private const val INDEX_DESCRIPTION = 3
-private const val INDEX_BEGIN = 4
-private const val INDEX_END = 5
-
-class Event(
-        val id: Long,
-        val calendarId: Long,
-        val title: String?,
-        val description: String?,
-        val begin: Long,
-        val end: Long)
-
-private fun eventMatchesRule(event: Event, rule: CalendarRule): Boolean {
+private fun eventMatchesRule(event: CalendarEvent, rule: CalendarRule): Boolean {
     if (rule.calendarIds.isNotEmpty() && !rule.calendarIds.contains(event.calendarId)) {
         return false
     }
@@ -78,6 +55,7 @@ private fun eventMatchesRule(event: Event, rule: CalendarRule): Boolean {
 @Singleton
 class PoliteStateManager
 @Inject constructor(
+    private val calendarFacade: CalendarFacade,
     private val context: Context,
     private val notificationManager: AppNotificationManager,
     private val preferences: AppPreferences,
@@ -235,72 +213,53 @@ class PoliteStateManager
             val currentEvents = hashSetOf<Long>()
             val currentCancelledEvents = hashSetOf<Long>()
 
-            // get current and upcoming event instances
-            val builder = CalendarContract.Instances.CONTENT_URI.buildUpon()
-            ContentUris.appendId(builder, now - deactivation)
-            ContentUris.appendId(builder, now + LOOK_AHEAD)
-            val eventCur = context.contentResolver.query(
-                    builder.build(),
-                    EVENT_PROJECTION,
-                    EVENT_SELECTION,
-                    null,
-                    EVENT_SORT)
+            val events = calendarFacade.getEventsInRange(
+                Instant.ofEpochMilli(now - deactivation),
+                Instant.ofEpochMilli(now + LOOK_AHEAD))
+            for (event in events) {
+                val eventActivation = event.begin.toEpochMilli() - activation
+                val eventDeactivation = event.end.toEpochMilli() + deactivation
 
-            // iterate calendar events
-            if (eventCur != null) {
-                while (eventCur.moveToNext()) {
-                    val event = Event(
-                            id = eventCur.getLong(INDEX_ID),
-                            calendarId = eventCur.getLong(INDEX_CALENDAR_ID),
-                            title = eventCur.getString(INDEX_TITLE),
-                            description = eventCur.getString(INDEX_DESCRIPTION),
-                            begin = eventCur.getLong(INDEX_BEGIN),
-                            end = eventCur.getLong(INDEX_END))
-                    val eventActivation = event.begin - activation
-                    val eventDeactivation = event.end + deactivation
-
-                    if (eventDeactivation < now + TOLERANCE) {
-                        continue
-                    }
-
-                    if (eventActivation >= now + TOLERANCE) {
-                        nextRunTime = Math.min(eventActivation, nextRunTime)
-                        break
-                    }
-
-                    val cancelled = cancelledEvents.contains(event.id)
-                    val matchingRules = calendarRules.filter { eventMatchesRule(event, it) }
-                    if (cancelled) {
-                        if (matchingRules.isNotEmpty()) {
-                            currentCancelledEvents.add(event.id)
-                        }
-                        continue
-                    }
-                    if (matchingRules.isEmpty())
-                        continue
-
-                    activate = true
-                    currentEvents.add(event.id)
-                    val active = activeEvents.contains(event.id)
-                    for (rule in matchingRules) {
-                        if (notificationText.isEmpty()) {
-                            notificationText = event.title ?: ""
-                        }
-                        vibrate = vibrate && rule.vibrate
-                        reactivate = reactivate || !active || rule.id == modifiedRuleId
-                        nextRunTime = Math.min(eventDeactivation, nextRunTime)
-                    }
+                if (eventDeactivation < now + TOLERANCE) {
+                    continue
                 }
-                eventCur.close()
 
-                // save active events
+                if (eventActivation >= now + TOLERANCE) {
+                    nextRunTime = Math.min(eventActivation, nextRunTime)
+                    break
+                }
+
+                val cancelled = cancelledEvents.contains(event.eventId)
+                val matchingRules = calendarRules.filter { eventMatchesRule(event, it) }
+                if (cancelled) {
+                    if (matchingRules.isNotEmpty()) {
+                        currentCancelledEvents.add(event.eventId)
+                    }
+                    continue
+                }
+                if (matchingRules.isEmpty())
+                    continue
+
+                activate = true
+                currentEvents.add(event.eventId)
+                val active = activeEvents.contains(event.eventId)
+                for (rule in matchingRules) {
+                    if (notificationText.isEmpty()) {
+                        notificationText = event.title ?: ""
+                    }
+                    vibrate = vibrate && rule.vibrate
+                    reactivate = reactivate || !active || rule.id == modifiedRuleId
+                    nextRunTime = Math.min(eventDeactivation, nextRunTime)
+                }
+            }
+
+            // save active events
                 val activeEventsPreferencesEditor = activeEventsPreferences.edit()
                         .clear()
                 currentEvents.mapIndexed { i, id ->
                     activeEventsPreferencesEditor.putLong(i.toString(), id)
                 }
                 activeEventsPreferencesEditor.apply()
-            }
         }
 
         // save active state
