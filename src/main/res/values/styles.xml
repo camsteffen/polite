@@ -8,6 +8,7 @@
         <item name="colorRuleListItemBackground">@color/rule_list_item_dark</item>
         <item name="alertDialogTheme">@style/AppTheme.AlertDialog</item>
         <item name="dayStateList">@drawable/day_state_list_dark</item>
+        <item name="preferenceTheme">@style/PreferenceThemeOverlay.v14.Material</item>
     </style>
 
     <style name="AppThemeLight" parent="Theme.AppCompat.Light.NoActionBar">
@@ -18,6 +19,7 @@
         <item name="colorRuleListItemBackground">@android:color/white</item>
         <item name="alertDialogTheme">@style/AppThemeLight.AlertDialog</item>
         <item name="dayStateList">@drawable/day_state_list_light</item>
+        <item name="preferenceTheme">@style/PreferenceThemeOverlay.v14.Material</item>
     </style>
 
     <style name="AppThemeLight.LaunchScreen">

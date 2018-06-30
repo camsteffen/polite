@@ -7,6 +7,9 @@
     <declare-styleable name="CaptionOption">
         <attr name="label"/>
     </declare-styleable>
+    <declare-styleable name="RelativeTimePreference">
+        <attr name="summary"/>
+    </declare-styleable>
     <declare-styleable name="SwitchOption">
         <attr name="label"/>
     </declare-styleable>

@@ -24,19 +24,19 @@ private const val END = 1
 class EditScheduleRuleFragment : EditRuleFragment<ScheduleRule>(), TimePickerDialogFragment.OnTimeSetListener {
 
     private val beginTime : ValueOption
-        get() = view.findViewById(R.id.start_time) as ValueOption
+        get() = view!!.findViewById(R.id.start_time) as ValueOption
     private val endTime : ValueOption
-        get() = view.findViewById(R.id.end_time) as ValueOption
+        get() = view!!.findViewById(R.id.end_time) as ValueOption
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         return inflater.inflate(R.layout.edit_schedule_rule_fragment, container, false)
     }
 
-    override fun onViewCreated(view: View?, savedInstanceState: Bundle?) {
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        val layoutInflater = activity.getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
-        val daysView = view!!.findViewById(R.id.days) as LinearLayout
+        val layoutInflater = activity!!.getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
+        val daysView = view.findViewById(R.id.days) as LinearLayout
         val locale = getLocales(resources.configuration)[0]
         val firstDay = WeekFields.of(locale).firstDayOfWeek
         for (i in 0..6L) {
@@ -61,15 +61,15 @@ class EditScheduleRuleFragment : EditRuleFragment<ScheduleRule>(), TimePickerDia
 
         val beginTime = beginTime
         val endTime = endTime
-        beginTime.value.text = rule.begin.toString(activity)
-        endTime.value.text = rule.end.toString(activity)
+        beginTime.value.text = rule.begin.toString(activity!!)
+        endTime.value.text = rule.end.toString(activity!!)
 
         beginTime.setOnClickListener(setTimeListener(BEGIN, rule.begin))
         endTime.setOnClickListener(setTimeListener(END, rule.end))
         setDuration()
     }
 
-    override fun createRule(): ScheduleRule = ScheduleRule(activity)
+    override fun createRule(): ScheduleRule = ScheduleRule(activity!!)
 
     override fun save() {
         rulesFragment.saveRule(mainActivity, rule)
@@ -80,7 +80,7 @@ class EditScheduleRuleFragment : EditRuleFragment<ScheduleRule>(), TimePickerDia
             rule.end - rule.begin
         else
             TimeUnit.DAYS.toMinutes(1).toInt() + (rule.end - rule.begin)
-        val durationTV = view.findViewById(R.id.duration) as TextView
+        val durationTV = view!!.findViewById(R.id.duration) as TextView
         durationTV.text = if (duration < 60)
             getString(R.string.duration_format_minutes, duration)
         else
@@ -115,7 +115,7 @@ class EditScheduleRuleFragment : EditRuleFragment<ScheduleRule>(), TimePickerDia
             else -> throw IllegalStateException()
         }
         time.set(hourOfDay, minute)
-        tv.text = time.toString(activity)
+        tv.text = time.toString(activity!!)
         setDuration()
     }
 }

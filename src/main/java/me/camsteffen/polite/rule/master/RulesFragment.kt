@@ -15,7 +15,7 @@ import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
-import dagger.android.DaggerFragment
+import dagger.android.support.DaggerFragment
 import me.camsteffen.polite.DB
 import me.camsteffen.polite.DBActions
 import me.camsteffen.polite.HelpFragment
@@ -50,7 +50,7 @@ class RulesFragment : DaggerFragment() {
     private val noRulesView: View?
         get() = view?.findViewById(R.id.no_rules)
     private val fab: FloatingActionButton
-        get() = activity.findViewById(R.id.fab) as FloatingActionButton
+        get() = activity!!.findViewById(R.id.fab) as FloatingActionButton
     var rulesLoader: LoadRules? = null
 
     lateinit var adapter: RuleAdapter
@@ -84,7 +84,7 @@ class RulesFragment : DaggerFragment() {
         return inflater.inflate(R.layout.rules_fragment, container, false)
     }
 
-    override fun onViewCreated(view: View?, savedInstanceState: Bundle?) {
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
         setDisabledNoticeVisibility()
@@ -113,7 +113,7 @@ class RulesFragment : DaggerFragment() {
         if (notificationManager.isNotificationPolicyAccessGranted) {
             notificationManager.cancelNotificationPolicyAccessRequired()
         } else if (preferences.enable) {
-            AlertDialog.Builder(activity)
+            AlertDialog.Builder(activity!!)
                     .setTitle(R.string.notification_policy_access_required)
                     .setMessage(R.string.notification_policy_access_explain)
                     .setNegativeButton(R.string.disable_polite) { dialog, _ ->
@@ -158,7 +158,7 @@ class RulesFragment : DaggerFragment() {
             }
             R.id.settings -> openSettings()
             R.id.help -> {
-                fragmentManager.beginTransaction()
+                fragmentManager!!.beginTransaction()
                         .replace(R.id.fragment_container, HelpFragment())
                         .addToBackStack(null)
                         .commit()
@@ -170,7 +170,7 @@ class RulesFragment : DaggerFragment() {
     }
 
     override fun onCreateContextMenu(menu: ContextMenu?, view: View?, menuInfo: ContextMenu.ContextMenuInfo?) {
-        activity.menuInflater.inflate(R.menu.rule_context, menu)
+        activity!!.menuInflater.inflate(R.menu.rule_context, menu)
     }
 
     override fun onContextItemSelected(item: MenuItem?): Boolean {
@@ -189,7 +189,7 @@ class RulesFragment : DaggerFragment() {
     }
 
     private fun openSettings() {
-        fragmentManager.beginTransaction()
+        fragmentManager!!.beginTransaction()
                 .replace(R.id.fragment_container, SettingsFragment(), SettingsFragment.FRAGMENT_TAG)
                 .addToBackStack(null)
                 .commit()
@@ -199,11 +199,11 @@ class RulesFragment : DaggerFragment() {
     fun ruleSetEnabled(rule: Rule, enable: Boolean) {
         rule.enabled = enable
         adapter.notifyRuleChanged(rule.id)
-        DBActions.RuleSetEnabled(activity.applicationContext, rule.id, enable).execute()
+        DBActions.RuleSetEnabled(activity!!.applicationContext, rule.id, enable).execute()
     }
 
     fun deleteRule(id: Long) {
-        DBActions.DeleteRule(activity.applicationContext, id).execute()
+        DBActions.DeleteRule(activity!!.applicationContext, id).execute()
         adapter.deleteRule(id)
     }
 
@@ -219,7 +219,7 @@ class RulesFragment : DaggerFragment() {
         val args = Bundle()
         args.putParcelable(EditRuleFragment.KEY_RULE, rule)
         fragment.arguments = args
-        fragmentManager.beginTransaction()
+        fragmentManager!!.beginTransaction()
                 .setCustomAnimations(R.animator.slide_in_right, R.animator.slide_out_left, R.animator.slide_in_left, R.animator.slide_out_right)
                 .replace(R.id.fragment_container, fragment, EditRuleFragment.FRAGMENT_TAG)
                 .addToBackStack(null)
@@ -228,11 +228,11 @@ class RulesFragment : DaggerFragment() {
     }
 
     fun openNewCalendarRule() {
-        openRule(CalendarRule(activity))
+        openRule(CalendarRule(activity!!))
     }
 
     fun openNewScheduleRule() {
-        openRule(ScheduleRule(activity))
+        openRule(ScheduleRule(activity!!))
     }
 
     fun saveRule(mainActivity: MainActivity, rule: Rule) {
@@ -243,14 +243,14 @@ class RulesFragment : DaggerFragment() {
     }
 
     fun renameRule(id: Long, name: String) {
-        DBActions.RenameRule(activity.applicationContext, id, name).execute()
+        DBActions.RenameRule(activity!!.applicationContext, id, name).execute()
         adapter.renameRule(id, name)
     }
 
     private val fabOnClick = View.OnClickListener {
-        val view = activity.layoutInflater.inflate(R.layout.create_rule, null)
+        val view = activity!!.layoutInflater.inflate(R.layout.create_rule, null)
 
-        val dialog = AlertDialog.Builder(activity)
+        val dialog = AlertDialog.Builder(activity!!)
                 .setTitle(R.string.create_a_rule)
                 .setView(view)
                 .create()

@@ -3,7 +3,6 @@ package me.camsteffen.polite
 import android.Manifest
 import android.annotation.TargetApi
 import android.app.Activity
-import android.app.FragmentManager
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.graphics.Color
@@ -12,16 +11,20 @@ import android.os.Build
 import android.os.Bundle
 import android.provider.Settings
 import android.support.v4.app.ActivityCompat
+import android.support.v4.app.FragmentManager
 import android.support.v4.content.ContextCompat
 import android.support.v4.graphics.drawable.DrawableCompat
 import android.support.v7.app.AlertDialog
+import android.support.v7.app.AppCompatActivity
 import android.support.v7.app.AppCompatDelegate
 import android.support.v7.widget.Toolbar
 import android.view.Menu
 import android.view.View
 import android.view.inputmethod.EditorInfo
 import android.widget.EditText
-import dagger.android.support.DaggerAppCompatActivity
+import dagger.android.AndroidInjection
+import dagger.android.DispatchingAndroidInjector
+import dagger.android.HasAndroidInjector
 import me.camsteffen.polite.model.CalendarRule
 import me.camsteffen.polite.rule.edit.EditRuleFragment
 import me.camsteffen.polite.rule.master.RulesFragment
@@ -32,7 +35,8 @@ import javax.inject.Inject
 
 private const val ACTIVITY_CALENDAR_PERMISSION = 1
 
-class MainActivity : DaggerAppCompatActivity(), FragmentManager.OnBackStackChangedListener, ActivityCompat.OnRequestPermissionsResultCallback {
+class MainActivity : AppCompatActivity(), HasAndroidInjector, FragmentManager.OnBackStackChangedListener,
+        ActivityCompat.OnRequestPermissionsResultCallback {
 
     companion object {
         const val REQUEST_PERMISSION_CALENDAR = 0
@@ -43,27 +47,31 @@ class MainActivity : DaggerAppCompatActivity(), FragmentManager.OnBackStackChang
         }
     }
 
+    @Inject lateinit var dispatchingAndroidInjector: DispatchingAndroidInjector<Any>
     @Inject lateinit var notificationManager: AppNotificationManager
     @Inject lateinit var preferences: AppPreferences
     val titleET: EditText
         get() = findViewById(R.id.title) as EditText
     private val rulesFragment: RulesFragment?
-        get() = fragmentManager.findFragmentByTag(RulesFragment.FRAGMENT_TAG) as RulesFragment?
+        get() = supportFragmentManager.findFragmentByTag(RulesFragment.FRAGMENT_TAG) as RulesFragment?
     private val editRuleFragment: EditRuleFragment<*>?
-        get() = fragmentManager.findFragmentByTag(EditRuleFragment.FRAGMENT_TAG) as EditRuleFragment<*>?
+        get() = supportFragmentManager.findFragmentByTag(EditRuleFragment.FRAGMENT_TAG) as EditRuleFragment<*>?
 
     @Inject
     fun inject(preferences: AppPreferences) {
         this.preferences = preferences
     }
 
+    override fun androidInjector() = dispatchingAndroidInjector
+
     override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
+        AndroidInjection.inject(this)
         setThemeFromPreference()
+        super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
         if (savedInstanceState == null) {
-            fragmentManager.beginTransaction()
+            supportFragmentManager.beginTransaction()
                     .setCustomAnimations(android.R.animator.fade_in, 0)
                     .add(R.id.fragment_container, RulesFragment(), RulesFragment.FRAGMENT_TAG)
                     .commit()
@@ -72,7 +80,7 @@ class MainActivity : DaggerAppCompatActivity(), FragmentManager.OnBackStackChang
 
         preferences.launchCount++
 
-        fragmentManager.addOnBackStackChangedListener(this)
+        supportFragmentManager.addOnBackStackChangedListener(this)
 
         setSupportActionBar(findViewById(R.id.toolbar) as Toolbar)
         setHomeAsUp()
@@ -99,8 +107,8 @@ class MainActivity : DaggerAppCompatActivity(), FragmentManager.OnBackStackChang
         val editRuleFragment = editRuleFragment
         if(editRuleFragment != null && editRuleFragment.isVisible) {
             editRuleFragment.validateSaveClose()
-        } else if (fragmentManager.backStackEntryCount > 0) {
-            fragmentManager.popBackStack()
+        } else if (supportFragmentManager.backStackEntryCount > 0) {
+            supportFragmentManager.popBackStack()
         } else {
             finish()
         }
@@ -185,7 +193,7 @@ class MainActivity : DaggerAppCompatActivity(), FragmentManager.OnBackStackChang
     }
 
     private fun setHomeAsUp() {
-        val backStackEntryCount = fragmentManager.backStackEntryCount
+        val backStackEntryCount = supportFragmentManager.backStackEntryCount
         supportActionBar!!.setDisplayHomeAsUpEnabled(backStackEntryCount > 0)
     }
 

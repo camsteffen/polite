@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
+                  xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <SwitchPreference
         android:key="@string/preference_enable"
@@ -11,15 +12,17 @@
         android:title="@string/notifications"
         android:defaultValue="true" />
 
-    <me.camsteffen.polite.settings.ActivationPicker
+    <me.camsteffen.polite.settings.RelativeTimePreference
         android:key="@string/preference_activation"
         android:title="@string/activation"
-        android:defaultValue="0" />
+        android:defaultValue="0"
+        app:summary="@plurals/minutes_before_event" />
 
-    <me.camsteffen.polite.settings.DeactivationPicker
+    <me.camsteffen.polite.settings.RelativeTimePreference
         android:key="@string/preference_deactivation"
         android:title="@string/deactivation"
-        android:defaultValue="0" />
+        android:defaultValue="0"
+        app:summary="@plurals/minutes_after_event" />
 
     <ListPreference
         android:key="@string/preference_theme"

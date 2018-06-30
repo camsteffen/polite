@@ -24,11 +24,11 @@ import me.camsteffen.polite.view.CaptionOption
 class EditCalendarRuleFragment : EditRuleFragment<CalendarRule>() {
 
     private val inverseMatch: CaptionOption
-        get() = view.findViewById(R.id.inverse) as CaptionOption
+        get() = view!!.findViewById(R.id.inverse) as CaptionOption
     private val keywordsSection: View
-        get() = view.findViewById(R.id.keywords_section)
+        get() = view!!.findViewById(R.id.keywords_section)
     private val addKeywordEditText: EditText
-        get() = view.findViewById(R.id.new_keyword) as EditText
+        get() = view!!.findViewById(R.id.new_keyword) as EditText
     private var wordsTV: TextView? = null
     private var removeKeywordsTip: TextView? = null
 
@@ -36,10 +36,10 @@ class EditCalendarRuleFragment : EditRuleFragment<CalendarRule>() {
         return inflater.inflate(R.layout.edit_calendar_rule_fragment, container, false)
     }
 
-    override fun onViewCreated(view: View?, savedInstanceState: Bundle?) {
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        val calendars = view!!.findViewById(R.id.calendars) as CaptionOption
+        val calendars = view.findViewById(R.id.calendars) as CaptionOption
         val eventsMatch = view.findViewById(R.id.events) as CaptionOption
         val addKeywordButton = view.findViewById(R.id.add_keyword_button) as Button
         wordsTV = view.findViewById(R.id.words) as TextView
@@ -85,7 +85,7 @@ class EditCalendarRuleFragment : EditRuleFragment<CalendarRule>() {
         onUpdateKeywords()
     }
 
-    override fun createRule(): CalendarRule = CalendarRule(activity)
+    override fun createRule(): CalendarRule = CalendarRule(activity!!)
 
     override fun save() {
         rulesFragment.saveRule(mainActivity, rule)
@@ -101,8 +101,8 @@ class EditCalendarRuleFragment : EditRuleFragment<CalendarRule>() {
         if (rule.keywords.add(word)) {
             addKeywordEditText.setText("")
             onUpdateKeywords()
-            view.post { // scroll after keywords draw
-                val scrollView = view.findViewById(R.id.scroll_view) as ScrollView
+            view!!.post { // scroll after keywords draw
+                val scrollView = view!!.findViewById(R.id.scroll_view) as ScrollView
                 val keywordsSection = keywordsSection
                 if(keywordsSection.top > scrollView.scrollY) {
                     scrollView.smoothScrollTo(0, keywordsSection.top)
@@ -125,7 +125,7 @@ class EditCalendarRuleFragment : EditRuleFragment<CalendarRule>() {
                     onUpdateKeywords()
                 }
             }, start, end, 0)
-            keywordSpan.setSpan(KeywordSpan(activity), start, end, 0)
+            keywordSpan.setSpan(KeywordSpan(activity!!), start, end, 0)
             keywordSpan.append(" ")
         }
         wordsTV!!.text = keywordSpan
@@ -141,7 +141,7 @@ class EditCalendarRuleFragment : EditRuleFragment<CalendarRule>() {
                 CalendarContract.Calendars._ID,
                 CalendarContract.Calendars.CALENDAR_DISPLAY_NAME)
 
-        val cr = activity.contentResolver
+        val cr = activity!!.contentResolver
         val calCur = cr.query(CalendarContract.Calendars.CONTENT_URI, CALENDAR_PROJECTION, null, null, null)
         if(calCur == null) {
             Toast.makeText(activity, R.string.error_read_calendars, Toast.LENGTH_SHORT).show()
@@ -166,7 +166,7 @@ class EditCalendarRuleFragment : EditRuleFragment<CalendarRule>() {
         }
         calCur.close()
 
-        AlertDialog.Builder(activity)
+        AlertDialog.Builder(activity!!)
                 .setTitle(R.string.select_calendars)
                 .setMultiChoiceItems(calNames, checked) { _, which, isChecked ->
                     checked[which] = isChecked
@@ -188,7 +188,7 @@ class EditCalendarRuleFragment : EditRuleFragment<CalendarRule>() {
     }
 
     private fun onUpdateCalendars() {
-        val calendars = view.findViewById(R.id.calendars) as CaptionOption
+        val calendars = view!!.findViewById(R.id.calendars) as CaptionOption
         val calendarsCaption = calendars.caption
         if (rule.calendarIds.size == 0) {
             calendarsCaption.setText(R.string.all)
@@ -221,7 +221,7 @@ class EditCalendarRuleFragment : EditRuleFragment<CalendarRule>() {
     }
 
     private fun setInverseMatch() {
-        AlertDialog.Builder(activity)
+        AlertDialog.Builder(activity!!)
                 .setTitle(R.string.inverse_match)
                 .setMessage(R.string.inverse_match_message)
                 .setNegativeButton(R.string.disable, { _, _ ->
@@ -245,7 +245,7 @@ class EditCalendarRuleFragment : EditRuleFragment<CalendarRule>() {
             CalendarRule.MATCH_TITLE or CalendarRule.MATCH_DESCRIPTION -> R.string.match_by_title_desc
             else -> throw IllegalStateException("illegal rule match value: ${rule.match}")
         }
-        val events = view.findViewById(R.id.events) as CaptionOption
+        val events = view!!.findViewById(R.id.events) as CaptionOption
         events.caption.text = getString(stringId)
 
         // show or hide keywords section
@@ -267,7 +267,7 @@ class EditCalendarRuleFragment : EditRuleFragment<CalendarRule>() {
         if(word.isEmpty()) {
             saveClose()
         } else {
-            AlertDialog.Builder(activity)
+            AlertDialog.Builder(activity!!)
                     .setTitle(R.string.unsaved_keyword_title)
                     .setMessage(getString(R.string.unsaved_keyword_message, word))
                     .setPositiveButton(R.string.continue_, { _, _ ->

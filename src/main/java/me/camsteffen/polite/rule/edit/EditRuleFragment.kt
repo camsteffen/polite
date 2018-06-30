@@ -1,7 +1,7 @@
 package me.camsteffen.polite.rule.edit
 
-import android.app.Fragment
 import android.os.Bundle
+import android.support.v4.app.Fragment
 import android.support.v7.app.AlertDialog
 import android.text.Editable
 import android.text.TextWatcher
@@ -27,7 +27,7 @@ abstract class EditRuleFragment<RuleType : Rule> : Fragment() {
     val mainActivity: MainActivity
         get() = activity as MainActivity
     val rulesFragment: RulesFragment
-        get() = fragmentManager.findFragmentByTag(RulesFragment.FRAGMENT_TAG) as RulesFragment
+        get() = fragmentManager!!.findFragmentByTag(RulesFragment.FRAGMENT_TAG) as RulesFragment
     lateinit var rule: RuleType
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -68,11 +68,11 @@ abstract class EditRuleFragment<RuleType : Rule> : Fragment() {
         when(item!!.itemId) {
             android.R.id.home -> validateSaveClose()
             R.id.delete -> {
-                AlertDialog.Builder(activity)
+                AlertDialog.Builder(activity!!)
                         .setTitle(R.string.delete_rule_title)
                         .setMessage(R.string.delete_rule_confirm)
                         .setPositiveButton(R.string.yes) { _, _ ->
-                            fragmentManager.popBackStack()
+                            fragmentManager!!.popBackStack()
                             if (rule.id != Rule.NEW_RULE)
                                 rulesFragment.deleteRule(rule.id)
                         }
@@ -81,7 +81,7 @@ abstract class EditRuleFragment<RuleType : Rule> : Fragment() {
                         .show()
             }
             R.id.help -> {
-                fragmentManager.beginTransaction()
+                fragmentManager!!.beginTransaction()
                         .replace(R.id.fragment_container, HelpFragment())
                         .addToBackStack(null)
                         .commit()
@@ -93,8 +93,8 @@ abstract class EditRuleFragment<RuleType : Rule> : Fragment() {
 
     abstract fun createRule(): RuleType
 
-    override fun onViewCreated(view: View?, savedInstanceState: Bundle?) {
-        val enableSwitch = view!!.findViewById(R.id.enable) as Switch
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        val enableSwitch = view.findViewById(R.id.enable) as Switch
         val vibrateSwitch = view.findViewById(R.id.vibrate) as Switch
 
         // Set initial state
@@ -121,7 +121,7 @@ abstract class EditRuleFragment<RuleType : Rule> : Fragment() {
     fun saveClose() {
         save()
         hideKeyboard(activity!!)
-        fragmentManager.popBackStack()
+        fragmentManager!!.popBackStack()
     }
 
     private val titleListener = object : TextWatcher {

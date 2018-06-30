@@ -3,34 +3,37 @@ package me.camsteffen.polite
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
+import android.support.v4.app.Fragment
+import android.view.LayoutInflater
 import android.support.v4.os.ConfigurationCompat.getLocales
 import android.view.Menu
 import android.view.MenuInflater
 import android.view.MenuItem
 import android.view.View
+import android.view.ViewGroup
 import android.webkit.WebResourceRequest
 import android.webkit.WebView
 import android.webkit.WebViewClient
-import android.webkit.WebViewFragment
 import java.io.IOException
 
-class HelpFragment : WebViewFragment() {
+class HelpFragment : Fragment() {
 
     private val mainActivity: MainActivity
         get() = activity as MainActivity
+
+    private var webView: WebView? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setHasOptionsMenu(true)
     }
 
-    override fun onViewCreated(view: View?, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-        mainActivity.supportActionBar!!.setTitle(R.string.help)
-    }
-
-    override fun onActivityCreated(savedInstanceState: Bundle?) {
-        super.onActivityCreated(savedInstanceState)
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
+        val webView = WebView(activity!!)
         val language = getLocales(resources.configuration)[0].language
         var path = "help-$language.html"
         if(!assetExists(path)) {
@@ -38,7 +41,30 @@ class HelpFragment : WebViewFragment() {
         }
         val url = "file:///android_asset/$path"
         webView.loadUrl(url)
-        webView.setWebViewClient(webViewClient)
+        webView.webViewClient = webViewClient
+        this.webView = webView
+        return webView
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        mainActivity.supportActionBar!!.setTitle(R.string.help)
+    }
+
+    override fun onPause() {
+        super.onPause()
+        webView!!.onPause()
+    }
+
+    override fun onResume() {
+        super.onResume()
+        webView!!.onResume()
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        webView!!.destroy()
+        webView = null
     }
 
     override fun onCreateOptionsMenu(menu: Menu?, inflater: MenuInflater?) {
@@ -47,13 +73,13 @@ class HelpFragment : WebViewFragment() {
 
     override fun onOptionsItemSelected(item: MenuItem?): Boolean {
         when(item!!.itemId) {
-            android.R.id.home -> fragmentManager.popBackStack()
+            android.R.id.home -> fragmentManager!!.popBackStack()
             R.id.email -> {
                 val intent = Intent(Intent.ACTION_SEND)
                 intent.type = "message/rfc822"
                 intent.putExtra(Intent.EXTRA_EMAIL, arrayOf(getString(R.string.help_email)))
                 intent.putExtra(Intent.EXTRA_SUBJECT, getString(R.string.help_email_subject))
-                if (intent.resolveActivity(activity.packageManager) != null) {
+                if (intent.resolveActivity(activity!!.packageManager) != null) {
                     startActivity(intent)
                 }
             }
@@ -78,8 +104,8 @@ class HelpFragment : WebViewFragment() {
         override fun shouldOverrideUrlLoading(view: WebView?, url: String?): Boolean {
             if (url =="help://sound_settings") {
                 val intent = Intent(android.provider.Settings.ACTION_SOUND_SETTINGS)
-                if (intent.resolveActivity(activity.packageManager) != null) {
-                    activity.startActivity(intent)
+                if (intent.resolveActivity(activity!!.packageManager) != null) {
+                    activity!!.startActivity(intent)
                 }
                 return true
             }
