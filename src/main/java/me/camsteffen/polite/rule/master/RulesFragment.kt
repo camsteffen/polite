@@ -144,7 +144,6 @@ class RulesFragment : DaggerFragment() {
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
         inflater.inflate(R.menu.menu_main, menu)
-        mainActivity.setMenuIcon(menu, R.id.share, R.drawable.ic_share_black_24dp)
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {

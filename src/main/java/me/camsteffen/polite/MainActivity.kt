@@ -5,15 +5,12 @@ import android.annotation.TargetApi
 import android.app.Activity
 import android.content.Intent
 import android.content.pm.PackageManager
-import android.graphics.Color
 import android.net.Uri
 import android.os.Build
 import android.os.Bundle
 import android.provider.Settings
 import android.support.v4.app.ActivityCompat
 import android.support.v4.app.FragmentManager
-import android.support.v4.content.ContextCompat
-import android.support.v4.graphics.drawable.DrawableCompat
 import android.support.v7.app.AlertDialog
 import android.support.v7.app.AppCompatActivity
 import android.support.v7.app.AppCompatDelegate
@@ -31,6 +28,7 @@ import me.camsteffen.polite.rule.master.RulesFragment
 import me.camsteffen.polite.settings.AppPreferences
 import me.camsteffen.polite.util.AppNotificationManager
 import me.camsteffen.polite.util.hideKeyboard
+import me.camsteffen.polite.util.tintMenuIcons
 import javax.inject.Inject
 
 private const val ACTIVITY_CALENDAR_PERMISSION = 1
@@ -101,6 +99,12 @@ class MainActivity : AppCompatActivity(), HasAndroidInjector, FragmentManager.On
 
     override fun onBackStackChanged() {
         setHomeAsUp()
+    }
+
+    override fun onPrepareOptionsMenu(menu: Menu): Boolean {
+        super.onPrepareOptionsMenu(menu)
+        tintMenuIcons(this, menu)
+        return true
     }
 
     override fun onBackPressed() {
@@ -195,13 +199,6 @@ class MainActivity : AppCompatActivity(), HasAndroidInjector, FragmentManager.On
     private fun setHomeAsUp() {
         val backStackEntryCount = supportFragmentManager.backStackEntryCount
         supportActionBar!!.setDisplayHomeAsUpEnabled(backStackEntryCount > 0)
-    }
-
-    fun setMenuIcon(menu: Menu, itemId: Int, iconId: Int) {
-        var drawable = ContextCompat.getDrawable(this, iconId)!!
-        drawable = DrawableCompat.wrap(drawable).mutate()
-        DrawableCompat.setTint(drawable, Color.WHITE)
-        menu.findItem(itemId).icon = drawable
     }
 
 }

@@ -60,7 +60,6 @@ abstract class EditRuleFragment<RuleType : Rule> : Fragment() {
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
         inflater.inflate(R.menu.menu_edit_rule, menu)
-        mainActivity.setMenuIcon(menu, R.id.delete, R.drawable.ic_delete_black_24dp)
     }
 
     override fun onOptionsItemSelected(item: MenuItem?): Boolean {
