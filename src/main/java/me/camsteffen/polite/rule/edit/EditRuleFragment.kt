@@ -1,7 +1,6 @@
 package me.camsteffen.polite.rule.edit
 
 import android.os.Bundle
-import android.support.v4.app.Fragment
 import android.support.v7.app.AlertDialog
 import android.text.Editable
 import android.text.TextWatcher
@@ -10,6 +9,7 @@ import android.view.MenuInflater
 import android.view.MenuItem
 import android.view.View
 import android.widget.Switch
+import dagger.android.support.DaggerFragment
 import me.camsteffen.polite.HelpFragment
 import me.camsteffen.polite.MainActivity
 import me.camsteffen.polite.R
@@ -17,7 +17,7 @@ import me.camsteffen.polite.model.Rule
 import me.camsteffen.polite.rule.master.RulesFragment
 import me.camsteffen.polite.util.hideKeyboard
 
-abstract class EditRuleFragment<RuleType : Rule> : Fragment() {
+abstract class EditRuleFragment<RuleType : Rule> : DaggerFragment() {
 
     companion object {
         const val FRAGMENT_TAG = "EditRule"

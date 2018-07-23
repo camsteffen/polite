@@ -1,7 +1,6 @@
 package me.camsteffen.polite.rule.edit
 
 import android.os.Bundle
-import android.provider.CalendarContract
 import android.support.v7.app.AlertDialog
 import android.text.SpannableStringBuilder
 import android.text.method.LinkMovementMethod
@@ -19,8 +18,10 @@ import me.camsteffen.polite.R
 import me.camsteffen.polite.model.CalendarEventMatchBy
 import me.camsteffen.polite.model.CalendarRule
 import me.camsteffen.polite.model.Rule
+import me.camsteffen.polite.util.CalendarDao
 import me.camsteffen.polite.util.KeywordSpan
 import me.camsteffen.polite.view.CaptionOption
+import javax.inject.Inject
 
 class EditCalendarRuleFragment : EditRuleFragment<CalendarRule>() {
 
@@ -32,6 +33,7 @@ class EditCalendarRuleFragment : EditRuleFragment<CalendarRule>() {
         get() = view!!.findViewById(R.id.new_keyword) as EditText
     private var wordsTV: TextView? = null
     private var removeKeywordsTip: TextView? = null
+    @Inject lateinit var calendarDao: CalendarDao
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         return inflater.inflate(R.layout.edit_calendar_rule_fragment, container, false)
@@ -138,38 +140,22 @@ class EditCalendarRuleFragment : EditRuleFragment<CalendarRule>() {
         if(!mainActivity.checkCalendarPermission())
             return
 
-        val CALENDAR_PROJECTION = arrayOf(
-                CalendarContract.Calendars._ID,
-                CalendarContract.Calendars.CALENDAR_DISPLAY_NAME)
-
-        val cr = activity!!.contentResolver
-        val calCur = cr.query(CalendarContract.Calendars.CONTENT_URI, CALENDAR_PROJECTION, null, null, null)
-        if(calCur == null) {
+        val calendars = calendarDao.getCalendars()
+        if (calendars == null) {
             Toast.makeText(activity, R.string.error_read_calendars, Toast.LENGTH_SHORT).show()
             return
         }
-        val count = calCur.count
-        if(count == 0) {
+        if (calendars.isEmpty()) {
             Toast.makeText(activity, R.string.no_calendars_found, Toast.LENGTH_SHORT).show()
-            calCur.close()
             return
         }
-        val calIDs = LongArray(count)
-        val calNames = arrayOfNulls<String>(count)
-        val checked = BooleanArray(count)
 
-        for (i in 0 until count) {
-            calCur.moveToNext()
-            val id = calCur.getLong(0)
-            calIDs[i] = id
-            calNames[i] = calCur.getString(1)
-            checked[i] = rule.calendarIds.contains(id)
-        }
-        calCur.close()
+        val calendarNames = calendars.map { it.name }.toTypedArray()
+        val checked = calendars.map { rule.calendarIds.contains(it.id) }.toBooleanArray()
 
         AlertDialog.Builder(activity!!)
                 .setTitle(R.string.select_calendars)
-                .setMultiChoiceItems(calNames, checked) { _, which, isChecked ->
+                .setMultiChoiceItems(calendarNames, checked) { _, which, isChecked ->
                     checked[which] = isChecked
                 }
                 .setNeutralButton(R.string.all) { _, _ ->
@@ -180,7 +166,7 @@ class EditCalendarRuleFragment : EditRuleFragment<CalendarRule>() {
                     rule.calendarIds.clear()
                     checked.indices
                             .filter { checked[it] }
-                            .forEach { rule.calendarIds.add(calIDs[it]) }
+                            .forEach { rule.calendarIds.add(calendars[it].id) }
                     onUpdateCalendars()
                 }
                 .setNegativeButton(android.R.string.cancel, null)
