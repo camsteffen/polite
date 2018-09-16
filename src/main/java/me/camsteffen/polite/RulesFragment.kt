@@ -141,7 +141,8 @@ class RulesFragment : Fragment() {
         when (item.itemId) {
             R.id.share -> {
                 val intent = Intent(Intent.ACTION_SEND)
-                intent.putExtra(Intent.EXTRA_TEXT, getString(R.string.share_text))
+                val text = getString(R.string.share_text, getString(R.string.play_store_url))
+                intent.putExtra(Intent.EXTRA_TEXT, text)
                 intent.type = "text/plain"
                 startActivity(Intent.createChooser(intent, getString(R.string.share_polite)))
             }

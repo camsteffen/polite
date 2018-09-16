@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="preference_activation">activation</string>
-    <string name="preference_deactivation">deactivation</string>
-    <string name="preference_enable">enable</string>
-    <string name="preference_notifications">notifications</string>
-    <string name="preference_theme">theme</string>
+    <string name="preference_activation" translatable="false">activation</string>
+    <string name="preference_deactivation" translatable="false">deactivation</string>
+    <string name="preference_enable" translatable="false">enable</string>
+    <string name="preference_notifications" translatable="false">notifications</string>
+    <string name="preference_theme" translatable="false">theme</string>
 </resources>
