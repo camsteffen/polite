@@ -25,13 +25,13 @@ import android.support.v7.widget.Toolbar
 import android.view.Menu
 import android.view.View
 import android.view.inputmethod.EditorInfo
-import android.view.inputmethod.InputMethodManager
 import android.widget.EditText
 import dagger.android.support.DaggerAppCompatActivity
 import me.camsteffen.polite.model.CalendarRule
 import me.camsteffen.polite.rule.edit.EditRuleFragment
 import me.camsteffen.polite.rule.master.RulesFragment
 import me.camsteffen.polite.util.RateAppPrompt
+import me.camsteffen.polite.util.hideKeyboard
 import javax.inject.Inject
 
 private const val ACTIVITY_CALENDAR_PERMISSION = 1
@@ -86,7 +86,7 @@ class MainActivity : DaggerAppCompatActivity(), FragmentManager.OnBackStackChang
 
         titleET.setOnEditorActionListener { _, actionId, _ ->
             if (actionId == EditorInfo.IME_ACTION_DONE) {
-                hideKeyboard()
+                hideKeyboard(this)
                 titleET.clearFocus()
             }
             false
@@ -202,14 +202,6 @@ class MainActivity : DaggerAppCompatActivity(), FragmentManager.OnBackStackChang
     private fun setHomeAsUp() {
         val backStackEntryCount = fragmentManager.backStackEntryCount
         supportActionBar!!.setDisplayHomeAsUpEnabled(backStackEntryCount > 0)
-    }
-
-    fun hideKeyboard() {
-        val currentFocus = currentFocus
-        if(currentFocus != null) {
-            val inputMethodManager = getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
-            inputMethodManager.hideSoftInputFromWindow(currentFocus.windowToken, 0)
-        }
     }
 
     fun setMenuIcon(menu: Menu, itemId: Int, iconId: Int) {

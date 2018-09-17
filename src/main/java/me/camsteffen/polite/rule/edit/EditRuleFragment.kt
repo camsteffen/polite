@@ -15,6 +15,7 @@ import me.camsteffen.polite.MainActivity
 import me.camsteffen.polite.R
 import me.camsteffen.polite.model.Rule
 import me.camsteffen.polite.rule.master.RulesFragment
+import me.camsteffen.polite.util.hideKeyboard
 
 abstract class EditRuleFragment<RuleType : Rule> : Fragment() {
 
@@ -119,7 +120,7 @@ abstract class EditRuleFragment<RuleType : Rule> : Fragment() {
 
     fun saveClose() {
         save()
-        mainActivity.hideKeyboard()
+        hideKeyboard(activity!!)
         fragmentManager.popBackStack()
     }
 
