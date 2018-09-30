@@ -3,6 +3,10 @@ package me.camsteffen.polite
 import android.Manifest
 import android.annotation.TargetApi
 import android.app.Activity
+import android.arch.lifecycle.Lifecycle
+import android.arch.lifecycle.LifecycleObserver
+import android.arch.lifecycle.LifecycleOwner
+import android.arch.lifecycle.OnLifecycleEvent
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.net.Uri
@@ -54,6 +58,7 @@ class MainActivity : AppCompatActivity(), HasAndroidInjector, FragmentManager.On
         get() = supportFragmentManager.findFragmentByTag(RulesFragment.FRAGMENT_TAG) as RulesFragment?
     private val editRuleFragment: EditRuleFragment<*>?
         get() = supportFragmentManager.findFragmentByTag(EditRuleFragment.FRAGMENT_TAG) as EditRuleFragment<*>?
+    private var onBackPressedListener: OnBackPressedListener? = null
 
     @Inject
     fun inject(preferences: AppPreferences) {
@@ -108,13 +113,9 @@ class MainActivity : AppCompatActivity(), HasAndroidInjector, FragmentManager.On
     }
 
     override fun onBackPressed() {
-        val editRuleFragment = editRuleFragment
-        if(editRuleFragment != null && editRuleFragment.isVisible) {
-            editRuleFragment.validateSaveClose()
-        } else if (supportFragmentManager.backStackEntryCount > 0) {
-            supportFragmentManager.popBackStack()
-        } else {
-            finish()
+        when {
+            onBackPressedListener.run { this != null && this.invoke() } -> Unit
+            else -> super.onBackPressed()
         }
     }
 
@@ -176,6 +177,25 @@ class MainActivity : AppCompatActivity(), HasAndroidInjector, FragmentManager.On
         }
     }
 
+    fun registerOnBackPressedListener(
+        lifecycleOwner: LifecycleOwner,
+        onBackPressedListener: OnBackPressedListener
+    ) {
+        this.onBackPressedListener = onBackPressedListener
+        lifecycleOwner.lifecycle.addObserver(object : LifecycleObserver {
+            @OnLifecycleEvent(Lifecycle.Event.ON_STOP)
+            fun onStop() {
+                unRegisterOnBackPressedListener(onBackPressedListener)
+            }
+        })
+    }
+
+    fun unRegisterOnBackPressedListener(onBackPressedListener: OnBackPressedListener) {
+        if (this.onBackPressedListener == onBackPressedListener) {
+            this.onBackPressedListener = null
+        }
+    }
+
     fun setThemeFromPreference() {
         val themeDark = getString(R.string.theme_dark)
         val theme = when (preferences.theme) {
@@ -202,3 +222,5 @@ class MainActivity : AppCompatActivity(), HasAndroidInjector, FragmentManager.On
     }
 
 }
+
+typealias OnBackPressedListener = () -> Boolean

@@ -1,5 +1,6 @@
 package me.camsteffen.polite.rule.edit
 
+import android.content.Context
 import android.os.Bundle
 import android.support.v7.app.AlertDialog
 import android.text.Editable
@@ -29,6 +30,11 @@ abstract class EditRuleFragment<RuleType : Rule> : DaggerFragment() {
     val rulesFragment: RulesFragment
         get() = fragmentManager!!.findFragmentByTag(RulesFragment.FRAGMENT_TAG) as RulesFragment
     lateinit var rule: RuleType
+
+    override fun onAttach(context: Context?) {
+        super.onAttach(context)
+        mainActivity.registerOnBackPressedListener(this, this::onBackPressed)
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -87,6 +93,11 @@ abstract class EditRuleFragment<RuleType : Rule> : DaggerFragment() {
             }
             else -> return false
         }
+        return true
+    }
+
+    private fun onBackPressed(): Boolean {
+        validateSaveClose()
         return true
     }
 
