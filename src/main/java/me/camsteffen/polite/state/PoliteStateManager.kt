@@ -24,6 +24,8 @@ import me.camsteffen.polite.model.CalendarRule
 import me.camsteffen.polite.model.ScheduleRule
 import me.camsteffen.polite.settings.AppPreferences
 import me.camsteffen.polite.util.TimeOfDay
+import org.threeten.bp.DayOfWeek
+import org.threeten.bp.LocalDate
 import java.util.Calendar
 import java.util.Date
 import java.util.GregorianCalendar
@@ -193,27 +195,27 @@ class PoliteStateManager
         }
         cancelledScheduleRulesEditor.apply()
         scheduleRules = scheduleRules.filterNot { cancelledScheduleRules.contains(it.id) }
-        
+
         // iterate schedule rules
         val activeScheduleRulesEditor = activeScheduleRulesPreferences.edit()
                 .clear()
         for (rule in scheduleRules) {
             val calendar = GregorianCalendar()
-            val currentDayOfWeek = calendar.get(Calendar.DAY_OF_WEEK) - 1
+            val currentDayOfWeek = LocalDate.now().dayOfWeek
             var dayAdjust = 0
             if (TimeOfDay(calendar) >= rule.end)
                 ++dayAdjust
             if (rule.begin > rule.end)
                 --dayAdjust
-            var dayOfWeek = -1
+            var dayOfWeek = DayOfWeek.MONDAY
             for (i in 0..6) {
-                dayOfWeek = (currentDayOfWeek + dayAdjust + i + 7) % 7
-                if (rule.days[dayOfWeek]) {
+                dayOfWeek = currentDayOfWeek + dayAdjust.toLong() + i.toLong()
+                if (rule.days.contains(dayOfWeek)) {
                     dayAdjust += i
                     break
                 }
             }
-            if (!rule.days[dayOfWeek])
+            if (!rule.days.contains(dayOfWeek))
                 continue
             calendar.add(Calendar.DAY_OF_WEEK, dayAdjust)
             calendar.set(Calendar.HOUR_OF_DAY, rule.begin.hour)

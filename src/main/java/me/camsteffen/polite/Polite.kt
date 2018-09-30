@@ -3,6 +3,7 @@ package me.camsteffen.polite
 import android.app.Application
 import android.content.SharedPreferences
 import android.preference.PreferenceManager
+import com.jakewharton.threetenabp.AndroidThreeTen
 import dagger.android.DispatchingAndroidInjector
 import dagger.android.HasAndroidInjector
 import me.camsteffen.polite.di.DaggerAppComponent
@@ -27,6 +28,7 @@ class Polite : Application(), HasAndroidInjector {
 
     override fun onCreate() {
         super.onCreate()
+        AndroidThreeTen.init(this)
         db = DB(this)
         preferences = PreferenceManager.getDefaultSharedPreferences(this)
         DaggerAppComponent.factory().create(this).inject(this)

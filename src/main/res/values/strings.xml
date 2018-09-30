@@ -21,20 +21,6 @@
     <string name="calendars">Calendars</string>
     <string name="create_a_rule">Create A Rule</string>
     <string name="continue_">Continue</string>
-    <string name="day_abbreviation_sunday">Sun</string>
-    <string name="day_abbreviation_monday">Mon</string>
-    <string name="day_abbreviation_tuesday">Tue</string>
-    <string name="day_abbreviation_wednesday">Wed</string>
-    <string name="day_abbreviation_thursday">Thu</string>
-    <string name="day_abbreviation_friday">Fri</string>
-    <string name="day_abbreviation_saturday">Sat</string>
-    <string name="day_symbol_sunday">S</string>
-    <string name="day_symbol_monday">M</string>
-    <string name="day_symbol_tuesday">T</string>
-    <string name="day_symbol_wednesday">W</string>
-    <string name="day_symbol_thursday">T</string>
-    <string name="day_symbol_friday">F</string>
-    <string name="day_symbol_saturday">S</string>
     <string name="days">Days</string>
     <string name="deactivation">Deactivation</string>
     <string name="delete">Delete</string>
@@ -104,22 +90,4 @@
     <string name="vibrate">Vibrate</string>
     <string name="word_already_added">\"%s\" is already added</string>
     <string name="yes">Yes</string>
-    <string-array name="day_symbols">
-        <item>@string/day_symbol_sunday</item>
-        <item>@string/day_symbol_monday</item>
-        <item>@string/day_symbol_tuesday</item>
-        <item>@string/day_symbol_wednesday</item>
-        <item>@string/day_symbol_thursday</item>
-        <item>@string/day_symbol_friday</item>
-        <item>@string/day_symbol_saturday</item>
-    </string-array>
-    <string-array name="day_abbreviations">
-        <item>@string/day_abbreviation_sunday</item>
-        <item>@string/day_abbreviation_monday</item>
-        <item>@string/day_abbreviation_tuesday</item>
-        <item>@string/day_abbreviation_wednesday</item>
-        <item>@string/day_abbreviation_thursday</item>
-        <item>@string/day_abbreviation_friday</item>
-        <item>@string/day_abbreviation_saturday</item>
-    </string-array>
 </resources>

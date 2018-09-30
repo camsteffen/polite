@@ -8,6 +8,7 @@ import android.provider.BaseColumns
 import me.camsteffen.polite.model.CalendarRule
 import me.camsteffen.polite.model.Rule
 import me.camsteffen.polite.model.ScheduleRule
+import org.threeten.bp.DayOfWeek
 
 object DBActions {
 
@@ -140,13 +141,13 @@ object DBActions {
         values.put(BaseColumns._ID, ruleID)
         values.put(DB.ScheduleRule.COLUMN_BEGIN, rule.begin.toInt())
         values.put(DB.ScheduleRule.COLUMN_END, rule.end.toInt())
-        values.put(DB.ScheduleRule.COLUMN_SUNDAY, rule.days[ScheduleRule.SUNDAY])
-        values.put(DB.ScheduleRule.COLUMN_MONDAY, rule.days[ScheduleRule.MONDAY])
-        values.put(DB.ScheduleRule.COLUMN_TUESDAY, rule.days[ScheduleRule.TUESDAY])
-        values.put(DB.ScheduleRule.COLUMN_WEDNESDAY, rule.days[ScheduleRule.WEDNESDAY])
-        values.put(DB.ScheduleRule.COLUMN_THURSDAY, rule.days[ScheduleRule.THURSDAY])
-        values.put(DB.ScheduleRule.COLUMN_FRIDAY, rule.days[ScheduleRule.FRIDAY])
-        values.put(DB.ScheduleRule.COLUMN_SATURDAY, rule.days[ScheduleRule.SATURDAY])
+        values.put(DB.ScheduleRule.COLUMN_SUNDAY, rule.days.contains(DayOfWeek.SUNDAY))
+        values.put(DB.ScheduleRule.COLUMN_MONDAY, rule.days.contains(DayOfWeek.MONDAY))
+        values.put(DB.ScheduleRule.COLUMN_TUESDAY, rule.days.contains(DayOfWeek.TUESDAY))
+        values.put(DB.ScheduleRule.COLUMN_WEDNESDAY, rule.days.contains(DayOfWeek.WEDNESDAY))
+        values.put(DB.ScheduleRule.COLUMN_THURSDAY, rule.days.contains(DayOfWeek.THURSDAY))
+        values.put(DB.ScheduleRule.COLUMN_FRIDAY, rule.days.contains(DayOfWeek.FRIDAY))
+        values.put(DB.ScheduleRule.COLUMN_SATURDAY, rule.days.contains(DayOfWeek.SATURDAY))
         db.insertOrThrow(DB.ScheduleRule.TABLE_NAME, null, values)
         return ruleID
     }

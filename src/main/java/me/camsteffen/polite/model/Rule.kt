@@ -13,8 +13,11 @@ import me.camsteffen.polite.Polite
 import me.camsteffen.polite.R
 import me.camsteffen.polite.rule.RuleAdapter
 import me.camsteffen.polite.rule.RuleList
+import me.camsteffen.polite.rule.scheduleSummary
 import me.camsteffen.polite.util.TimeOfDay
+import org.threeten.bp.DayOfWeek
 import java.util.ArrayList
+import java.util.EnumSet
 import java.util.TreeSet
 
 sealed class Rule : Parcelable, RuleList.RuleListItem {
@@ -56,7 +59,7 @@ sealed class Rule : Parcelable, RuleList.RuleListItem {
         vibrate = parcel.readByte() != 0.toByte()
     }
 
-    open fun getCaption(context: Context): CharSequence = ""
+    open fun getCaption(context: Context): String = ""
 
     override fun writeToParcel(dest: Parcel, flags: Int) {
         dest.writeLong(id)
@@ -291,12 +294,12 @@ class ScheduleRule : Rule {
 
     val begin: TimeOfDay
     val end: TimeOfDay
-    val days: BooleanArray
+    val days: EnumSet<DayOfWeek>
 
     constructor(context: Context) : super(context) {
         begin = TimeOfDay(12, 0)
         end = TimeOfDay(13, 0)
-        days = booleanArrayOf(false, true, true, true, true, true, false) // Mon-Fri
+        days = EnumSet.of(DayOfWeek.MONDAY, DayOfWeek.TUESDAY, DayOfWeek.WEDNESDAY, DayOfWeek.THURSDAY, DayOfWeek.FRIDAY)
     }
 
     constructor(
@@ -306,18 +309,20 @@ class ScheduleRule : Rule {
             vibrate: Boolean,
             begin: TimeOfDay,
             end: TimeOfDay,
-            days: BooleanArray
+            days: Collection<DayOfWeek>
     ) : super(id, name, enabled, vibrate) {
         this.begin = begin
         this.end = end
-        this.days = days
+        this.days = if (days.isEmpty()) EnumSet.noneOf(DayOfWeek::class.java)
+        else EnumSet.copyOf(days)
     }
 
     constructor(parcel: Parcel) : super(parcel) {
         begin = TimeOfDay(parcel.readInt())
         end = TimeOfDay(parcel.readInt())
-        days = BooleanArray(7)
-        parcel.readBooleanArray(days)
+        val dayList = parcel.createIntArray().map(DayOfWeek::of)
+        days = if (dayList.isEmpty()) EnumSet.noneOf(DayOfWeek::class.java)
+        else EnumSet.copyOf(dayList)
     }
 
     override fun addToAdapter(adapter: RuleAdapter) {
@@ -332,48 +337,13 @@ class ScheduleRule : Rule {
         DBActions.SaveScheduleRule(context, this).execute()
     }
 
-    override fun getCaption(context: Context): CharSequence {
-        val days = context.resources.getStringArray(R.array.day_abbreviations)
-        val atoms = ArrayList<String>()
-        var count = 0
-        val ranges = ArrayList<Pair<Int, Int>>()
-        for (i in 0 until days.size) {
-            if (this.days[i]) {
-                ++count
-            } else {
-                ranges.add(Pair(i-count, count))
-                count = 0
-            }
-        }
-        if (count == days.size) {
-            atoms.add(context.getString(R.string.every_day))
-        } else if (count > 0) {
-            ranges.add(Pair(days.size-count, count))
-        }
-        for ((first, second) in ranges) {
-            val last = first + second - 1
-            if (second > 2) {
-                atoms.add("${days[first]} - ${days[last]}")
-            } else {
-                (first..last).mapTo(atoms) { days[it] }
-            }
-        }
-        if (atoms.isEmpty())
-            return ""
-        val it = atoms.iterator()
-        val builder = StringBuilder(it.next())
-        for (atom in it) {
-            builder.append(", $atom")
-        }
-        builder.append("  ${begin.toString(context)} - ${end.toString(context)}")
-        return builder
-    }
+    override fun getCaption(context: Context) = scheduleSummary(context, days, begin, end)
 
     override fun writeToParcel(dest: Parcel, flags: Int) {
         super.writeToParcel(dest, flags)
         dest.writeInt(begin.toInt())
         dest.writeInt(end.toInt())
-        dest.writeBooleanArray(days)
+        dest.writeIntArray(days.map { it.value }.toIntArray())
     }
 
     override fun describeContents(): Int = 0
@@ -403,13 +373,6 @@ class ScheduleRule : Rule {
     }
 
     companion object {
-        const val SUNDAY = 0
-        const val MONDAY = 1
-        const val TUESDAY = 2
-        const val WEDNESDAY = 3
-        const val THURSDAY = 4
-        const val FRIDAY = 5
-        const val SATURDAY = 6
 
         @Suppress("unused") // required by Parcelable
         @JvmField val CREATOR = object : Parcelable.Creator<ScheduleRule> {
@@ -432,13 +395,13 @@ class ScheduleRule : Rule {
                     "${DB.Rule.COLUMN_VIBRATE}," +
                     "${DB.ScheduleRule.COLUMN_BEGIN}," +
                     "${DB.ScheduleRule.COLUMN_END}," +
-                    "${DB.ScheduleRule.COLUMN_SUNDAY}," +
                     "${DB.ScheduleRule.COLUMN_MONDAY}," +
                     "${DB.ScheduleRule.COLUMN_TUESDAY}," +
                     "${DB.ScheduleRule.COLUMN_WEDNESDAY}," +
                     "${DB.ScheduleRule.COLUMN_THURSDAY}," +
                     "${DB.ScheduleRule.COLUMN_FRIDAY}," +
-                    DB.ScheduleRule.COLUMN_SATURDAY +
+                    "${DB.ScheduleRule.COLUMN_SATURDAY}," +
+                    DB.ScheduleRule.COLUMN_SUNDAY +
                     " from ${DB.Rule.TABLE_NAME} INNER JOIN ${DB.ScheduleRule.TABLE_NAME} USING(${BaseColumns._ID})"
 
             if(selection != null) {
@@ -464,9 +427,11 @@ class ScheduleRule : Rule {
                 val vibrate = cursor.getInt(3) != 0
                 val begin = TimeOfDay(cursor.getInt(4))
                 val end = TimeOfDay(cursor.getInt(5))
-                val days = BooleanArray(7)
-                for(i in 0..6) {
-                    days[i] = cursor.getInt(i + 6) != 0
+                val days = EnumSet.noneOf(DayOfWeek::class.java)
+                for (i in 0..6) {
+                    if (cursor.getInt(i + 6) != 0) {
+                        days.add(DayOfWeek.values()[i])
+                    }
                 }
                 list.add(ScheduleRule(id, name, enabled, vibrate, begin, end, days))
             }
