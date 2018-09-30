@@ -97,6 +97,30 @@ class ScheduleRule : Rule {
 
     override fun describeContents(): Int = 0
 
+    override fun equals(other: Any?): Boolean {
+        if (this === other) return true
+        if (javaClass != other?.javaClass) return false
+
+        other as ScheduleRule
+
+        if (begin != other.begin) return false
+        if (end != other.end) return false
+        if (days != other.days) return false
+
+        return true
+    }
+
+    override fun hashCode(): Int {
+        var result = begin.hashCode()
+        result = 31 * result + end.hashCode()
+        result = 31 * result + days.hashCode()
+        return result
+    }
+
+    override fun toString(): String {
+        return "ScheduleRule(begin=$begin, end=$end, days=$days)"
+    }
+
     companion object {
         const val SUNDAY = 0
         const val MONDAY = 1
