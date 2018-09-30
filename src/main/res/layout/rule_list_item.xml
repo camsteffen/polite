@@ -10,6 +10,7 @@
 
     <RelativeLayout
         android:background="?attr/selectableItemBackground"
+        android:focusable="true"
         android:descendantFocusability="blocksDescendants"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
