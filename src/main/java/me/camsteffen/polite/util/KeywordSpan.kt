@@ -15,10 +15,9 @@ class KeywordSpan(context: Context) : ReplacementSpan() {
     private val textColor: Int
 
     init {
-        val attributes = intArrayOf(R.attr.colorAccentBackground, android.R.attr.textColorPrimary)
-        val values = context.theme.obtainStyledAttributes(attributes)
-        bgColor = values.getColor(0, -1)
-        textColor = values.getColor(1, -1)
+        val values = context.theme.obtainStyledAttributes(R.style.KeywordSpan, R.styleable.KeywordSpan)
+        bgColor = values.getColor(R.styleable.KeywordSpan_android_colorBackground, -1)
+        textColor = values.getColor(R.styleable.KeywordSpan_android_colorForeground, -1)
         values.recycle()
     }
 
