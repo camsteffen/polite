@@ -16,6 +16,7 @@ import android.widget.ScrollView
 import android.widget.TextView
 import android.widget.Toast
 import me.camsteffen.polite.R
+import me.camsteffen.polite.model.CalendarEventMatchBy
 import me.camsteffen.polite.model.CalendarRule
 import me.camsteffen.polite.model.Rule
 import me.camsteffen.polite.util.KeywordSpan
@@ -200,12 +201,12 @@ class EditCalendarRuleFragment : EditRuleFragment<CalendarRule>() {
     private fun selectEventMatch(view: View) {
         val popup = PopupMenu(activity, view)
         popup.setOnMenuItemClickListener { item ->
-            rule.match = when (item!!.itemId) {
-                R.id.match_all -> CalendarRule.MATCH_ALL
-                R.id.match_by_title -> CalendarRule.MATCH_TITLE
-                R.id.match_by_desc -> CalendarRule.MATCH_DESCRIPTION
-                R.id.match_by_title_desc -> CalendarRule.MATCH_TITLE or CalendarRule.MATCH_DESCRIPTION
-                else -> throw IllegalStateException()
+            rule.matchBy = when (item!!.itemId) {
+                R.id.match_all -> CalendarEventMatchBy.ALL
+                R.id.match_by_title -> CalendarEventMatchBy.TITLE
+                R.id.match_by_desc -> CalendarEventMatchBy.DESCRIPTION
+                R.id.match_by_title_desc -> CalendarEventMatchBy.TITLE_AND_DESCRIPTION
+                else -> throw IllegalArgumentException()
             }
             val keywordsSection = keywordsSection
             val keywordsWasVisible = keywordsSection.visibility == View.VISIBLE
@@ -238,18 +239,12 @@ class EditCalendarRuleFragment : EditRuleFragment<CalendarRule>() {
 
     private fun onUpdateEventMatch() {
         // set caption text
-        val stringId = when (rule.match) {
-            CalendarRule.MATCH_ALL -> R.string.all_events
-            CalendarRule.MATCH_TITLE -> R.string.match_by_title
-            CalendarRule.MATCH_DESCRIPTION -> R.string.match_by_desc
-            CalendarRule.MATCH_TITLE or CalendarRule.MATCH_DESCRIPTION -> R.string.match_by_title_desc
-            else -> throw IllegalStateException("illegal rule match value: ${rule.match}")
-        }
+        val stringId = rule.matchBy.captionStringId
         val events = view!!.findViewById(R.id.events) as CaptionOption
         events.caption.text = getString(stringId)
 
         // show or hide keywords section
-        keywordsSection.visibility = if (rule.match == CalendarRule.MATCH_ALL)
+        keywordsSection.visibility = if (rule.matchBy == CalendarEventMatchBy.ALL)
             View.GONE
         else
             View.VISIBLE

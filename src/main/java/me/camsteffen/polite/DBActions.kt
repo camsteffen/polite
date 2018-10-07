@@ -110,9 +110,9 @@ object DBActions {
         // Calendar Rule
         val values = ContentValues()
         values.put(BaseColumns._ID, ruleID)
-        values.put(DB.CalendarRule.COLUMN_MATCH_ALL, rule.matchAll)
-        values.put(DB.CalendarRule.COLUMN_MATCH_TITLE, rule.matchTitle)
-        values.put(DB.CalendarRule.COLUMN_MATCH_DESCRIPTION, rule.matchDescription)
+        values.put(DB.CalendarRule.COLUMN_MATCH_ALL, rule.matchBy.all)
+        values.put(DB.CalendarRule.COLUMN_MATCH_TITLE, rule.matchBy.title)
+        values.put(DB.CalendarRule.COLUMN_MATCH_DESCRIPTION, rule.matchBy.description)
         values.put(DB.CalendarRule.COLUMN_INVERSE_MATCH, rule.inverseMatch)
         db.insertOrThrow(DB.CalendarRule.TABLE_NAME, null, values)
 

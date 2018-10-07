@@ -91,19 +91,12 @@ sealed class Rule : Parcelable, RuleList.RuleListItem {
 class CalendarRule : Rule {
 
     val calendarIds: MutableList<Long>
-    var match: Int
+    var matchBy: CalendarEventMatchBy
     var inverseMatch: Boolean
     val keywords: TreeSet<String>
 
-    val matchAll: Boolean
-        get() = match and MATCH_ALL == MATCH_ALL
-    val matchTitle: Boolean
-        get() = match and MATCH_TITLE == MATCH_TITLE
-    val matchDescription: Boolean
-        get() = match and MATCH_DESCRIPTION == MATCH_DESCRIPTION
-
     constructor(context: Context) : super(context) {
-        match = MATCH_ALL
+        matchBy = CalendarEventMatchBy.ALL
         inverseMatch = false
         calendarIds = mutableListOf()
         keywords = TreeSet()
@@ -115,11 +108,11 @@ class CalendarRule : Rule {
             enabled: Boolean,
             vibrate: Boolean,
             calendars: Collection<Long>,
-            match: Int,
+            match: CalendarEventMatchBy,
             inverseMatch: Boolean,
             keywords: Collection<String>) : super(id, name, enabled, vibrate) {
         this.calendarIds = calendars.toMutableList()
-        this.match = match
+        this.matchBy = match
         this.inverseMatch = inverseMatch
         this.keywords = TreeSet(keywords)
     }
@@ -127,7 +120,10 @@ class CalendarRule : Rule {
     constructor(parcel: Parcel) : super(parcel) {
         calendarIds = mutableListOf()
         parcel.readList(calendarIds, null)
-        match = parcel.readInt()
+        val matchAll = parcel.readInt() != 0
+        val matchTitle = parcel.readInt() != 0
+        val matchDescription = parcel.readInt() != 0
+        matchBy = CalendarEventMatchBy.having(matchAll, matchTitle, matchDescription)!!
         inverseMatch = parcel.readInt() != 0
         val keywordsArr = mutableListOf<String>()
         parcel.readStringList(keywordsArr)
@@ -169,22 +165,20 @@ class CalendarRule : Rule {
     override fun writeToParcel(dest: Parcel, flags: Int) {
         super.writeToParcel(dest, flags)
         dest.writeList(calendarIds)
-        dest.writeInt(match)
-        dest.writeInt(if(inverseMatch) 1 else 0)
+        dest.writeInt(if (matchBy.all) 1 else 0)
+        dest.writeInt(if (matchBy.title) 1 else 0)
+        dest.writeInt(if (matchBy.description) 1 else 0)
+        dest.writeInt(if (inverseMatch) 1 else 0)
         dest.writeStringList(keywords.toMutableList())
     }
 
     override fun scrub() {
-        if (match == MATCH_ALL) {
+        if (matchBy == CalendarEventMatchBy.ALL) {
             keywords.clear()
         }
     }
 
     companion object {
-        const val MATCH_ALL = 1
-        const val MATCH_TITLE = 2
-        const val MATCH_DESCRIPTION = 4
-
         @Suppress("unused") // required by Parcelable
         @JvmField val CREATOR = object : Parcelable.Creator<CalendarRule> {
 
@@ -253,14 +247,16 @@ class CalendarRule : Rule {
                     calendars
                 }
 
-                var match = 0
-                if (ruleCursor.getInt(INDEX_MATCH_ALL) != 0) {
-                    match = MATCH_ALL
+                val match = if (ruleCursor.getInt(INDEX_MATCH_ALL) != 0) {
+                    CalendarEventMatchBy.ALL
                 } else if (ruleCursor.getInt(INDEX_MATCH_TITLE) != 0) {
-                    match = MATCH_TITLE
-                }
-                if (ruleCursor.getInt(INDEX_MATCH_DESCRIPTION) != 0) {
-                    match = match or MATCH_DESCRIPTION
+                    if (ruleCursor.getInt(INDEX_MATCH_DESCRIPTION) != 0) {
+                        CalendarEventMatchBy.TITLE_AND_DESCRIPTION
+                    } else {
+                        CalendarEventMatchBy.TITLE
+                    }
+                } else {
+                    CalendarEventMatchBy.DESCRIPTION
                 }
 
                 val inverseMatch = ruleCursor.getInt(INDEX_INVERSE_MATCH) != 0

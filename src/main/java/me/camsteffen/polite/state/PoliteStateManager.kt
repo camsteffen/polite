@@ -61,15 +61,15 @@ private fun eventMatchesRule(event: Event, rule: CalendarRule): Boolean {
     if (rule.calendarIds.isNotEmpty() && !rule.calendarIds.contains(event.calendarId)) {
         return false
     }
-    if (rule.matchAll) {
+    if (rule.matchBy.all) {
         return true
     }
     var match = false
-    if (rule.matchTitle && event.title != null && event.title.isNotBlank()) {
+    if (rule.matchBy.title && event.title != null && event.title.isNotBlank()) {
         val title = event.title.toLowerCase()
         match = rule.keywords.any { title.contains(it) }
     }
-    if (!match && rule.matchDescription && event.description != null && event.description.isNotBlank()) {
+    if (!match && rule.matchBy.description && event.description != null && event.description.isNotBlank()) {
         val desc = event.description.toLowerCase()
         match = rule.keywords.any { desc.contains(it) }
     }
