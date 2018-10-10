@@ -56,8 +56,6 @@
     <string name="events">Eintrag</string>
     <string name="every_day">Jeden Tag</string>
     <string name="go_back">Zurück</string>
-    <string name="google_plus_community">Google+ Community</string>
-    <string name="google_plus_community_url"><xliff:g id="url">https://plus.google.com/communities/114753327737625029623</xliff:g></string>
     <string name="help">Hilfe</string>
     <string name="help_email"><xliff:g id="email">politebycam@gmail.com</xliff:g></string>
     <string name="help_email_subject"><xliff:g id="help_email_subject">Polite Help</xliff:g></string>
@@ -86,7 +84,6 @@
     <string name="preference_enable"><xliff:g id="preference_key">enable</xliff:g></string>
     <string name="preference_notifications"><xliff:g id="preference_key">notifications</xliff:g></string>
     <string name="preference_theme"><xliff:g id="preference_key">theme</xliff:g></string>
-    <string name="quit">Quit</string>
     <string name="rate_app_message">Würden Sie sich kurz Zeit nehmen, um eine ehrliche Bewertung im Play Store zu hinterlassen? Ich werde Sie auch nicht weiter stören. Danke!</string>     <!-- needs rework... -->
     <string name="rate_app_title">High five!</string>
     <string name="remove_keyword_hint">Klicke auf ein Stichwort um es zu entfernen</string>
