@@ -2,14 +2,15 @@ package me.camsteffen.polite.rule.edit
 
 import android.content.Context
 import android.os.Bundle
-import android.text.Editable
-import android.text.TextWatcher
+import android.view.LayoutInflater
 import android.view.Menu
 import android.view.MenuInflater
 import android.view.MenuItem
 import android.view.View
-import android.widget.Switch
+import android.view.ViewGroup
+import android.widget.ScrollView
 import androidx.appcompat.app.AlertDialog
+import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.ViewModelProviders
 import dagger.android.support.DaggerFragment
@@ -17,9 +18,9 @@ import me.camsteffen.polite.HelpFragment
 import me.camsteffen.polite.MainActivity
 import me.camsteffen.polite.R
 import me.camsteffen.polite.RuleService
+import me.camsteffen.polite.databinding.EditRuleBinding
 import me.camsteffen.polite.model.Rule
 import me.camsteffen.polite.rule.RuleMasterDetailViewModel
-import me.camsteffen.polite.rule.master.RulesFragment
 import me.camsteffen.polite.util.RateAppPrompt
 import me.camsteffen.polite.util.hideKeyboard
 import javax.inject.Inject
@@ -35,11 +36,11 @@ abstract class EditRuleFragment<RuleType : Rule> : DaggerFragment() {
     @Inject lateinit var viewModelProviderFactory: ViewModelProvider.Factory
 
     private lateinit var masterModel: RuleMasterDetailViewModel
+    private lateinit var editRuleModel: EditRuleViewModel<RuleType>
 
     val mainActivity: MainActivity
         get() = activity as MainActivity
-    val rulesFragment: RulesFragment
-        get() = fragmentManager!!.findFragmentByTag(RulesFragment.FRAGMENT_TAG) as RulesFragment
+    protected lateinit var scrollView: ScrollView
     lateinit var rule: RuleType
     var newRule: Boolean = false
 
@@ -56,6 +57,18 @@ abstract class EditRuleFragment<RuleType : Rule> : DaggerFragment() {
         super.onCreate(savedInstanceState)
         setHasOptionsMenu(true)
         retainInstance = true
+        editRuleModel = onCreateEditRuleViewModel()
+        editRuleModel.setRule(rule)
+    }
+
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+        val binding = DataBindingUtil.inflate<EditRuleBinding>(layoutInflater, R.layout.edit_rule, container, false)
+        binding.lifecycleOwner = this
+        scrollView = binding.scrollView
+        binding.model = editRuleModel
+        val editRuleView = onCreateEditRuleView(inflater, binding.editRule, savedInstanceState)
+        binding.editRule.addView(editRuleView)
+        return binding.root
     }
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
@@ -64,16 +77,18 @@ abstract class EditRuleFragment<RuleType : Rule> : DaggerFragment() {
         val titleET = mainActivity.titleET
         titleET.visibility = View.VISIBLE
         titleET.setText(rule.name)
-        titleET.addTextChangedListener(titleListener)
     }
 
     override fun onDestroyView() {
         super.onDestroyView()
         val titleET = mainActivity.titleET
         titleET.visibility = View.GONE
-        titleET.removeTextChangedListener(titleListener)
         mainActivity.supportActionBar!!.setDisplayShowTitleEnabled(true)
     }
+
+    abstract fun onCreateEditRuleViewModel(): EditRuleViewModel<RuleType>
+
+    abstract fun onCreateEditRuleView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
         inflater.inflate(R.menu.menu_edit_rule, menu)
@@ -113,48 +128,31 @@ abstract class EditRuleFragment<RuleType : Rule> : DaggerFragment() {
         return true
     }
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        val enableSwitch = view.findViewById(R.id.enable) as Switch
-        val vibrateSwitch = view.findViewById(R.id.vibrate) as Switch
-
-        // Set initial state
-        enableSwitch.isChecked = rule.enabled
-        vibrateSwitch.isChecked = rule.vibrate
-
-        // Enable Switch
-        enableSwitch.setOnCheckedChangeListener { _, isChecked ->
-            rule.enabled = isChecked
-        }
-
-        // Vibrate Switch
-        vibrateSwitch.setOnCheckedChangeListener { _, isChecked ->
-            rule.vibrate = isChecked
-        }
-    }
-
     open fun validateSaveClose() {
         saveClose()
     }
 
-    fun save() {
+    private fun save(rule: RuleType) {
         ruleService.saveRuleAsync(rule)
         rateAppPrompt.conditionalPrompt(activity!!)
     }
 
     fun saveClose() {
-        save()
+        val rule = ruleFromUi()
+        if (rule != masterModel.selectedRule) {
+            save(rule)
+        }
         hideKeyboard(activity!!)
         fragmentManager!!.popBackStack()
         masterModel.selectedRule.value = null
     }
 
-    private val titleListener: TextWatcher = object : TextWatcher {
-        override fun beforeTextChanged(s: CharSequence, start: Int, count: Int, after: Int) = Unit
+    abstract fun ruleFromUi(id: Long, name: String, enabled: Boolean, vibrate: Boolean): RuleType
 
-        override fun onTextChanged(s: CharSequence, start: Int, before: Int, count: Int) = Unit
-
-        override fun afterTextChanged(s: Editable) {
-            rule.name = s.toString()
-        }
+    private fun ruleFromUi(): RuleType {
+        val name = mainActivity.titleET.text.toString()
+        val enabled = editRuleModel.enabled.get()
+        val vibrate = editRuleModel.vibrate.get()
+        return ruleFromUi(rule.id, name, enabled, vibrate)
     }
 }

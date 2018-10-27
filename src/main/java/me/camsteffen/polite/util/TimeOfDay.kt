@@ -25,6 +25,10 @@ class TimeOfDay : Comparable<TimeOfDay> {
         this.minutes = hour * 60 + minute
     }
 
+    constructor(other: TimeOfDay) {
+        this.minutes = other.minutes
+    }
+
     constructor(calendar: Calendar) {
         val hour = calendar.get(Calendar.HOUR_OF_DAY)
         val minute = calendar.get(Calendar.MINUTE)

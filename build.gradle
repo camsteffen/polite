@@ -72,6 +72,10 @@ android {
     sourceSets {
         androidTest.assets.srcDirs += files("$projectDir/schemas".toString())
     }
+
+    dataBinding {
+        enabled = true
+    }
 }
 
 dependencies {

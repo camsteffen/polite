@@ -10,10 +10,10 @@ import android.view.ViewGroup
 import android.widget.Button
 import android.widget.EditText
 import android.widget.PopupMenu
-import android.widget.ScrollView
 import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
+import androidx.lifecycle.ViewModelProviders
 import me.camsteffen.polite.R
 import me.camsteffen.polite.model.CalendarEventMatchBy
 import me.camsteffen.polite.model.CalendarRule
@@ -32,10 +32,16 @@ class EditCalendarRuleFragment : EditRuleFragment<CalendarRule>() {
         get() = view!!.findViewById(R.id.new_keyword) as EditText
     private var wordsTV: TextView? = null
     private var removeKeywordsTip: TextView? = null
+    private lateinit var model: EditCalendarRuleViewModel
     @Inject lateinit var calendarDao: CalendarDao
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        return inflater.inflate(R.layout.edit_calendar_rule_fragment, container, false)
+    override fun onCreateEditRuleViewModel(): EditCalendarRuleViewModel {
+        model = ViewModelProviders.of(activity!!, viewModelProviderFactory)[EditCalendarRuleViewModel::class.java]
+        return model
+    }
+
+    override fun onCreateEditRuleView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
+        return inflater.inflate(R.layout.edit_calendar_rule, container, false)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -87,6 +93,11 @@ class EditCalendarRuleFragment : EditRuleFragment<CalendarRule>() {
         onUpdateKeywords()
     }
 
+    override fun ruleFromUi(id: Long, name: String, enabled: Boolean, vibrate: Boolean): CalendarRule {
+        return CalendarRule(id, name, enabled, vibrate, rule.matchBy, rule.inverseMatch,
+                rule.calendarIds.toMutableSet(), rule.keywords.toMutableSet())
+    }
+
     private fun addKeyword() {
         val addKeywordEditText = addKeywordEditText
         val word = addKeywordEditText.text.toString()
@@ -98,7 +109,6 @@ class EditCalendarRuleFragment : EditRuleFragment<CalendarRule>() {
             addKeywordEditText.setText("")
             onUpdateKeywords()
             view!!.post { // scroll after keywords draw
-                val scrollView = view!!.findViewById(R.id.scroll_view) as ScrollView
                 val keywordsSection = keywordsSection
                 if(keywordsSection.top > scrollView.scrollY) {
                     scrollView.smoothScrollTo(0, keywordsSection.top)

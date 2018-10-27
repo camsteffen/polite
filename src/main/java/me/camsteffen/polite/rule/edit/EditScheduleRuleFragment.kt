@@ -9,6 +9,7 @@ import android.widget.LinearLayout
 import android.widget.TextView
 import android.widget.Toast
 import androidx.core.os.ConfigurationCompat.getLocales
+import androidx.lifecycle.ViewModelProviders
 import me.camsteffen.polite.R
 import me.camsteffen.polite.model.ScheduleRule
 import me.camsteffen.polite.util.TimeOfDay
@@ -23,13 +24,19 @@ private const val END = 1
 
 class EditScheduleRuleFragment : EditRuleFragment<ScheduleRule>(), TimePickerDialogFragment.OnTimeSetListener {
 
+    private lateinit var model: EditScheduleRuleViewModel
     private val beginTime : ValueOption
         get() = view!!.findViewById(R.id.start_time) as ValueOption
     private val endTime : ValueOption
         get() = view!!.findViewById(R.id.end_time) as ValueOption
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        return inflater.inflate(R.layout.edit_schedule_rule_fragment, container, false)
+    override fun onCreateEditRuleViewModel(): EditScheduleRuleViewModel {
+        model = ViewModelProviders.of(activity!!, viewModelProviderFactory)[EditScheduleRuleViewModel::class.java]
+        return model
+    }
+
+    override fun onCreateEditRuleView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
+        return inflater.inflate(R.layout.edit_schedule_rule, container, false)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -67,6 +74,10 @@ class EditScheduleRuleFragment : EditRuleFragment<ScheduleRule>(), TimePickerDia
         beginTime.setOnClickListener(setTimeListener(BEGIN, rule.begin))
         endTime.setOnClickListener(setTimeListener(END, rule.end))
         setDuration()
+    }
+
+    override fun ruleFromUi(id: Long, name: String, enabled: Boolean, vibrate: Boolean): ScheduleRule {
+        return ScheduleRule(id, name, enabled, vibrate, TimeOfDay(rule.begin), TimeOfDay(rule.end), rule.days)
     }
 
     private fun setDuration() {

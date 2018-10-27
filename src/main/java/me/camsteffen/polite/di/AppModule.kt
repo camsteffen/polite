@@ -19,6 +19,8 @@ import me.camsteffen.polite.MainActivity
 import me.camsteffen.polite.Polite
 import me.camsteffen.polite.db.AppDatabase
 import me.camsteffen.polite.rule.RuleMasterDetailViewModel
+import me.camsteffen.polite.rule.edit.EditCalendarRuleViewModel
+import me.camsteffen.polite.rule.edit.EditScheduleRuleViewModel
 import javax.inject.Singleton
 
 @Module
@@ -43,6 +45,16 @@ abstract class AppModule {
     @IntoMap
     @ViewModelKey(RuleMasterDetailViewModel::class)
     abstract fun bindRuleMasterDetailViewModel(ruleMasterDetailViewModel: RuleMasterDetailViewModel): ViewModel
+
+    @Binds
+    @IntoMap
+    @ViewModelKey(EditCalendarRuleViewModel::class)
+    abstract fun bindEditCalendarRuleViewModel(editCalendarRuleViewModel: EditCalendarRuleViewModel): ViewModel
+
+    @Binds
+    @IntoMap
+    @ViewModelKey(EditScheduleRuleViewModel::class)
+    abstract fun bindEditScheduleRuleViewModel(editScheduleRuleViewModel: EditScheduleRuleViewModel): ViewModel
 
     @Module
     companion object {
