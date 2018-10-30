@@ -8,15 +8,20 @@ import me.camsteffen.polite.R
 
 class CaptionOption(context: Context, attrs: AttributeSet) : FrameLayout(context, attrs) {
 
-    val caption: TextView
-
     init {
         inflate(context, R.layout.caption_option, this)
-        caption = findViewById(R.id.caption) as TextView
+    }
+
+    val label: TextView = findViewById(R.id.label)
+    val caption: TextView = findViewById(R.id.caption)
+
+    init {
         val a = context.obtainStyledAttributes(attrs, R.styleable.CaptionOption)
-        val label = findViewById(R.id.label) as TextView
-        label.text = a.getString(R.styleable.SwitchOption_label)
+        label.text = a.getString(R.styleable.CaptionOption_label)
         a.recycle()
     }
 
+    fun setCaption(caption: String) {
+        this.caption.text = caption
+    }
 }
