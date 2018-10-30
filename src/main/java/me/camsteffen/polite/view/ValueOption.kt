@@ -8,15 +8,20 @@ import me.camsteffen.polite.R
 
 class ValueOption(context: Context, attrs: AttributeSet) : FrameLayout(context, attrs) {
 
-    val value: TextView
-
     init {
         inflate(context, R.layout.value_option, this)
-        value = findViewById(R.id.value) as TextView
+    }
+
+    val label: TextView = findViewById(R.id.label)
+    val value: TextView = findViewById(R.id.value)
+
+    init {
         val a = context.obtainStyledAttributes(attrs, R.styleable.ValueOption)
-        val label = findViewById(R.id.label) as TextView
         label.text = a.getString(R.styleable.SwitchOption_label)
         a.recycle()
     }
 
+    fun setValue(value: String) {
+        this.value.text = value
+    }
 }
