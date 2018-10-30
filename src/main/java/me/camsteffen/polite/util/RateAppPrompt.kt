@@ -1,4 +1,4 @@
-package me.camsteffen.polite
+package me.camsteffen.polite.util
 
 import android.app.Activity
 import android.content.Context
@@ -6,6 +6,9 @@ import android.content.Intent
 import android.net.Uri
 import android.support.v7.app.AlertDialog
 import android.widget.Toast
+import me.camsteffen.polite.Polite
+import me.camsteffen.polite.R
+import me.camsteffen.polite.settings.AppPreferences
 import java.util.concurrent.TimeUnit
 
 private const val MIN_LAUNCHES = 12

@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<me.camsteffen.polite.AnimateFrame
+<me.camsteffen.polite.view.AnimateFrame
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
@@ -18,7 +18,7 @@
 
             <include layout="@layout/edit_rule_common" />
 
-            <me.camsteffen.polite.widget.CaptionOption
+            <me.camsteffen.polite.view.CaptionOption
                 android:id="@+id/calendars"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -26,7 +26,7 @@
 
             <View style="@style/Divider"/>
 
-            <me.camsteffen.polite.widget.CaptionOption
+            <me.camsteffen.polite.view.CaptionOption
                 android:id="@+id/events"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -40,7 +40,7 @@
                 android:layout_height="wrap_content"
                 android:orientation="vertical">
 
-                <me.camsteffen.polite.widget.CaptionOption
+                <me.camsteffen.polite.view.CaptionOption
                     android:id="@+id/inverse"
                     app:label="@string/inverse_match"
                     android:layout_width="match_parent"
@@ -113,4 +113,4 @@
 
     </ScrollView>
 
-</me.camsteffen.polite.AnimateFrame>
+</me.camsteffen.polite.view.AnimateFrame>

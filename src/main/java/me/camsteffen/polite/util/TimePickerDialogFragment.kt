@@ -1,4 +1,4 @@
-package me.camsteffen.polite
+package me.camsteffen.polite.util
 
 import android.app.Dialog
 import android.app.DialogFragment

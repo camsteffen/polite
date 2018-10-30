@@ -1,4 +1,4 @@
-package me.camsteffen.polite
+package me.camsteffen.polite.rule.master
 
 import android.content.Context
 import android.graphics.Rect

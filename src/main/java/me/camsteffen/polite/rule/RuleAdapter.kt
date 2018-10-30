@@ -13,9 +13,10 @@ import android.widget.CompoundButton
 import android.widget.Switch
 import android.widget.TextView
 import me.camsteffen.polite.R
-import me.camsteffen.polite.RulesFragment
-import me.camsteffen.polite.rule.calendar.CalendarRule
-import me.camsteffen.polite.rule.schedule.ScheduleRule
+import me.camsteffen.polite.model.CalendarRule
+import me.camsteffen.polite.model.Rule
+import me.camsteffen.polite.model.ScheduleRule
+import me.camsteffen.polite.rule.master.RulesFragment
 
 private const val SUBHEAD = 0
 private const val CALENDAR_RULE = 1

@@ -1,4 +1,4 @@
-<me.camsteffen.polite.AnimateFrame
+<me.camsteffen.polite.view.AnimateFrame
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -33,7 +33,7 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent" />
 
-        <me.camsteffen.polite.MyRecyclerView
+        <me.camsteffen.polite.rule.master.MyRecyclerView
             android:id="@+id/rules_view"
             tools:listitem="@layout/rule_list_item"
             android:layout_below="@id/disabled_notice"
@@ -44,4 +44,4 @@
 
     </RelativeLayout>
 
-</me.camsteffen.polite.AnimateFrame>
+</me.camsteffen.polite.view.AnimateFrame>

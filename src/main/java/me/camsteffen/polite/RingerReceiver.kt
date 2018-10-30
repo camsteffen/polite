@@ -15,8 +15,10 @@ import android.os.Build
 import android.provider.CalendarContract
 import android.support.v4.app.NotificationCompat
 import android.support.v4.content.ContextCompat
-import me.camsteffen.polite.rule.calendar.CalendarRule
-import me.camsteffen.polite.rule.schedule.ScheduleRule
+import me.camsteffen.polite.model.CalendarRule
+import me.camsteffen.polite.model.ScheduleRule
+import me.camsteffen.polite.settings.AppPreferences
+import me.camsteffen.polite.util.TimeOfDay
 import java.util.Calendar
 import java.util.Date
 import java.util.GregorianCalendar

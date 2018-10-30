@@ -6,9 +6,9 @@ import android.content.Intent
 import android.database.sqlite.SQLiteDatabase
 import android.os.AsyncTask
 import android.provider.BaseColumns
-import me.camsteffen.polite.rule.Rule
-import me.camsteffen.polite.rule.calendar.CalendarRule
-import me.camsteffen.polite.rule.schedule.ScheduleRule
+import me.camsteffen.polite.model.CalendarRule
+import me.camsteffen.polite.model.Rule
+import me.camsteffen.polite.model.ScheduleRule
 
 object DBActions {
 

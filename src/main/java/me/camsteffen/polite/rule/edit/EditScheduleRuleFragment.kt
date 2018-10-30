@@ -1,4 +1,4 @@
-package me.camsteffen.polite.rule.schedule
+package me.camsteffen.polite.rule.edit
 
 import android.content.Context
 import android.os.Bundle
@@ -8,11 +8,11 @@ import android.view.ViewGroup
 import android.widget.LinearLayout
 import android.widget.TextView
 import android.widget.Toast
-import me.camsteffen.polite.EditRuleFragment
 import me.camsteffen.polite.R
-import me.camsteffen.polite.TimeOfDay
-import me.camsteffen.polite.TimePickerDialogFragment
-import me.camsteffen.polite.widget.ValueOption
+import me.camsteffen.polite.model.ScheduleRule
+import me.camsteffen.polite.util.TimeOfDay
+import me.camsteffen.polite.util.TimePickerDialogFragment
+import me.camsteffen.polite.view.ValueOption
 import java.util.concurrent.TimeUnit
 
 private const val BEGIN = 0

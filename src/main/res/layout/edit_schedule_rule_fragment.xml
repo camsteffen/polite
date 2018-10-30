@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<me.camsteffen.polite.AnimateFrame
+<me.camsteffen.polite.view.AnimateFrame
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
@@ -47,7 +47,7 @@
 
             <View style="@style/Divider" />
 
-            <me.camsteffen.polite.widget.ValueOption
+            <me.camsteffen.polite.view.ValueOption
                 android:id="@+id/start_time"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -55,7 +55,7 @@
 
             <View style="@style/Divider" />
 
-            <me.camsteffen.polite.widget.ValueOption
+            <me.camsteffen.polite.view.ValueOption
                 android:id="@+id/end_time"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -99,4 +99,4 @@
 
     </ScrollView>
 
-</me.camsteffen.polite.AnimateFrame>
+</me.camsteffen.polite.view.AnimateFrame>

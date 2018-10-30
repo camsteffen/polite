@@ -3,8 +3,9 @@ package me.camsteffen.polite.rule
 import android.os.Parcel
 import android.os.Parcelable
 import me.camsteffen.polite.R
-import me.camsteffen.polite.rule.calendar.CalendarRule
-import me.camsteffen.polite.rule.schedule.ScheduleRule
+import me.camsteffen.polite.model.CalendarRule
+import me.camsteffen.polite.model.Rule
+import me.camsteffen.polite.model.ScheduleRule
 import java.util.ArrayList
 
 private const val SCHEDULE_RULES_HEADING = -1L

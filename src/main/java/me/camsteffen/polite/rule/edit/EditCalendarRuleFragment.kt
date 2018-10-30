@@ -1,4 +1,4 @@
-package me.camsteffen.polite.rule.calendar
+package me.camsteffen.polite.rule.edit
 
 import android.os.Bundle
 import android.provider.CalendarContract
@@ -15,11 +15,11 @@ import android.widget.PopupMenu
 import android.widget.ScrollView
 import android.widget.TextView
 import android.widget.Toast
-import me.camsteffen.polite.EditRuleFragment
-import me.camsteffen.polite.KeywordSpan
 import me.camsteffen.polite.R
-import me.camsteffen.polite.rule.Rule
-import me.camsteffen.polite.widget.CaptionOption
+import me.camsteffen.polite.model.CalendarRule
+import me.camsteffen.polite.model.Rule
+import me.camsteffen.polite.util.KeywordSpan
+import me.camsteffen.polite.view.CaptionOption
 
 class EditCalendarRuleFragment : EditRuleFragment<CalendarRule>() {
 

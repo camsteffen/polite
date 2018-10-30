@@ -1,10 +1,12 @@
-package me.camsteffen.polite.rule
+package me.camsteffen.polite.model
 
 import android.content.Context
 import android.os.Parcel
 import android.os.Parcelable
 import me.camsteffen.polite.MainActivity
 import me.camsteffen.polite.R
+import me.camsteffen.polite.rule.RuleAdapter
+import me.camsteffen.polite.rule.RuleList
 
 abstract class Rule : Parcelable, RuleList.RuleListItem {
 
@@ -57,7 +59,7 @@ abstract class Rule : Parcelable, RuleList.RuleListItem {
     abstract fun addToAdapter(adapter: RuleAdapter)
 
     open fun saveDB(mainActivity: MainActivity, callback: () -> Unit) {
-        if(id == Rule.NEW_RULE) {
+        if(id == NEW_RULE) {
             saveDBNew(mainActivity, { id ->
                 this.id = id
                 callback()

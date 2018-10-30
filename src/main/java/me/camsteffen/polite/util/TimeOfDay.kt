@@ -1,4 +1,4 @@
-package me.camsteffen.polite
+package me.camsteffen.polite.util
 
 import android.content.Context
 import android.text.format.DateFormat

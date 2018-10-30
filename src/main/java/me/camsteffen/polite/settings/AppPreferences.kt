@@ -1,4 +1,4 @@
-package me.camsteffen.polite
+package me.camsteffen.polite.settings
 
 object AppPreferences {
     const val POLITE_MODE = "polite_mode"

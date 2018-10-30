@@ -1,4 +1,4 @@
-package me.camsteffen.polite.rule.schedule
+package me.camsteffen.polite.model
 
 import android.content.Context
 import android.database.Cursor
@@ -10,9 +10,8 @@ import me.camsteffen.polite.DB
 import me.camsteffen.polite.DBActions
 import me.camsteffen.polite.Polite
 import me.camsteffen.polite.R
-import me.camsteffen.polite.TimeOfDay
-import me.camsteffen.polite.rule.Rule
 import me.camsteffen.polite.rule.RuleAdapter
+import me.camsteffen.polite.util.TimeOfDay
 import java.util.ArrayList
 
 class ScheduleRule : Rule {

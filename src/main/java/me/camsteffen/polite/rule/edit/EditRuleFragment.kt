@@ -1,4 +1,4 @@
-package me.camsteffen.polite
+package me.camsteffen.polite.rule.edit
 
 import android.app.Fragment
 import android.os.Bundle
@@ -10,7 +10,11 @@ import android.view.MenuInflater
 import android.view.MenuItem
 import android.view.View
 import android.widget.Switch
-import me.camsteffen.polite.rule.Rule
+import me.camsteffen.polite.HelpFragment
+import me.camsteffen.polite.MainActivity
+import me.camsteffen.polite.R
+import me.camsteffen.polite.model.Rule
+import me.camsteffen.polite.rule.master.RulesFragment
 
 abstract class EditRuleFragment<RuleType : Rule> : Fragment() {
 
@@ -29,7 +33,7 @@ abstract class EditRuleFragment<RuleType : Rule> : Fragment() {
         super.onCreate(savedInstanceState)
         setHasOptionsMenu(true)
         retainInstance = true
-        rule = arguments?.getParcelable(EditRuleFragment.KEY_RULE) ?: createRule()
+        rule = arguments?.getParcelable(KEY_RULE) ?: createRule()
     }
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
@@ -50,7 +54,7 @@ abstract class EditRuleFragment<RuleType : Rule> : Fragment() {
     }
 
     override fun onSaveInstanceState(outState: Bundle) {
-        outState.putParcelable(EditRuleFragment.KEY_RULE, rule)
+        outState.putParcelable(KEY_RULE, rule)
     }
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {

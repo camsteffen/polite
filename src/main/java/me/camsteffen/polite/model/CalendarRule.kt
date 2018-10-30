@@ -1,4 +1,4 @@
-package me.camsteffen.polite.rule.calendar
+package me.camsteffen.polite.model
 
 import android.content.Context
 import android.database.Cursor
@@ -10,7 +10,6 @@ import me.camsteffen.polite.DB
 import me.camsteffen.polite.DBActions
 import me.camsteffen.polite.MainActivity
 import me.camsteffen.polite.Polite
-import me.camsteffen.polite.rule.Rule
 import me.camsteffen.polite.rule.RuleAdapter
 import java.util.ArrayList
 import java.util.TreeSet

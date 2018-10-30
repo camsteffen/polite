@@ -1,4 +1,4 @@
-package me.camsteffen.polite
+package me.camsteffen.polite.rule.master
 
 import android.app.Fragment
 import android.content.Intent
@@ -16,13 +16,21 @@ import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
-import me.camsteffen.polite.rule.Rule
+import me.camsteffen.polite.DB
+import me.camsteffen.polite.DBActions
+import me.camsteffen.polite.HelpFragment
+import me.camsteffen.polite.MainActivity
+import me.camsteffen.polite.Polite
+import me.camsteffen.polite.R
+import me.camsteffen.polite.model.CalendarRule
+import me.camsteffen.polite.model.Rule
+import me.camsteffen.polite.model.ScheduleRule
+import me.camsteffen.polite.rule.RenameDialogFragment
 import me.camsteffen.polite.rule.RuleAdapter
 import me.camsteffen.polite.rule.RuleList
-import me.camsteffen.polite.rule.calendar.CalendarRule
-import me.camsteffen.polite.rule.calendar.EditCalendarRuleFragment
-import me.camsteffen.polite.rule.schedule.EditScheduleRuleFragment
-import me.camsteffen.polite.rule.schedule.ScheduleRule
+import me.camsteffen.polite.rule.edit.EditCalendarRuleFragment
+import me.camsteffen.polite.rule.edit.EditRuleFragment
+import me.camsteffen.polite.rule.edit.EditScheduleRuleFragment
 import me.camsteffen.polite.settings.SettingsFragment
 
 private const val RULE_LIST = "RuleList"
@@ -284,8 +292,8 @@ class RulesFragment : Fragment() {
     }
 
     data class LoadRulesResult (
-        var scheduleRules: List<ScheduleRule>,
-        var calendarRules: List<CalendarRule>
+            var scheduleRules: List<ScheduleRule>,
+            var calendarRules: List<CalendarRule>
     )
 
     inner class LoadRules : AsyncTask<Void, Void, LoadRulesResult>() {

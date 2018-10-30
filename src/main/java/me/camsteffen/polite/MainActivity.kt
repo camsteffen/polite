@@ -28,7 +28,11 @@ import android.view.View
 import android.view.inputmethod.EditorInfo
 import android.view.inputmethod.InputMethodManager
 import android.widget.EditText
-import me.camsteffen.polite.rule.calendar.CalendarRule
+import me.camsteffen.polite.model.CalendarRule
+import me.camsteffen.polite.rule.edit.EditRuleFragment
+import me.camsteffen.polite.rule.master.RulesFragment
+import me.camsteffen.polite.settings.AppPreferences
+import me.camsteffen.polite.util.RateAppPrompt
 
 private const val ACTIVITY_CALENDAR_PERMISSION = 1
 
