@@ -12,7 +12,8 @@ import me.camsteffen.polite.MainActivity
 import me.camsteffen.polite.Polite
 import me.camsteffen.polite.rule.Rule
 import me.camsteffen.polite.rule.RuleAdapter
-import java.util.*
+import java.util.ArrayList
+import java.util.TreeSet
 
 class CalendarRule : Rule {
 

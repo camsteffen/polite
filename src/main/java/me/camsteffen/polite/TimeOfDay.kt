@@ -3,7 +3,9 @@ package me.camsteffen.polite
 import android.content.Context
 import android.text.format.DateFormat
 import java.text.SimpleDateFormat
-import java.util.*
+import java.util.Calendar
+import java.util.GregorianCalendar
+import java.util.Locale
 
 class TimeOfDay : Comparable<TimeOfDay> {
 

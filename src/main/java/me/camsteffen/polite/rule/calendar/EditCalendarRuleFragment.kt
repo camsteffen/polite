@@ -9,7 +9,12 @@ import android.text.style.ClickableSpan
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.*
+import android.widget.Button
+import android.widget.EditText
+import android.widget.PopupMenu
+import android.widget.ScrollView
+import android.widget.TextView
+import android.widget.Toast
 import me.camsteffen.polite.EditRuleFragment
 import me.camsteffen.polite.KeywordSpan
 import me.camsteffen.polite.R

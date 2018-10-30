@@ -6,10 +6,14 @@ import android.database.sqlite.SQLiteDatabase
 import android.os.Parcel
 import android.os.Parcelable
 import android.provider.BaseColumns
-import me.camsteffen.polite.*
+import me.camsteffen.polite.DB
+import me.camsteffen.polite.DBActions
+import me.camsteffen.polite.Polite
+import me.camsteffen.polite.R
+import me.camsteffen.polite.TimeOfDay
 import me.camsteffen.polite.rule.Rule
 import me.camsteffen.polite.rule.RuleAdapter
-import java.util.*
+import java.util.ArrayList
 
 class ScheduleRule : Rule {
 

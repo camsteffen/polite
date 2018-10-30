@@ -4,7 +4,11 @@ import android.app.AlarmManager
 import android.app.Notification
 import android.app.NotificationManager
 import android.app.PendingIntent
-import android.content.*
+import android.content.BroadcastReceiver
+import android.content.ContentUris
+import android.content.Context
+import android.content.Intent
+import android.content.SharedPreferences
 import android.content.pm.PackageManager
 import android.media.AudioManager
 import android.os.Build
@@ -13,7 +17,9 @@ import android.support.v4.app.NotificationCompat
 import android.support.v4.content.ContextCompat
 import me.camsteffen.polite.rule.calendar.CalendarRule
 import me.camsteffen.polite.rule.schedule.ScheduleRule
-import java.util.*
+import java.util.Calendar
+import java.util.Date
+import java.util.GregorianCalendar
 import java.util.concurrent.TimeUnit
 
 private val TOLERANCE = TimeUnit.SECONDS.toMillis(8)

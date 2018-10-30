@@ -5,7 +5,7 @@ import android.os.Parcelable
 import me.camsteffen.polite.R
 import me.camsteffen.polite.rule.calendar.CalendarRule
 import me.camsteffen.polite.rule.schedule.ScheduleRule
-import java.util.*
+import java.util.ArrayList
 
 private const val SCHEDULE_RULES_HEADING = -1L
 private const val CALENDAR_RULES_HEADING = -2L
