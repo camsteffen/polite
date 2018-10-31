@@ -2,8 +2,8 @@ package me.camsteffen.polite
 
 import android.content.Intent
 import android.net.Uri
-import android.os.Build
 import android.os.Bundle
+import android.support.v4.os.ConfigurationCompat.getLocales
 import android.view.Menu
 import android.view.MenuInflater
 import android.view.MenuItem
@@ -31,7 +31,7 @@ class HelpFragment : WebViewFragment() {
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
-        val language = getCurrentLanguage()
+        val language = getLocales(resources.configuration)[0].language
         var path = "help-$language.html"
         if(!assetExists(path)) {
             path = "help.html"
@@ -85,16 +85,6 @@ class HelpFragment : WebViewFragment() {
             }
             return false
         }
-    }
-
-    private fun getCurrentLanguage(): String {
-        val locale = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-            resources.configuration.locales.get(0)
-        } else {
-            @Suppress("DEPRECATION")
-            resources.configuration.locale
-        }
-        return locale.language
     }
 
     private fun assetExists(path: String): Boolean {
