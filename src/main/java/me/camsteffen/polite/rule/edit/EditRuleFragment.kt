@@ -21,14 +21,14 @@ import me.camsteffen.polite.RuleService
 import me.camsteffen.polite.databinding.EditRuleBinding
 import me.camsteffen.polite.model.Rule
 import me.camsteffen.polite.rule.RuleMasterDetailViewModel
-import me.camsteffen.polite.util.RateAppPrompt
+import me.camsteffen.polite.util.RateAppPromptFacade
 import me.camsteffen.polite.util.hideKeyboard
 import javax.inject.Inject
 
 abstract class EditRuleFragment<RuleType : Rule> : DaggerFragment() {
 
     @Inject lateinit var navController: NavController
-    @Inject lateinit var rateAppPrompt: RateAppPrompt
+    @Inject lateinit var rateAppPrompt: RateAppPromptFacade
     @Inject lateinit var ruleService: RuleService
     @Inject lateinit var viewModelProviderFactory: ViewModelProvider.Factory
 
@@ -120,7 +120,7 @@ abstract class EditRuleFragment<RuleType : Rule> : DaggerFragment() {
         val rule = ruleFromUi()
         if (newRule || rule != masterModel.selectedRule.value) {
             ruleService.saveRuleAsync(rule)
-            rateAppPrompt.conditionalPrompt(activity!!)
+            rateAppPrompt.conditionalPrompt()
         }
         hideKeyboard(activity!!)
         masterModel.selectedRule.value = null

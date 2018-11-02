@@ -36,6 +36,7 @@ abstract class AppModule {
     @Binds
     abstract fun provideContext(app: Application): Context
 
+    @ActivityScope
     @ContributesAndroidInjector(modules = [MainActivityModule::class, MainActivityFragmentsModule::class])
     abstract fun contributeMainActivity(): MainActivity
 

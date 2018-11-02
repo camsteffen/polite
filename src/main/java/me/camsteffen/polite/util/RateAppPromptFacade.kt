@@ -1,33 +1,41 @@
 package me.camsteffen.polite.util
 
 import android.app.Activity
-import android.content.Context
 import android.content.Intent
 import android.net.Uri
 import androidx.appcompat.app.AlertDialog
 import android.widget.Toast
 import me.camsteffen.polite.R
+import me.camsteffen.polite.di.ActivityScope
 import me.camsteffen.polite.settings.AppPreferences
-import java.util.concurrent.TimeUnit
+import org.threeten.bp.Duration
+import org.threeten.bp.Instant
 import javax.inject.Inject
-import javax.inject.Singleton
 
 private const val MIN_LAUNCHES = 12
-private const val MIN_DAYS_INSTALLED = 22
+private val MIN_INSTALLED_DURATION = Duration.ofDays(22)
 
-@Singleton
-class RateAppPrompt
-@Inject constructor(context: Context, private val preferences: AppPreferences) {
+@ActivityScope
+class RateAppPromptFacade
+@Inject constructor(private val activity: Activity, private val preferences: AppPreferences) {
 
-    private val timeInstalled = context.packageManager.getPackageInfo(context.packageName, 0).firstInstallTime
+    private val appInstalledTime = appInstalledTime(activity)
 
-    fun conditionalPrompt(activity: Activity) {
-        val daysInstalled = TimeUnit.DAYS.convert(System.currentTimeMillis() - timeInstalled, TimeUnit.MILLISECONDS)
-        if (preferences.askedToRate ||
-                preferences.launchCount < MIN_LAUNCHES ||
-                daysInstalled < MIN_DAYS_INSTALLED) {
-            return
+    fun conditionalPrompt() {
+        if (shouldShowPrompt()) {
+            showPrompt()
         }
+    }
+
+    private fun appInstalledDuration() = Duration.between(appInstalledTime, Instant.now())
+
+    private fun shouldShowPrompt(): Boolean {
+        return !preferences.askedToRate
+                && preferences.launchCount >= MIN_LAUNCHES
+                && appInstalledDuration() > MIN_INSTALLED_DURATION
+    }
+
+    private fun showPrompt() {
         AlertDialog.Builder(activity)
                 .setTitle(R.string.rate_app_title)
                 .setMessage(R.string.rate_app_message)
