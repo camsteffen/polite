@@ -27,7 +27,7 @@ import dagger.android.support.DaggerAppCompatActivity
 import me.camsteffen.polite.model.CalendarRule
 import me.camsteffen.polite.rule.edit.EditRuleFragment
 import me.camsteffen.polite.rule.master.RulesFragment
-import me.camsteffen.polite.util.RateAppPrompt
+import me.camsteffen.polite.settings.AppPreferences
 import me.camsteffen.polite.util.hideKeyboard
 import javax.inject.Inject
 
@@ -44,7 +44,7 @@ class MainActivity : DaggerAppCompatActivity(), FragmentManager.OnBackStackChang
         }
     }
 
-    @Inject lateinit var rateAppPrompt: RateAppPrompt
+    private lateinit var preferences: AppPreferences
 
     val notificationManager: NotificationManager
         get() = getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
@@ -55,9 +55,14 @@ class MainActivity : DaggerAppCompatActivity(), FragmentManager.OnBackStackChang
     private val editRuleFragment: EditRuleFragment<*>?
         get() = fragmentManager.findFragmentByTag(EditRuleFragment.FRAGMENT_TAG) as EditRuleFragment<*>?
 
+    @Inject
+    fun inject(preferences: AppPreferences) {
+        this.preferences = preferences
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
-        setThemeFromPreference()
         super.onCreate(savedInstanceState)
+        setThemeFromPreference()
         setContentView(R.layout.activity_main)
 
         if (savedInstanceState == null) {
@@ -68,7 +73,7 @@ class MainActivity : DaggerAppCompatActivity(), FragmentManager.OnBackStackChang
             AppBroadcastReceiver.sendRefresh(this)
         }
 
-        rateAppPrompt.launchCount++
+        preferences.launchCount++
 
         fragmentManager.addOnBackStackChangedListener(this)
 
@@ -163,10 +168,8 @@ class MainActivity : DaggerAppCompatActivity(), FragmentManager.OnBackStackChang
     }
 
     fun setThemeFromPreference() {
-        val themeLight = getString(R.string.theme_light)
         val themeDark = getString(R.string.theme_dark)
-        val themeName = Polite.preferences.getString(getString(R.string.preference_theme), themeLight)
-        val theme = when(themeName) {
+        val theme = when (preferences.theme) {
             themeDark -> R.style.AppTheme
             else -> R.style.AppThemeLight
         }

@@ -23,6 +23,7 @@ import me.camsteffen.polite.R
 import me.camsteffen.polite.model.CalendarRule
 import me.camsteffen.polite.model.ScheduleRule
 import me.camsteffen.polite.settings.AppPreferences
+import me.camsteffen.polite.settings.SharedPreferencesNames
 import me.camsteffen.polite.util.TimeOfDay
 import org.threeten.bp.DayOfWeek
 import org.threeten.bp.LocalDate
@@ -84,7 +85,8 @@ private fun eventMatchesRule(event: Event, rule: CalendarRule): Boolean {
 @Singleton
 class PoliteStateManager
 @Inject constructor(
-    private val context: Context
+    private val context: Context,
+    private val preferences: AppPreferences
 ) {
 
     private var _notificationPolicyAccess: Boolean? = null
@@ -96,15 +98,14 @@ class PoliteStateManager
             }
             return _notificationPolicyAccess!!
         }
-    private var preferences: SharedPreferences = Polite.preferences
     private var activeEventsPreferences: SharedPreferences =
-        context.getSharedPreferences(AppPreferences.POLITE_MODE_EVENTS, 0)
+        context.getSharedPreferences(SharedPreferencesNames.POLITE_MODE_EVENTS, 0)
     private var activeScheduleRulesPreferences: SharedPreferences =
-        context.getSharedPreferences(AppPreferences.ACTIVE_SCHEDULE_RULES, 0)
+        context.getSharedPreferences(SharedPreferencesNames.ACTIVE_SCHEDULE_RULES, 0)
     private var cancelledEventsPreferences: SharedPreferences =
-        context.getSharedPreferences(AppPreferences.CANCELLED_EVENTS, 0)
+        context.getSharedPreferences(SharedPreferencesNames.CANCELLED_EVENTS, 0)
     private var cancelledScheduleRulesPreferences: SharedPreferences =
-        context.getSharedPreferences(AppPreferences.CANCELLED_SCHEDULE_RULES, 0)
+        context.getSharedPreferences(SharedPreferencesNames.CANCELLED_SCHEDULE_RULES, 0)
     private var audioManager: AudioManager = context.getSystemService(Context.AUDIO_SERVICE) as AudioManager
     private var notificationManager: NotificationManager = context.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
 
@@ -137,7 +138,7 @@ class PoliteStateManager
 
     fun refresh(modifiedRuleId: Long?) {
         // check enabled setting
-        if (!preferences.getBoolean(context.getString(R.string.preference_enable), true)) {
+        if (!preferences.enable) {
             cancelledEventsPreferences.edit().clear().apply()
             cancelledScheduleRulesPreferences.edit().clear().apply()
             notificationManager.cancel(Polite.NOTIFY_ID_NOTIFICATION_POLICY_ACCESS)
@@ -166,10 +167,8 @@ class PoliteStateManager
         }
 
         // get activation and deactivation preferences
-        val activation = TimeUnit.MILLISECONDS.convert(preferences.getInt(
-                context.getString(R.string.preference_activation), 0).toLong(), TimeUnit.MINUTES)
-        val deactivation = TimeUnit.MILLISECONDS.convert(preferences.getInt(
-                context.getString(R.string.preference_deactivation), 0).toLong(), TimeUnit.MINUTES)
+        val activation = TimeUnit.MINUTES.toMillis(preferences.activation.toLong())
+        val deactivation = TimeUnit.MINUTES.toMillis(preferences.deactivation.toLong())
 
         val now = Date().time // current time
         var activate = false // whether Polite will be activated
@@ -339,11 +338,9 @@ class PoliteStateManager
         }
 
         // save active state
-        val active = preferences.getBoolean(AppPreferences.POLITE_MODE, false)
+        val active = preferences.politeMode
         if (activate != active) {
-            preferences.edit()
-                    .putBoolean(AppPreferences.POLITE_MODE, activate)
-                    .apply()
+            preferences.politeMode = activate
         }
 
         // set ringer mode
@@ -351,9 +348,7 @@ class PoliteStateManager
             deactivate()
         } else if (activate) {
             if (!active) {
-                preferences.edit()
-                        .putInt(AppPreferences.PREVIOUS_RINGER_MODE, audioManager.ringerMode)
-                        .apply()
+                preferences.previousRingerMode = audioManager.ringerMode
             }
             if (!active || reactivate) {
                 audioManager.ringerMode = if (vibrate)
@@ -364,7 +359,7 @@ class PoliteStateManager
         }
 
         // notification
-        val notificationsEnabled = preferences.getBoolean(context.getString(R.string.preference_notifications), true)
+        val notificationsEnabled = preferences.notifications
         if (activate && notificationsEnabled) {
             if (!active) {
                 val notification = NotificationCompat.Builder(context)
@@ -400,14 +395,12 @@ class PoliteStateManager
     }
 
     private fun deactivate() {
-        preferences.edit()
-                .putBoolean(AppPreferences.POLITE_MODE, false)
-                .apply()
+        preferences.politeMode = false
         activeEventsPreferences.edit().clear().apply()
         notificationManager.cancel(Polite.NOTIFY_ID_ACTIVE)
 
         // change to previous ringer mode only if louder than current mode
-        val previousRingerMode = preferences.getInt(AppPreferences.PREVIOUS_RINGER_MODE, 0)
+        val previousRingerMode = preferences.previousRingerMode
         if ((previousRingerMode == AudioManager.RINGER_MODE_NORMAL
                 || previousRingerMode == AudioManager.RINGER_MODE_VIBRATE
                 && audioManager.ringerMode == AudioManager.RINGER_MODE_SILENT)

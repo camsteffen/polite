@@ -1,8 +1,6 @@
 package me.camsteffen.polite
 
 import android.app.Application
-import android.content.SharedPreferences
-import android.preference.PreferenceManager
 import com.jakewharton.threetenabp.AndroidThreeTen
 import dagger.android.DispatchingAndroidInjector
 import dagger.android.HasAndroidInjector
@@ -18,7 +16,6 @@ class Polite : Application(), HasAndroidInjector {
         const val NOTIFY_ID_NOTIFICATION_POLICY_ACCESS = 3
 
         lateinit var db: DB
-        lateinit var preferences: SharedPreferences
     }
 
 
@@ -30,7 +27,6 @@ class Polite : Application(), HasAndroidInjector {
         super.onCreate()
         AndroidThreeTen.init(this)
         db = DB(this)
-        preferences = PreferenceManager.getDefaultSharedPreferences(this)
         DaggerAppComponent.factory().create(this).inject(this)
     }
 

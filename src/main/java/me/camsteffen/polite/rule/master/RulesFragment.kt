@@ -31,6 +31,7 @@ import me.camsteffen.polite.rule.RuleList
 import me.camsteffen.polite.rule.edit.EditCalendarRuleFragment
 import me.camsteffen.polite.rule.edit.EditRuleFragment
 import me.camsteffen.polite.rule.edit.EditScheduleRuleFragment
+import me.camsteffen.polite.settings.AppPreferences
 import me.camsteffen.polite.settings.SettingsFragment
 import me.camsteffen.polite.util.RateAppPrompt
 import javax.inject.Inject
@@ -39,6 +40,7 @@ private const val RULE_LIST = "RuleList"
 
 class RulesFragment : DaggerFragment() {
 
+    @Inject lateinit var preferences: AppPreferences
     @Inject lateinit var rateAppPrompt: RateAppPrompt
 
     val polite: Polite
@@ -110,13 +112,13 @@ class RulesFragment : DaggerFragment() {
         val notificationManager = mainActivity.notificationManager
         if(notificationManager.isNotificationPolicyAccessGranted) {
             notificationManager.cancel(Polite.NOTIFY_ID_NOTIFICATION_POLICY_ACCESS)
-        } else if(Polite.preferences.getBoolean(getString(R.string.preference_enable), true)) {
+        } else if (preferences.enable) {
             AlertDialog.Builder(activity)
                     .setTitle(R.string.notification_policy_access_required)
                     .setMessage(R.string.notification_policy_access_explain)
                     .setNegativeButton(R.string.disable_polite) { dialog, _ ->
                         dialog.dismiss()
-                        Polite.preferences.edit().putBoolean(getString(R.string.preference_enable), false).apply()
+                        preferences.enable = false
                     }
                     .setPositiveButton(android.R.string.ok) { _, _ ->
                         val intent = Intent(android.provider.Settings.ACTION_NOTIFICATION_POLICY_ACCESS_SETTINGS)
@@ -129,7 +131,7 @@ class RulesFragment : DaggerFragment() {
 
     private fun setDisabledNoticeVisibility() {
         disabledNotice?.visibility =
-                if (Polite.preferences.getBoolean(getString(R.string.preference_enable), true))
+                if (preferences.enable)
                     View.GONE
                 else
                     View.VISIBLE

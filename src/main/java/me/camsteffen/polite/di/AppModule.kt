@@ -2,8 +2,12 @@ package me.camsteffen.polite.di
 
 import android.app.Application
 import android.content.Context
+import android.content.SharedPreferences
+import android.content.res.Resources
+import android.preference.PreferenceManager
 import dagger.Binds
 import dagger.Module
+import dagger.Provides
 import dagger.android.ContributesAndroidInjector
 import me.camsteffen.polite.AppBroadcastReceiver
 import me.camsteffen.polite.MainActivity
@@ -23,4 +27,15 @@ abstract class AppModule {
 
     @ContributesAndroidInjector
     abstract fun contributeAppBroadcastReceiver(): AppBroadcastReceiver
+
+    @Module
+    companion object {
+
+        @JvmStatic @Provides
+        fun provideResources(app: Application): Resources = app.resources
+
+        @JvmStatic @Provides
+        fun provideSharedPreferences(app: Application): SharedPreferences =
+                PreferenceManager.getDefaultSharedPreferences(app)
+    }
 }
