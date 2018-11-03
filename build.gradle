@@ -19,6 +19,10 @@ repositories {
     jcenter()
 }
 
+configurations {
+    ktlint
+}
+
 def database_version = 6
 
 android {
@@ -109,4 +113,22 @@ dependencies {
 
     testImplementation 'junit:junit:4.12'
     androidTestImplementation 'androidx.test:runner:1.1.1'
+
+    ktlint "com.github.shyiko:ktlint:0.29.0"
 }
+
+task ktlint(type: JavaExec, group: 'verification') {
+    description = 'Check Kotlin code style.'
+    main = 'com.github.shyiko.ktlint.Main'
+    classpath = configurations.ktlint
+    args '--android', 'src/**/*.kt'
+}
+
+task ktlintFormat(type: JavaExec, group: 'formatting') {
+    description = 'Fix Kotlin code style deviations.'
+    main = 'com.github.shyiko.ktlint.Main'
+    classpath = configurations.ktlint
+    args '--android', '-F', 'src/**/*.kt'
+}
+
+check.dependsOn ktlint
