@@ -19,6 +19,8 @@ repositories {
     jcenter()
 }
 
+def database_version = 6
+
 android {
     compileSdkVersion 28
 
@@ -31,6 +33,12 @@ android {
         resConfigs "en", "de"
         vectorDrawables.useSupportLibrary = true
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+        buildConfigField "int", "DATABASE_VERSION", "$database_version"
+        kapt {
+            arguments {
+                arg("room.schemaLocation", "$projectDir/schemas".toString())
+            }
+        }
     }
 
     compileOptions {
@@ -60,11 +68,16 @@ android {
             applicationIdSuffix ".debug"
         }
     }
+
+    sourceSets {
+        androidTest.assets.srcDirs += files("$projectDir/schemas".toString())
+    }
 }
 
 dependencies {
     def dagger_version = '2.24'
     def lifecycle_version = '2.1.0'
+    def room_version = '2.1.0'
 
     implementation "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
     implementation "androidx.appcompat:appcompat:1.1.0"
@@ -81,6 +94,10 @@ dependencies {
     implementation "androidx.lifecycle:lifecycle-extensions:$lifecycle_version"
     implementation "androidx.lifecycle:lifecycle-livedata:$lifecycle_version"
     implementation "androidx.lifecycle:lifecycle-viewmodel:$lifecycle_version"
+
+    implementation "androidx.room:room-runtime:$room_version"
+    kapt "androidx.room:room-compiler:$room_version"
+    androidTestImplementation "androidx.room:room-testing:$room_version"
 
     testImplementation 'junit:junit:4.12'
     androidTestImplementation 'androidx.test:runner:1.1.1'
