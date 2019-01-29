@@ -1,3 +1,8 @@
+-- add schedule rules
+
+-- Note: CalendarRuleCalendar and CalendarRuleKeyword are missing some NOT NULL's after this
+-- migration. This is fixed in DB version 4.
+
 ALTER TABLE Rule RENAME TO RuleOld;
 ALTER TABLE RuleCalendar RENAME TO CalendarRuleCalendar;
 ALTER TABLE RuleKeyword RENAME TO CalendarRuleKeyword;

@@ -1,3 +1,5 @@
+-- add inverse match to calendar rule
+
 ALTER TABLE CalendarRule RENAME TO CalendarRuleOld;
 CREATE TABLE CalendarRule(
     _id INTEGER PRIMARY KEY NOT NULL,
