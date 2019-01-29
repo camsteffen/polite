@@ -3,7 +3,9 @@ package me.camsteffen.polite.db
 import android.content.Context
 import androidx.room.migration.Migration
 import androidx.sqlite.db.SupportSQLiteDatabase
-import java.util.Scanner
+import me.camsteffen.polite.util.SqlStatementReader
+import java.io.BufferedReader
+import java.io.InputStreamReader
 
 val MIGRATION_5_6 = EmptyMigration(5, 6)
 
@@ -26,9 +28,8 @@ class AssetMigration(val context: Context, startVersion: Int, endVersion: Int) :
 
     override fun migrate(database: SupportSQLiteDatabase) {
         val name = migrationAssetName(startVersion, endVersion)
-        val sqlIn = context.assets.open(name)
-        Scanner(sqlIn).useDelimiter(";\\s*").use { scanner ->
-            scanner.forEach { database.execSQL(it) }
+        context.assets.open(name).use { sqlIn ->
+            SqlStatementReader(BufferedReader(InputStreamReader(sqlIn))).forEach(database::execSQL)
         }
     }
 }
