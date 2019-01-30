@@ -19,7 +19,7 @@ repositories {
 }
 
 android {
-    compileSdkVersion 26
+    compileSdkVersion 28
 
     defaultConfig {
         applicationId "me.camsteffen.polite"
