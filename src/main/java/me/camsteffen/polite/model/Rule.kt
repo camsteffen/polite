@@ -34,14 +34,7 @@ data class CalendarRule(
     val keywords: Set<String>
 ) : Rule() {
     override fun getCaption(context: Context): String {
-        if (keywords.isEmpty())
-            return ""
-        val it = keywords.iterator()
-        val builder = StringBuilder(it.next())
-        for (word in it) {
-            builder.append(", $word")
-        }
-        return builder.toString()
+        return keywords.joinToString()
     }
 
     fun asCalendarRuleEntity() = CalendarRuleEntity(id, matchBy.asEntity(), inverseMatch)
