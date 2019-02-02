@@ -2,6 +2,7 @@ package me.camsteffen.polite.util
 
 import android.content.Context
 import android.text.format.DateFormat
+import org.threeten.bp.LocalTime
 import java.text.SimpleDateFormat
 import java.util.Calendar
 import java.util.GregorianCalendar
@@ -51,4 +52,8 @@ class TimeOfDay : Comparable<TimeOfDay> {
     override fun compareTo(other: TimeOfDay): Int = minutes - other.minutes
 
     override fun toString(): String = String.format("%d:%02d", hour, minute)
+
+    fun toLocalTime(): LocalTime {
+        return LocalTime.of(hour, minute)
+    }
 }
