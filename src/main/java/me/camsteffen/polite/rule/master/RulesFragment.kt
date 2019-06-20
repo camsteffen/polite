@@ -1,8 +1,11 @@
 package me.camsteffen.polite.rule.master
 
+import android.content.Context
 import android.content.Intent
 import android.os.Build
 import android.os.Bundle
+import android.os.PowerManager
+import android.provider.Settings
 import android.view.ContextMenu
 import android.view.LayoutInflater
 import android.view.Menu
@@ -70,15 +73,18 @@ class RulesFragment : DaggerFragment() {
 
     override fun onResume() {
         super.onResume()
-        checkNotificationPolicyAccess()
+        if (checkNotificationPolicyAccess()) {
+
+        }
     }
 
-    private fun checkNotificationPolicyAccess() {
+    private fun checkNotificationPolicyAccess(): Boolean {
         if (Build.VERSION.SDK_INT < Build.VERSION_CODES.N)
-            return
+            return true
         val notificationManager = mainActivity.notificationManager
         if (notificationManager.isNotificationPolicyAccessGranted) {
             notificationManager.cancelNotificationPolicyAccessRequired()
+            return true
         } else if (preferences.enable) {
             AlertDialog.Builder(activity!!)
                     .setTitle(R.string.notification_policy_access_required)
@@ -93,8 +99,24 @@ class RulesFragment : DaggerFragment() {
                     }
                     .create()
                     .show()
+            return false
+        } else {
+            return true
         }
     }
+
+    private fun checkIgnoreBatteryOptimizations(): Boolean {
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.P) {
+            return true
+        }
+        val powerManager = context!!.getSystemService(Context.POWER_SERVICE) as PowerManager
+        if (powerManager.isIgnoringBatteryOptimizations(context!!.packageName)) {
+            return true
+        }
+        startActivity(Intent(Settings.ACTION_REQUEST_IGNORE_BATTERY_OPTIMIZATIONS))
+        return false
+    }
+
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
