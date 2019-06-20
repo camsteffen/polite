@@ -11,8 +11,8 @@
         android:name=".Polite"
         android:allowBackup="true"
         android:fullBackupContent="true"
-        android:icon="@mipmap/app_icon"
-        android:roundIcon="@mipmap/app_icon"
+        android:icon="@mipmap/ic_launcher"
+        android:roundIcon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:supportsRtl="false">
 
