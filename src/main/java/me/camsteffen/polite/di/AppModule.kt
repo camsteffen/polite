@@ -7,6 +7,7 @@ import android.content.ContentResolver
 import android.content.Context
 import android.content.SharedPreferences
 import android.content.res.Resources
+import android.media.AudioManager
 import android.preference.PreferenceManager
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModel
@@ -99,6 +100,11 @@ abstract class AppModule {
         @JvmStatic @Provides
         fun provideAlarmManager(context: Context): AlarmManager {
             return context.getSystemService(Context.ALARM_SERVICE) as AlarmManager
+        }
+
+        @JvmStatic @Provides
+        fun provideAudioManager(context: Context): AudioManager {
+            return context.getSystemService(Context.AUDIO_SERVICE) as AudioManager
         }
 
         @JvmStatic @Provides

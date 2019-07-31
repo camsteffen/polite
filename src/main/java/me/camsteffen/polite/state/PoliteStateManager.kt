@@ -55,7 +55,8 @@ class PoliteStateManager
     private val notificationManager: AppNotificationManager,
     private val preferences: AppPreferences,
     private val ruleDao: RuleDao,
-    private val refreshScheduler: RefreshScheduler
+    private val refreshScheduler: RefreshScheduler,
+    private val ringerModeManager: RingerModeManager
 ) {
 
     private var activeEventsPreferences: SharedPreferences =
@@ -268,14 +269,13 @@ class PoliteStateManager
         if (active && !activate) {
             deactivate()
         } else if (activate) {
-            if (!active) {
-                preferences.previousRingerMode = audioManager.ringerMode
-            }
-            if (!active || reactivate) {
-                audioManager.ringerMode = if (vibrate)
-                    AudioManager.RINGER_MODE_VIBRATE
-                else
-                    AudioManager.RINGER_MODE_SILENT
+            if (active) {
+                if (reactivate) {
+                    ringerModeManager.setRingerMode(vibrate)
+                }
+            } else {
+                ringerModeManager.saveRingerMode()
+                ringerModeManager.setRingerMode(vibrate)
             }
         }
 
@@ -298,15 +298,7 @@ class PoliteStateManager
         preferences.politeMode = false
         activeEventsPreferences.edit().clear().apply()
         notificationManager.cancelPoliteActive()
-
-        // change to previous ringer mode only if louder than current mode
-        val previousRingerMode = preferences.previousRingerMode
-        if ((previousRingerMode == AudioManager.RINGER_MODE_NORMAL
-                || previousRingerMode == AudioManager.RINGER_MODE_VIBRATE
-                && audioManager.ringerMode == AudioManager.RINGER_MODE_SILENT)
-                && notificationManager.isNotificationPolicyAccessGranted) {
-            audioManager.ringerMode = previousRingerMode
-        }
+        ringerModeManager.restoreRingerMode()
     }
 
 }
