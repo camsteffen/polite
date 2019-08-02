@@ -17,6 +17,7 @@ import dagger.Module
 import dagger.Provides
 import dagger.android.ContributesAndroidInjector
 import dagger.multibindings.IntoMap
+import dagger.multibindings.IntoSet
 import me.camsteffen.polite.AppBroadcastReceiver
 import me.camsteffen.polite.AppTimingConfig
 import me.camsteffen.polite.MainActivity
@@ -29,6 +30,9 @@ import me.camsteffen.polite.rule.RuleMasterDetailViewModel
 import me.camsteffen.polite.rule.edit.EditCalendarRuleViewModel
 import me.camsteffen.polite.rule.edit.EditScheduleRuleViewModel
 import me.camsteffen.polite.settings.PreferenceDefaults
+import me.camsteffen.polite.util.CalendarRuleEventFinder
+import me.camsteffen.polite.util.RuleEventFinder
+import me.camsteffen.polite.util.ScheduleRuleEventFinder
 import me.camsteffen.polite.util.SharedPreferenceBooleanLiveData
 import org.threeten.bp.Clock
 import javax.inject.Singleton
@@ -66,6 +70,12 @@ abstract class AppModule {
     @IntoMap
     @ViewModelKey(EditScheduleRuleViewModel::class)
     abstract fun bindEditScheduleRuleViewModel(editScheduleRuleViewModel: EditScheduleRuleViewModel): ViewModel
+
+    @Binds @IntoSet
+    abstract fun bindCalendarRuleEventFinder(calendarRuleEventFinder: CalendarRuleEventFinder): RuleEventFinder<*>
+
+    @Binds @IntoSet
+    abstract fun bindScheduleRuleEventFinder(scheduleRuleEventFinder: ScheduleRuleEventFinder): RuleEventFinder<*>
 
     @Module
     companion object {

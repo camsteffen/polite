@@ -3,6 +3,7 @@ package me.camsteffen.polite.model
 import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
+import me.camsteffen.polite.util.RuleEvent
 import org.threeten.bp.Instant
 
 /**
@@ -16,4 +17,11 @@ data class ActiveRuleEvent(
     val begin: Instant,
     val end: Instant,
     val vibrate: Boolean
-)
+) {
+    constructor(ruleEvent: RuleEvent) : this(
+        ruleId = ruleEvent.rule.id,
+        begin = ruleEvent.begin,
+        end = ruleEvent.end,
+        vibrate = ruleEvent.vibrate
+    )
+}
