@@ -48,7 +48,7 @@ class AppPreferences
         set(value) = editor.putInt(PreferenceKeys.LAUNCH_COUNT, value).apply()
 
     var previousRingerMode: Int
-        get() = preferences.getInt(PreferenceKeys.PREVIOUS_RINGER_MODE, 0)
+        get() = preferences.getInt(PreferenceKeys.PREVIOUS_RINGER_MODE, -1)
         set(value) = editor.putInt(PreferenceKeys.PREVIOUS_RINGER_MODE, value).apply()
 
     var enable: Boolean
