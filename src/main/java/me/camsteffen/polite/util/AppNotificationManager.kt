@@ -27,19 +27,29 @@ class AppNotificationManager
 
     fun notifyPoliteActive(text: String) {
         val notification = NotificationCompat.Builder(context)
-                .setColor(ContextCompat.getColor(context, R.color.primary))
-                .setSmallIcon(R.mipmap.notification_icon)
-                .setVisibility(NotificationCompat.VISIBILITY_PUBLIC)
-                .setOngoing(true)
-                .setContentTitle(context.resources.getString(R.string.polite_active))
-                .setContentText(text)
-                .setContentIntent(PendingIntent.getActivity(context, 0, Intent(context, MainActivity::class.java), 0))
-                .addAction(NotificationCompat.Action.Builder(
+            .setColor(ContextCompat.getColor(context, R.color.primary))
+            .setSmallIcon(R.mipmap.notification_icon)
+            .setVisibility(NotificationCompat.VISIBILITY_PUBLIC)
+            .setOngoing(true)
+            .setContentTitle(context.resources.getString(R.string.polite_active))
+            .setContentText(text)
+            .setContentIntent(
+                PendingIntent.getActivity(
+                    context,
+                    0,
+                    Intent(context, MainActivity::class.java),
+                    0
+                )
+            )
+            .addAction(
+                NotificationCompat.Action.Builder(
                     R.drawable.ic_cancel_black_24dp,
-                        context.resources.getString(android.R.string.cancel),
-                        AppBroadcastReceiver.pendingCancelIntent(context))
-                        .build())
-                .build()
+                    context.resources.getString(android.R.string.cancel),
+                    AppBroadcastReceiver.pendingCancelIntent(context)
+                )
+                    .build()
+            )
+            .build()
         notificationManager.notify(NotificationIds.ACTIVE, notification)
     }
 
@@ -50,14 +60,21 @@ class AppNotificationManager
     @RequiresApi(Build.VERSION_CODES.M)
     fun notifyNotificationPolicyAccessRequired() {
         val notification = NotificationCompat.Builder(context)
-                .setColor(ContextCompat.getColor(context, R.color.primary))
-                .setSmallIcon(R.mipmap.notification_icon)
-                .setVisibility(NotificationCompat.VISIBILITY_PUBLIC)
-                .setContentTitle(context.resources.getString(R.string.notification_policy_access_required))
-                .setContentText(context.resources.getString(R.string.notification_policy_access_explain))
-                .setVisibility(NotificationCompat.VISIBILITY_PUBLIC)
-                .setContentIntent(PendingIntent.getActivity(context, 0, Intent(Settings.ACTION_NOTIFICATION_POLICY_ACCESS_SETTINGS), 0))
-                .build()
+            .setColor(ContextCompat.getColor(context, R.color.primary))
+            .setSmallIcon(R.mipmap.notification_icon)
+            .setVisibility(NotificationCompat.VISIBILITY_PUBLIC)
+            .setContentTitle(context.resources.getString(R.string.notification_policy_access_required))
+            .setContentText(context.resources.getString(R.string.notification_policy_access_explain))
+            .setVisibility(NotificationCompat.VISIBILITY_PUBLIC)
+            .setContentIntent(
+                PendingIntent.getActivity(
+                    context,
+                    0,
+                    Intent(Settings.ACTION_NOTIFICATION_POLICY_ACCESS_SETTINGS),
+                    0
+                )
+            )
+            .build()
         notificationManager.notify(NotificationIds.NOTIFICATION_POLICY_ACCESS, notification)
     }
 
@@ -67,13 +84,20 @@ class AppNotificationManager
 
     fun notifyCalendarPermissionRequired() {
         val notification = NotificationCompat.Builder(context)
-                .setColor(ContextCompat.getColor(context, R.color.primary))
-                .setSmallIcon(R.mipmap.notification_icon)
-                .setVisibility(NotificationCompat.VISIBILITY_PUBLIC)
-                .setContentTitle(context.resources.getString(R.string.calendar_permission_required))
-                .setContentText(context.resources.getString(R.string.calendar_permission_explain))
-                .setContentIntent(PendingIntent.getActivity(context, 0, Intent(context, MainActivity::class.java), 0))
-                .build()
+            .setColor(ContextCompat.getColor(context, R.color.primary))
+            .setSmallIcon(R.mipmap.notification_icon)
+            .setVisibility(NotificationCompat.VISIBILITY_PUBLIC)
+            .setContentTitle(context.resources.getString(R.string.calendar_permission_required))
+            .setContentText(context.resources.getString(R.string.calendar_permission_explain))
+            .setContentIntent(
+                PendingIntent.getActivity(
+                    context,
+                    0,
+                    Intent(context, MainActivity::class.java),
+                    0
+                )
+            )
+            .build()
         notificationManager.notify(NotificationIds.CALENDAR_PERMISSION, notification)
     }
 
