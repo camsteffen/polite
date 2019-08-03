@@ -52,6 +52,7 @@ class AppNotificationManager
 
     fun notifyPoliteActive(text: String) {
         val notification = NotificationCompat.Builder(context, ChannelIds.POLITE_ACTIVE)
+            .setCategory(NotificationCompat.CATEGORY_SERVICE)
             .setColor(ContextCompat.getColor(context, R.color.primary))
             .setSmallIcon(R.mipmap.notification_icon)
             .setVisibility(NotificationCompat.VISIBILITY_PUBLIC)
@@ -85,6 +86,7 @@ class AppNotificationManager
     @RequiresApi(Build.VERSION_CODES.M)
     fun notifyNotificationPolicyAccessRequired() {
         val notification = NotificationCompat.Builder(context, ChannelIds.PERMISSION_NEEDED)
+            .setCategory(NotificationCompat.CATEGORY_ERROR)
             .setColor(ContextCompat.getColor(context, R.color.primary))
             .setSmallIcon(R.mipmap.notification_icon)
             .setVisibility(NotificationCompat.VISIBILITY_PUBLIC)
@@ -109,6 +111,7 @@ class AppNotificationManager
 
     fun notifyCalendarPermissionRequired() {
         val notification = NotificationCompat.Builder(context, ChannelIds.PERMISSION_NEEDED)
+            .setCategory(NotificationCompat.CATEGORY_ERROR)
             .setColor(ContextCompat.getColor(context, R.color.primary))
             .setSmallIcon(R.mipmap.notification_icon)
             .setVisibility(NotificationCompat.VISIBILITY_PUBLIC)
