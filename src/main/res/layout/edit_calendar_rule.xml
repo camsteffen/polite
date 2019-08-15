@@ -1,63 +1,78 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<layout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
+
     <data>
+
         <import type="android.view.View" />
+
         <variable
             name="model"
-            type="me.camsteffen.polite.rule.edit.EditCalendarRuleViewModel"/>
+            type="me.camsteffen.polite.rule.edit.EditCalendarRuleViewModel" />
+
         <variable
             name="handlers"
             type="me.camsteffen.polite.rule.edit.EditCalendarRuleFragment" />
     </data>
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical">
+
+        <Switch
+            android:id="@+id/enable"
+            style="@style/Option.Switch"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:checked="@={model.busyOnly}"
+            android:text="@string/busy_events_only" />
+
+        <View style="@style/Divider" />
+
         <me.camsteffen.polite.view.CaptionOption
             android:id="@+id/calendars"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:onClick="@{_ -> handlers.onClickCalendars()}"
-            app:label="@string/calendars"
-            app:caption="@{model.calendarIds.isEmpty() ? @string/all : @string/n_selected(model.calendarIds.size())}"/>
+            app:caption="@{model.calendarIds.isEmpty() ? @string/all : @string/n_selected(model.calendarIds.size())}"
+            app:label="@string/calendars" />
 
-        <View style="@style/Divider"/>
+        <View style="@style/Divider" />
 
         <me.camsteffen.polite.view.CaptionOption
             android:id="@+id/events"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:onClick="@{handlers::onClickMatchBy}"
-            app:label="@string/events"
-            app:caption="@{context.getString(model.matchBy.captionStringId)}"/>
+            app:caption="@{context.getString(model.matchBy.captionStringId)}"
+            app:label="@string/events" />
 
         <View style="@style/Divider" />
 
         <LinearLayout
-            android:visibility="@{model.showKeywords ? View.VISIBLE : View.GONE}"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical">
+            android:orientation="vertical"
+            android:visibility="@{model.showKeywords ? View.VISIBLE : View.GONE}">
 
             <me.camsteffen.polite.view.CaptionOption
                 android:id="@+id/inverse"
-                app:label="@string/inverse_match"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:onClick="@{_ -> handlers.onClickInverseMatch()}"
-                app:caption="@{model.inverseMatch ? @string/enabled : @string/disabled}"/>
+                app:caption="@{model.inverseMatch ? @string/enabled : @string/disabled}"
+                app:label="@string/inverse_match" />
 
             <View style="@style/Divider" />
 
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:textAppearance="@style/TextSubhead"
                 android:padding="16dp"
-                android:text="@string/keywords"/>
+                android:text="@string/keywords"
+                android:textAppearance="@style/TextSubhead" />
 
             <LinearLayout
                 android:id="@+id/keywords_section"
@@ -69,51 +84,51 @@
 
                 <EditText
                     android:id="@+id/new_keyword"
-                    android:paddingTop="16dp"
-                    android:paddingBottom="16dp"
-                    android:hint="@string/add_keyword_hint"
-                    android:inputType="text"
-                    android:maxLength="20"
-                    android:imeActionId="100"
-                    android:imeActionLabel="@string/add"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:importantForAutofill="no"/>
+                    android:hint="@string/add_keyword_hint"
+                    android:imeActionId="100"
+                    android:imeActionLabel="@string/add"
+                    android:importantForAutofill="no"
+                    android:inputType="text"
+                    android:maxLength="20"
+                    android:paddingTop="16dp"
+                    android:paddingBottom="16dp" />
 
                 <Button
-                    android:onClick="@{_ -> handlers.onClickAddKeyword()}"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="@string/add"/>
+                    android:onClick="@{_ -> handlers.onClickAddKeyword()}"
+                    android:text="@string/add" />
 
             </LinearLayout>
 
             <me.camsteffen.polite.view.WordSetView
                 android:id="@+id/words"
-                android:paddingTop="8dp"
-                android:paddingBottom="8dp"
-                android:paddingLeft="16dp"
-                android:paddingRight="16dp"
-                android:textSize="26sp"
-                android:lineSpacingExtra="8dp"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                app:words="@{model.keywords}"
-                app:onClickWord="@{handlers::onClickKeyword}"/>
+                android:lineSpacingExtra="8dp"
+                android:paddingLeft="16dp"
+                android:paddingTop="8dp"
+                android:paddingRight="16dp"
+                android:paddingBottom="8dp"
+                android:textSize="26sp"
+                app:onClickWord="@{handlers::onClickKeyword}"
+                app:words="@{model.keywords}" />
 
             <TextView
                 android:id="@+id/remove_keywords_tip"
-                android:paddingTop="8dp"
-                android:paddingBottom="8dp"
-                android:paddingLeft="16dp"
-                android:paddingRight="16dp"
-                android:text="@string/remove_keyword_hint"
-                android:textStyle="italic"
-                android:textSize="16sp"
-                android:gravity="center"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:gravity="center"
+                android:paddingLeft="16dp"
+                android:paddingTop="8dp"
+                android:paddingRight="16dp"
+                android:paddingBottom="8dp"
+                android:text="@string/remove_keyword_hint"
+                android:textSize="16sp"
+                android:textStyle="italic"
                 android:visibility="@{model.keywords.isEmpty() ? View.VISIBLE : View.GONE}" />
 
         </LinearLayout>

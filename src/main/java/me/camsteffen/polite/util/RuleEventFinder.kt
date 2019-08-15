@@ -88,6 +88,9 @@ private fun CalendarRule.matches(event: CalendarEvent): Boolean {
     if (calendarIds.isNotEmpty() && !calendarIds.contains(event.calendarId)) {
         return false
     }
+    if (busyOnly && !event.isBusy) {
+        return false
+    }
     if (matchBy.all) return true
     val fields = listOf(
         event.title.takeIf { matchBy.title },

@@ -13,6 +13,7 @@
     <string name="all">All</string>
     <string name="all_events">All Events</string>
     <string name="app_name">Polite</string>
+    <string name="busy_events_only">Busy Events Only</string>
     <string name="calendar_permission_explain">Polite needs permission to read your calendar events for Calendar Rules to work. Your calendar data will not be stored or shared with anyone.</string>
     <string name="calendar_permission_required">Calendar Permission Required</string>
     <string name="calendar_rule">Calendar Rule</string>

@@ -17,7 +17,8 @@ object TestObjects {
         title: String = "",
         description: String = "",
         begin: Instant = Instant.EPOCH,
-        end: Instant = Instant.EPOCH
+        end: Instant = Instant.EPOCH,
+        isBusy: Boolean = false
     ): CalendarEvent {
         return CalendarEvent(
             eventId = eventId ?: calendarEventId++,
@@ -25,12 +26,14 @@ object TestObjects {
             title = title,
             description = description,
             begin = begin,
-            end = end
+            end = end,
+            isBusy = isBusy
         )
     }
 
     fun calendarRule(
         vibrate: Boolean = false,
+        busyOnly: Boolean = false,
         matchBy: CalendarEventMatchBy = CalendarEventMatchBy.ALL,
         inverseMatch: Boolean = false,
         calendarIds: Set<Long> = emptySet(),
@@ -41,6 +44,7 @@ object TestObjects {
             name = "",
             enabled = true,
             vibrate = vibrate,
+            busyOnly = busyOnly,
             matchBy = matchBy,
             inverseMatch = inverseMatch,
             calendarIds = calendarIds,

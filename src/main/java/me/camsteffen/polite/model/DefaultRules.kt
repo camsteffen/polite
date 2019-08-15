@@ -16,6 +16,7 @@ class DefaultRules
         name = context.getString(R.string.rule_default_name),
         enabled = RuleDefaults.enabled,
         vibrate = RuleDefaults.vibrate,
+        busyOnly = false,
         calendarIds = emptySet(),
         matchBy = CalendarEventMatchBy.ALL,
         inverseMatch = false,

@@ -11,6 +11,8 @@ import javax.inject.Inject
 class EditCalendarRuleViewModel
 @Inject constructor(application: Application) : EditRuleViewModel<CalendarRule>(application) {
 
+    val busyOnly = MutableLiveData<Boolean>()
+
     val calendarIds = MutableLiveData<Set<Long>>()
 
     val inverseMatch: LiveData<Boolean>
@@ -31,6 +33,7 @@ class EditCalendarRuleViewModel
     }
 
     init {
+        busyOnly.value = false
         calendarIds.value = emptySet()
         keywordsLiveData.value = keywordSet
     }

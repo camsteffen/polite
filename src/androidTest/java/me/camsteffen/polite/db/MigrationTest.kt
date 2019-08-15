@@ -24,7 +24,8 @@ class MigrationTest {
 
     private val allMigrations = allMigrations(getInstrumentation().targetContext)
 
-    @Rule @JvmField
+    @Rule
+    @JvmField
     val migrationHelper = MigrationTestHelper(
         getInstrumentation(),
         AppDatabase::class.java.canonicalName,
@@ -74,29 +75,33 @@ class MigrationTest {
 
         val calendarRules = dao.calendarRulesSortedByName()
         assertThat(calendarRules).hasSize(2)
-        val calendarRule1 = calendarRules[0]
-        val calendarRule2 = calendarRules[1]
 
-        assertThat(calendarRule1).isEqualTo(CalendarRule(
-            id = 1,
-            name = "name1",
-            enabled = true,
-            vibrate = false,
-            matchBy = CalendarEventMatchBy.TITLE_AND_DESCRIPTION,
-            inverseMatch = false,
-            calendarIds = setOf(11L, 12L),
-            keywords = setOf("keyword1", "keyword2")
-        ))
-        assertThat(calendarRule2).isEqualTo(CalendarRule(
-            id = 2,
-            name = "name2",
-            enabled = false,
-            vibrate = true,
-            matchBy = CalendarEventMatchBy.ALL,
-            inverseMatch = false,
-            calendarIds = emptySet(),
-            keywords = emptySet()
-        ))
+        assertThat(calendarRules[0]).isEqualTo(
+            CalendarRule(
+                id = 1,
+                name = "name1",
+                enabled = true,
+                vibrate = false,
+                busyOnly = false,
+                matchBy = CalendarEventMatchBy.TITLE_AND_DESCRIPTION,
+                inverseMatch = false,
+                calendarIds = setOf(11L, 12L),
+                keywords = setOf("keyword1", "keyword2")
+            )
+        )
+        assertThat(calendarRules[1]).isEqualTo(
+            CalendarRule(
+                id = 2,
+                name = "name2",
+                enabled = false,
+                vibrate = true,
+                busyOnly = false,
+                matchBy = CalendarEventMatchBy.ALL,
+                inverseMatch = false,
+                calendarIds = emptySet(),
+                keywords = emptySet()
+            )
+        )
     }
 
     @Test
@@ -161,44 +166,52 @@ class MigrationTest {
         val calendarRule1 = calendarRules[0]
         val calendarRule2 = calendarRules[1]
 
-        assertThat(calendarRule1).isEqualTo(CalendarRule(
-            id = 1,
-            name = "name1",
-            enabled = true,
-            vibrate = false,
-            matchBy = CalendarEventMatchBy.TITLE_AND_DESCRIPTION,
-            inverseMatch = false,
-            calendarIds = setOf(11L, 12L),
-            keywords = setOf("keyword1", "keyword2")
-        ))
-        assertThat(calendarRule2).isEqualTo(CalendarRule(
-            id = 2,
-            name = "name2",
-            enabled = false,
-            vibrate = true,
-            matchBy = CalendarEventMatchBy.ALL,
-            inverseMatch = false,
-            calendarIds = emptySet(),
-            keywords = emptySet()
-        ))
+        assertThat(calendarRule1).isEqualTo(
+            CalendarRule(
+                id = 1,
+                name = "name1",
+                enabled = true,
+                vibrate = false,
+                busyOnly = false,
+                matchBy = CalendarEventMatchBy.TITLE_AND_DESCRIPTION,
+                inverseMatch = false,
+                calendarIds = setOf(11L, 12L),
+                keywords = setOf("keyword1", "keyword2")
+            )
+        )
+        assertThat(calendarRule2).isEqualTo(
+            CalendarRule(
+                id = 2,
+                name = "name2",
+                enabled = false,
+                vibrate = true,
+                busyOnly = false,
+                matchBy = CalendarEventMatchBy.ALL,
+                inverseMatch = false,
+                calendarIds = emptySet(),
+                keywords = emptySet()
+            )
+        )
 
         val scheduleRules = dao.scheduleRulesSortedByName()
         assertEquals(1, scheduleRules.size)
         val scheduleRule1 = scheduleRules[0]
 
-        assertThat(scheduleRule1).isEqualTo(ScheduleRule(
-            id = 3,
-            name = "name3",
-            enabled = true,
-            vibrate = true,
-            schedule = ScheduleRuleSchedule(
-                13, 4,
-                18, 59,
-                DayOfWeek.SUNDAY,
-                DayOfWeek.SATURDAY,
-                DayOfWeek.THURSDAY
+        assertThat(scheduleRule1).isEqualTo(
+            ScheduleRule(
+                id = 3,
+                name = "name3",
+                enabled = true,
+                vibrate = true,
+                schedule = ScheduleRuleSchedule(
+                    13, 4,
+                    18, 59,
+                    DayOfWeek.SUNDAY,
+                    DayOfWeek.SATURDAY,
+                    DayOfWeek.THURSDAY
+                )
             )
-        ))
+        )
     }
 
     @Test
@@ -265,57 +278,65 @@ class MigrationTest {
         val calendarRule1 = calendarRules[0]
         val calendarRule2 = calendarRules[1]
 
-        assertThat(calendarRule1).isEqualTo(CalendarRule(
-            id = 1,
-            name = "name1",
-            enabled = true,
-            vibrate = false,
-            matchBy = CalendarEventMatchBy.TITLE_AND_DESCRIPTION,
-            inverseMatch = true,
-            calendarIds = setOf(11L, 12L),
-            keywords = setOf("keyword1", "keyword2")
-        ))
-        assertThat(calendarRule2).isEqualTo(CalendarRule(
-            id = 2,
-            name = "name2",
-            enabled = false,
-            vibrate = true,
-            matchBy = CalendarEventMatchBy.ALL,
-            inverseMatch = false,
-            calendarIds = emptySet(),
-            keywords = emptySet()
-        ))
+        assertThat(calendarRule1).isEqualTo(
+            CalendarRule(
+                id = 1,
+                name = "name1",
+                enabled = true,
+                vibrate = false,
+                matchBy = CalendarEventMatchBy.TITLE_AND_DESCRIPTION,
+                inverseMatch = true,
+                calendarIds = setOf(11L, 12L),
+                keywords = setOf("keyword1", "keyword2")
+            )
+        )
+        assertThat(calendarRule2).isEqualTo(
+            CalendarRule(
+                id = 2,
+                name = "name2",
+                enabled = false,
+                vibrate = true,
+                matchBy = CalendarEventMatchBy.ALL,
+                inverseMatch = false,
+                calendarIds = emptySet(),
+                keywords = emptySet()
+            )
+        )
 
         val scheduleRules = dao.scheduleRulesSortedByName()
         assertEquals(1, scheduleRules.size)
         val scheduleRule1 = scheduleRules[0]
 
-        assertThat(scheduleRule1).isEqualTo(ScheduleRule(
-            id = 3,
-            name = "name3",
-            enabled = true,
-            vibrate = true,
-            schedule = ScheduleRuleSchedule(
-                13, 4,
-                18, 59,
-                DayOfWeek.SUNDAY,
-                DayOfWeek.SATURDAY,
-                DayOfWeek.THURSDAY
+        assertThat(scheduleRule1).isEqualTo(
+            ScheduleRule(
+                id = 3,
+                name = "name3",
+                enabled = true,
+                vibrate = true,
+                schedule = ScheduleRuleSchedule(
+                    13, 4,
+                    18, 59,
+                    DayOfWeek.SUNDAY,
+                    DayOfWeek.SATURDAY,
+                    DayOfWeek.THURSDAY
+                )
             )
-        ))
+        )
     }
 
     private fun getSqliteTestDbOpenHelper(version: Int): SqliteTestDbOpenHelper {
         return SqliteTestDbOpenHelper(
             getInstrumentation().context,
             getInstrumentation().targetContext,
-            TEST_DATABASE_NAME, version)
+            TEST_DATABASE_NAME, version
+        )
     }
 
     private fun getMigratedRoomDatabase(): AppDatabase {
         val database = Room.databaseBuilder(
             getInstrumentation().targetContext,
-            AppDatabase::class.java, TEST_DATABASE_NAME)
+            AppDatabase::class.java, TEST_DATABASE_NAME
+        )
             .addMigrations(*allMigrations)
             .build()
         migrationHelper.closeWhenFinished(database)

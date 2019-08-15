@@ -22,6 +22,9 @@ data class CalendarRuleEntity(
     @PrimaryKey
     val id: Long,
 
+    @ColumnInfo(name = "busy_only")
+    val busyOnly: Boolean,
+
     @Embedded(prefix = "match_")
     val matchBy: CalendarEventMatchByEntity,
 

@@ -41,7 +41,8 @@ private object Query {
         Instances.TITLE,
         Instances.DESCRIPTION,
         Instances.BEGIN,
-        Instances.END
+        Instances.END,
+        Instances.AVAILABILITY
     )
 
     const val SELECTION = "${Instances.ALL_DAY}=0"
@@ -54,6 +55,7 @@ private object Query {
         const val DESCRIPTION = 3
         const val BEGIN = 4
         const val END = 5
+        const val AVAILABILITY = 6
     }
 
     fun execute(contentResolver: ContentResolver, begin: Long, end: Long): Cursor? {
@@ -69,6 +71,7 @@ private object Query {
         title = cursor.getString(Index.TITLE),
         description = cursor.getString(Index.DESCRIPTION),
         begin = Instant.ofEpochMilli(cursor.getLong(Index.BEGIN)),
-        end = Instant.ofEpochMilli(cursor.getLong(Index.END))
+        end = Instant.ofEpochMilli(cursor.getLong(Index.END)),
+        isBusy = cursor.getInt(Index.AVAILABILITY) == Instances.AVAILABILITY_BUSY
     )
 }

@@ -26,6 +26,7 @@ data class CalendarRule(
     override val name: String,
     override val enabled: Boolean,
     override val vibrate: Boolean,
+    val busyOnly: Boolean,
     val matchBy: CalendarEventMatchBy,
     val inverseMatch: Boolean,
     val calendarIds: Set<Long>,
@@ -35,7 +36,12 @@ data class CalendarRule(
         return keywords.joinToString()
     }
 
-    fun asCalendarRuleEntity() = CalendarRuleEntity(id, matchBy.asEntity(), inverseMatch)
+    fun asCalendarRuleEntity() = CalendarRuleEntity(
+        id = id,
+        busyOnly = busyOnly,
+        matchBy = matchBy.asEntity(),
+        inverseMatch = inverseMatch
+    )
 
     fun calendarRuleCalendars(): List<CalendarRuleCalendar> =
         calendarIds.map { CalendarRuleCalendar(id, it) }
