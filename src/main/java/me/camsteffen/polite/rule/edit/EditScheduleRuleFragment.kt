@@ -18,9 +18,6 @@ import org.threeten.bp.LocalTime
 import org.threeten.bp.format.TextStyle
 import org.threeten.bp.temporal.WeekFields
 
-private const val BEGIN = 0
-private const val END = 1
-
 class EditScheduleRuleFragment : EditRuleFragment<ScheduleRule>(), TimePickerDialogFragment.OnTimeSetListener {
 
     private lateinit var model: EditScheduleRuleViewModel
@@ -67,11 +64,11 @@ class EditScheduleRuleFragment : EditRuleFragment<ScheduleRule>(), TimePickerDia
     }
 
     fun onClickBeginTime() {
-        showTimePicker(BEGIN, model.beginTime.get()!!)
+        showTimePicker(TimePickerCodes.BEGIN, model.beginTime.get()!!)
     }
 
     fun onClickEndTime() {
-        showTimePicker(END, model.endTime.get()!!)
+        showTimePicker(TimePickerCodes.END, model.endTime.get()!!)
     }
 
     private fun showTimePicker(code: Int, localTime: LocalTime) {
@@ -89,10 +86,15 @@ class EditScheduleRuleFragment : EditRuleFragment<ScheduleRule>(), TimePickerDia
 
     override fun onTimeSet(hourOfDay: Int, minute: Int, requestCode: Int) {
         val timeOfDay = when (requestCode) {
-            BEGIN -> model.beginTime
-            END -> model.endTime
+            TimePickerCodes.BEGIN -> model.beginTime
+            TimePickerCodes.END -> model.endTime
             else -> throw IllegalArgumentException()
         }
         timeOfDay.set(LocalTime.of(hourOfDay, minute))
     }
+}
+
+private object TimePickerCodes {
+    const val BEGIN = 0
+    const val END = 1
 }
