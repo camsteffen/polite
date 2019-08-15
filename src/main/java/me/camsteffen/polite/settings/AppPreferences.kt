@@ -2,6 +2,7 @@ package me.camsteffen.polite.settings
 
 import android.content.SharedPreferences
 import android.content.res.Resources
+import android.os.Build
 import me.camsteffen.polite.R
 import javax.inject.Inject
 import javax.inject.Singleton
@@ -34,7 +35,12 @@ class AppPreferences
         set(value) = editor.putString(themeKey, value).apply()
 
     var notifications: Boolean
-        get() = preferences.getBoolean(notificationsKey, true)
+        get() = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            // defer to android notification channels
+            true
+        } else {
+            preferences.getBoolean(notificationsKey, true)
+        }
         set(value) = editor.putBoolean(notificationsKey, value).apply()
 
     var askedToRate: Boolean

@@ -60,6 +60,7 @@
     <string name="notification_policy_access_required">"Nicht stören" Zugriff benötigt</string>
     <string name="notifications">Benachrichtigungen</string>
     <string name="open_app_settings">App Einstellungen öffnen</string>
+    <string name="permission_needed">Berechtigung erforderlich</string>
     <string name="polite_active">Polite ist aktiv</string>
     <string name="rate_app_message">Würden Sie sich kurz Zeit nehmen, um eine ehrliche Bewertung im Play Store zu hinterlassen? Ich werde Sie auch nicht weiter stören. Danke!</string>     <!-- needs rework... -->
     <string name="rate_app_title">High five!</string>
