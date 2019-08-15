@@ -2,6 +2,7 @@ package me.camsteffen.polite.model
 
 import androidx.room.ColumnInfo
 import androidx.room.Embedded
+import me.camsteffen.polite.rule.ScheduleRuleSchedule
 import org.threeten.bp.LocalTime
 
 class ScheduleRuleEntry(
@@ -20,9 +21,7 @@ class ScheduleRuleEntry(
             name = ruleBase.name,
             enabled = ruleBase.enabled,
             vibrate = ruleBase.vibrate,
-            beginTime = beginTime,
-            endTime = endTime,
-            daysOfWeek = days.toDayOfWeekSet()
+            schedule = ScheduleRuleSchedule(beginTime, endTime, days.toDayOfWeekSet())
         )
     }
 }

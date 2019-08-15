@@ -151,27 +151,28 @@ class PoliteStateManager
             val time = LocalTime.now()
             val currentDayOfWeek = LocalDate.now().dayOfWeek
             var dayAdjust = 0
-            if (time >= rule.endTime)
+            val schedule = rule.schedule
+            if (time >= schedule.endTime)
                 ++dayAdjust
-            if (rule.beginTime > rule.endTime)
+            if (schedule.beginTime > schedule.endTime)
                 --dayAdjust
             var dayOfWeek = DayOfWeek.MONDAY
             for (i in 0..6) {
                 dayOfWeek = currentDayOfWeek + dayAdjust.toLong() + i.toLong()
-                if (rule.daysOfWeek.contains(dayOfWeek)) {
+                if (schedule.daysOfWeek.contains(dayOfWeek)) {
                     dayAdjust += i
                     break
                 }
             }
-            if (!rule.daysOfWeek.contains(dayOfWeek))
+            if (!schedule.daysOfWeek.contains(dayOfWeek))
                 continue
             calendar.add(Calendar.DAY_OF_WEEK, dayAdjust)
-            calendar.set(Calendar.HOUR_OF_DAY, rule.beginTime.hour)
-            calendar.set(Calendar.MINUTE, rule.beginTime.minute)
+            calendar.set(Calendar.HOUR_OF_DAY, schedule.beginTime.hour)
+            calendar.set(Calendar.MINUTE, schedule.beginTime.minute)
             calendar.set(Calendar.SECOND, 0)
             calendar.set(Calendar.MILLISECOND, 0)
             var begin = calendar.timeInMillis
-            var end = begin + Duration.between(rule.beginTime, rule.endTime).toMillis()
+            var end = begin + Duration.between(schedule.beginTime, schedule.endTime).toMillis()
             if (end < begin)
                 end += TimeUnit.DAYS.toMillis(1)
             begin -= activation

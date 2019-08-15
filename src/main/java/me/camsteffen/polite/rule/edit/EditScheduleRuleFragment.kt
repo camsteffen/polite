@@ -12,6 +12,7 @@ import me.camsteffen.polite.R
 import me.camsteffen.polite.databinding.DayButtonBinding
 import me.camsteffen.polite.databinding.EditScheduleRuleBinding
 import me.camsteffen.polite.model.ScheduleRule
+import me.camsteffen.polite.rule.ScheduleRuleSchedule
 import me.camsteffen.polite.util.TimePickerDialogFragment
 import org.threeten.bp.LocalTime
 import org.threeten.bp.format.TextStyle
@@ -49,7 +50,7 @@ class EditScheduleRuleFragment : EditRuleFragment<ScheduleRule>(), TimePickerDia
             val day = firstDay + i
             val binding = DataBindingUtil.inflate<DayButtonBinding>(layoutInflater, R.layout.day_button, parent, true)
             binding.text = day.getDisplayName(TextStyle.NARROW, locale)
-            binding.checked = model.days[day]
+            binding.checked = model.daysOfWeek[day]
             if (i < 6) {
                 layoutInflater.inflate(R.layout.day_button_space, parent, true)
             }
@@ -57,19 +58,20 @@ class EditScheduleRuleFragment : EditRuleFragment<ScheduleRule>(), TimePickerDia
     }
 
     override fun ruleFromUi(id: Long, name: String, enabled: Boolean, vibrate: Boolean): ScheduleRule {
-        val days = model.days.asSequence()
+        val days = model.daysOfWeek.asSequence()
             .filter { it.value.get() }
             .map { it.key }
             .toSet()
-        return ScheduleRule(id, name, enabled, vibrate, model.begin.get()!!, model.end.get()!!, days)
+        val schedule = ScheduleRuleSchedule(model.beginTime.get()!!, model.endTime.get()!!, days)
+        return ScheduleRule(id, name, enabled, vibrate, schedule)
     }
 
     fun onClickBeginTime() {
-        showTimePicker(BEGIN, model.begin.get()!!)
+        showTimePicker(BEGIN, model.beginTime.get()!!)
     }
 
     fun onClickEndTime() {
-        showTimePicker(END, model.end.get()!!)
+        showTimePicker(END, model.endTime.get()!!)
     }
 
     private fun showTimePicker(code: Int, localTime: LocalTime) {
@@ -78,7 +80,7 @@ class EditScheduleRuleFragment : EditRuleFragment<ScheduleRule>(), TimePickerDia
     }
 
     override fun validateSaveClose() {
-        if (model.days.isEmpty()) {
+        if (model.daysOfWeek.isEmpty()) {
             Toast.makeText(activity, R.string.no_days_selected, Toast.LENGTH_SHORT).show()
         } else {
             saveClose()
@@ -87,8 +89,8 @@ class EditScheduleRuleFragment : EditRuleFragment<ScheduleRule>(), TimePickerDia
 
     override fun onTimeSet(hourOfDay: Int, minute: Int, requestCode: Int) {
         val timeOfDay = when (requestCode) {
-            BEGIN -> model.begin
-            END -> model.end
+            BEGIN -> model.beginTime
+            END -> model.endTime
             else -> throw IllegalArgumentException()
         }
         timeOfDay.set(LocalTime.of(hourOfDay, minute))

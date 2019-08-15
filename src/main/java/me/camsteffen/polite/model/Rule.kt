@@ -1,9 +1,7 @@
 package me.camsteffen.polite.model
 
 import android.content.Context
-import me.camsteffen.polite.rule.scheduleSummary
-import org.threeten.bp.DayOfWeek
-import org.threeten.bp.LocalTime
+import me.camsteffen.polite.rule.ScheduleRuleSchedule
 
 
 sealed class Rule {
@@ -51,18 +49,15 @@ data class ScheduleRule(
     override val name: String,
     override val enabled: Boolean,
     override val vibrate: Boolean,
-    val beginTime: LocalTime,
-    val endTime: LocalTime,
-    val daysOfWeek: Set<DayOfWeek>
+    val schedule: ScheduleRuleSchedule
 ) : Rule() {
-
-    override fun getCaption(context: Context) = scheduleSummary(context, daysOfWeek, beginTime, endTime)
+    override fun getCaption(context: Context) = schedule.summary(context)
 
     fun asScheduleRuleEntity() = ScheduleRuleEntity(
         id = id,
-        beginTime = beginTime,
-        endTime = endTime,
-        daysOfWeek = DaysOfWeekEntity(daysOfWeek)
+        beginTime = schedule.beginTime,
+        endTime = schedule.endTime,
+        daysOfWeek = DaysOfWeekEntity(schedule.daysOfWeek)
     )
 }
 
