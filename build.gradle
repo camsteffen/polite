@@ -115,7 +115,7 @@ dependencies {
     testImplementation 'io.mockk:mockk:1.9.3'
     testImplementation 'com.google.truth:truth:1.0'
     androidTestImplementation 'com.google.truth:truth:1.0'
-    androidTestImplementation 'androidx.test:runner:1.1.1'
+    androidTestImplementation 'androidx.test:runner:1.2.0'
     testImplementation('org.threeten:threetenbp:1.4.0') {
         exclude group: 'com.jakewharton.threetenabp', module: 'threetenabp'
     }
