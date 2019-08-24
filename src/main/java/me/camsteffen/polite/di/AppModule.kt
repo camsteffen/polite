@@ -16,10 +16,12 @@ import dagger.Provides
 import dagger.android.ContributesAndroidInjector
 import dagger.multibindings.IntoMap
 import me.camsteffen.polite.AppBroadcastReceiver
+import me.camsteffen.polite.AppTimingConfig
 import me.camsteffen.polite.MainActivity
 import me.camsteffen.polite.Polite
 import me.camsteffen.polite.R
 import me.camsteffen.polite.db.AppDatabase
+import me.camsteffen.polite.defaultAppTimingConfig
 import me.camsteffen.polite.rule.RuleMasterDetailViewModel
 import me.camsteffen.polite.rule.edit.EditCalendarRuleViewModel
 import me.camsteffen.polite.rule.edit.EditScheduleRuleViewModel
@@ -90,6 +92,11 @@ abstract class AppModule {
         fun provideEnableLiveData(sharedPreferences: SharedPreferences, resources: Resources): LiveData<Boolean> {
             val key = resources.getString(R.string.preference_enable)
             return SharedPreferenceBooleanLiveData(sharedPreferences, key, PreferenceDefaults.ENABLE)
+        }
+
+        @JvmStatic @Provides
+        fun provideAppTimingConfig(): AppTimingConfig {
+            return defaultAppTimingConfig
         }
     }
 }
