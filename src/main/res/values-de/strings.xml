@@ -64,8 +64,8 @@
     <string name="rate_app_message">Würden Sie sich kurz Zeit nehmen, um eine ehrliche Bewertung im Play Store zu hinterlassen? Ich werde Sie auch nicht weiter stören. Danke!</string>     <!-- needs rework... -->
     <string name="rate_app_title">High five!</string>
     <string name="remove_keyword_hint">Klicke auf ein Stichwort um es zu entfernen</string>
-    <string name="rename">Umbennen</string>
-    <string name="rename_rule">Regel umbennen</string>
+    <string name="rename">Umbenennen</string>
+    <string name="rename_rule">Regel umbenennen</string>
     <string name="rule_default_name">unbenannte Regel</string>
     <string name="schedule_rule">Zeitregel</string>
     <string name="schedule_rule_desc">Schalten Sie Ihr Telefon zu einer bestimmten Zeit stumm.</string>
