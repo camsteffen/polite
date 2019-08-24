@@ -4,13 +4,14 @@ import androidx.room.Room
 import androidx.room.testing.MigrationTestHelper
 import androidx.sqlite.db.framework.FrameworkSQLiteOpenHelperFactory
 import androidx.test.platform.app.InstrumentationRegistry.getInstrumentation
+import com.google.common.truth.Truth.assertThat
 import me.camsteffen.polite.BuildConfig.DATABASE_VERSION
 import me.camsteffen.polite.model.CalendarEventMatchBy
+import me.camsteffen.polite.model.CalendarRule
+import me.camsteffen.polite.model.ScheduleRule
 import me.camsteffen.polite.rule.ScheduleRuleSchedule
 import org.junit.After
 import org.junit.Assert.assertEquals
-import org.junit.Assert.assertFalse
-import org.junit.Assert.assertTrue
 import org.junit.Rule
 import org.junit.Test
 import org.threeten.bp.DayOfWeek
@@ -72,27 +73,30 @@ class MigrationTest {
         val dao = getMigratedRoomDatabase().ruleDao
 
         val calendarRules = dao.calendarRulesSortedByName()
-        assertEquals(2, calendarRules.size)
+        assertThat(calendarRules).hasSize(2)
         val calendarRule1 = calendarRules[0]
         val calendarRule2 = calendarRules[1]
 
-        assertEquals(1, calendarRule1.id)
-        assertEquals("name1", calendarRule1.name)
-        assertTrue(calendarRule1.enabled)
-        assertFalse(calendarRule1.vibrate)
-        assertEquals(CalendarEventMatchBy.TITLE_AND_DESCRIPTION, calendarRule1.matchBy)
-        assertFalse(calendarRule1.inverseMatch)
-        assertEquals(setOf(11L, 12L), calendarRule1.calendarIds)
-        assertEquals(setOf("keyword1", "keyword2"), calendarRule1.keywords)
-
-        assertEquals(2, calendarRule2.id)
-        assertEquals("name2", calendarRule2.name)
-        assertFalse(calendarRule2.enabled)
-        assertTrue(calendarRule2.vibrate)
-        assertEquals(CalendarEventMatchBy.ALL, calendarRule2.matchBy)
-        assertFalse(calendarRule2.inverseMatch)
-        assertEquals(emptySet<Long>(), calendarRule2.calendarIds)
-        assertEquals(emptySet<String>(), calendarRule2.keywords)
+        assertThat(calendarRule1).isEqualTo(CalendarRule(
+            id = 1,
+            name = "name1",
+            enabled = true,
+            vibrate = false,
+            matchBy = CalendarEventMatchBy.TITLE_AND_DESCRIPTION,
+            inverseMatch = false,
+            calendarIds = setOf(11L, 12L),
+            keywords = setOf("keyword1", "keyword2")
+        ))
+        assertThat(calendarRule2).isEqualTo(CalendarRule(
+            id = 2,
+            name = "name2",
+            enabled = false,
+            vibrate = true,
+            matchBy = CalendarEventMatchBy.ALL,
+            inverseMatch = false,
+            calendarIds = emptySet(),
+            keywords = emptySet()
+        ))
     }
 
     @Test
@@ -157,40 +161,44 @@ class MigrationTest {
         val calendarRule1 = calendarRules[0]
         val calendarRule2 = calendarRules[1]
 
-        assertEquals(1, calendarRule1.id)
-        assertEquals("name1", calendarRule1.name)
-        assertTrue(calendarRule1.enabled)
-        assertFalse(calendarRule1.vibrate)
-        assertEquals(CalendarEventMatchBy.TITLE_AND_DESCRIPTION, calendarRule1.matchBy)
-        assertFalse(calendarRule1.inverseMatch)
-        assertEquals(setOf(11L, 12L), calendarRule1.calendarIds)
-        assertEquals(setOf("keyword1", "keyword2"), calendarRule1.keywords)
-
-        assertEquals(2, calendarRule2.id)
-        assertEquals("name2", calendarRule2.name)
-        assertFalse(calendarRule2.enabled)
-        assertTrue(calendarRule2.vibrate)
-        assertEquals(CalendarEventMatchBy.ALL, calendarRule2.matchBy)
-        assertFalse(calendarRule2.inverseMatch)
-        assertEquals(emptySet<Long>(), calendarRule2.calendarIds)
-        assertEquals(emptySet<String>(), calendarRule2.keywords)
+        assertThat(calendarRule1).isEqualTo(CalendarRule(
+            id = 1,
+            name = "name1",
+            enabled = true,
+            vibrate = false,
+            matchBy = CalendarEventMatchBy.TITLE_AND_DESCRIPTION,
+            inverseMatch = false,
+            calendarIds = setOf(11L, 12L),
+            keywords = setOf("keyword1", "keyword2")
+        ))
+        assertThat(calendarRule2).isEqualTo(CalendarRule(
+            id = 2,
+            name = "name2",
+            enabled = false,
+            vibrate = true,
+            matchBy = CalendarEventMatchBy.ALL,
+            inverseMatch = false,
+            calendarIds = emptySet(),
+            keywords = emptySet()
+        ))
 
         val scheduleRules = dao.scheduleRulesSortedByName()
         assertEquals(1, scheduleRules.size)
         val scheduleRule1 = scheduleRules[0]
 
-        assertEquals(3, scheduleRule1.id)
-        assertEquals("name3", scheduleRule1.name)
-        assertTrue(scheduleRule1.enabled)
-        assertTrue(scheduleRule1.vibrate)
-        val schedule = ScheduleRuleSchedule(
-            13, 4,
-            18, 59,
-            DayOfWeek.SUNDAY,
-            DayOfWeek.SATURDAY,
-            DayOfWeek.THURSDAY
-        )
-        assertEquals(schedule, scheduleRule1.schedule)
+        assertThat(scheduleRule1).isEqualTo(ScheduleRule(
+            id = 3,
+            name = "name3",
+            enabled = true,
+            vibrate = true,
+            schedule = ScheduleRuleSchedule(
+                13, 4,
+                18, 59,
+                DayOfWeek.SUNDAY,
+                DayOfWeek.SATURDAY,
+                DayOfWeek.THURSDAY
+            )
+        ))
     }
 
     @Test
@@ -257,40 +265,44 @@ class MigrationTest {
         val calendarRule1 = calendarRules[0]
         val calendarRule2 = calendarRules[1]
 
-        assertEquals(1, calendarRule1.id)
-        assertEquals("name1", calendarRule1.name)
-        assertTrue(calendarRule1.enabled)
-        assertFalse(calendarRule1.vibrate)
-        assertEquals(CalendarEventMatchBy.TITLE_AND_DESCRIPTION, calendarRule1.matchBy)
-        assertTrue(calendarRule1.inverseMatch)
-        assertEquals(setOf(11L, 12L), calendarRule1.calendarIds)
-        assertEquals(setOf("keyword1", "keyword2"), calendarRule1.keywords)
-
-        assertEquals(2, calendarRule2.id)
-        assertEquals("name2", calendarRule2.name)
-        assertFalse(calendarRule2.enabled)
-        assertTrue(calendarRule2.vibrate)
-        assertEquals(CalendarEventMatchBy.ALL, calendarRule2.matchBy)
-        assertFalse(calendarRule2.inverseMatch)
-        assertEquals(emptySet<Long>(), calendarRule2.calendarIds)
-        assertEquals(emptySet<String>(), calendarRule2.keywords)
+        assertThat(calendarRule1).isEqualTo(CalendarRule(
+            id = 1,
+            name = "name1",
+            enabled = true,
+            vibrate = false,
+            matchBy = CalendarEventMatchBy.TITLE_AND_DESCRIPTION,
+            inverseMatch = true,
+            calendarIds = setOf(11L, 12L),
+            keywords = setOf("keyword1", "keyword2")
+        ))
+        assertThat(calendarRule2).isEqualTo(CalendarRule(
+            id = 2,
+            name = "name2",
+            enabled = false,
+            vibrate = true,
+            matchBy = CalendarEventMatchBy.ALL,
+            inverseMatch = false,
+            calendarIds = emptySet(),
+            keywords = emptySet()
+        ))
 
         val scheduleRules = dao.scheduleRulesSortedByName()
         assertEquals(1, scheduleRules.size)
         val scheduleRule1 = scheduleRules[0]
 
-        assertEquals(3, scheduleRule1.id)
-        assertEquals("name3", scheduleRule1.name)
-        assertTrue(scheduleRule1.enabled)
-        assertTrue(scheduleRule1.vibrate)
-        val schedule = ScheduleRuleSchedule(
-            13, 4,
-            18, 59,
-            DayOfWeek.SUNDAY,
-            DayOfWeek.SATURDAY,
-            DayOfWeek.THURSDAY
-        )
-        assertEquals(schedule, scheduleRule1.schedule)
+        assertThat(scheduleRule1).isEqualTo(ScheduleRule(
+            id = 3,
+            name = "name3",
+            enabled = true,
+            vibrate = true,
+            schedule = ScheduleRuleSchedule(
+                13, 4,
+                18, 59,
+                DayOfWeek.SUNDAY,
+                DayOfWeek.SATURDAY,
+                DayOfWeek.THURSDAY
+            )
+        ))
     }
 
     private fun getSqliteTestDbOpenHelper(version: Int): SqliteTestDbOpenHelper {
