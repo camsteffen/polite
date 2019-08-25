@@ -1,294 +1,108 @@
 package me.camsteffen.polite.state
 
-import android.Manifest
-import android.content.Context
-import android.content.SharedPreferences
-import android.content.pm.PackageManager
-import android.media.AudioManager
-import androidx.core.content.ContextCompat
-import me.camsteffen.polite.data.CalendarEvent
-import me.camsteffen.polite.data.CalendarFacade
-import me.camsteffen.polite.db.RuleDao
-import me.camsteffen.polite.model.CalendarRule
+import androidx.annotation.WorkerThread
+import me.camsteffen.polite.AppTimingConfig
+import me.camsteffen.polite.db.PoliteStateDao
+import me.camsteffen.polite.model.EventCancel
+import me.camsteffen.polite.model.ScheduleRuleCancel
 import me.camsteffen.polite.settings.AppPreferences
-import me.camsteffen.polite.settings.SharedPreferencesNames
-import me.camsteffen.polite.util.AppNotificationManager
 import me.camsteffen.polite.util.AppPermissionChecker
-import org.threeten.bp.DayOfWeek
-import org.threeten.bp.Duration
+import me.camsteffen.polite.util.RuleEvent
+import me.camsteffen.polite.util.RuleEventFinders
+import org.threeten.bp.Clock
 import org.threeten.bp.Instant
-import org.threeten.bp.LocalDate
-import org.threeten.bp.LocalTime
-import java.util.Calendar
-import java.util.Date
-import java.util.GregorianCalendar
-import java.util.concurrent.TimeUnit
 import javax.inject.Inject
 import javax.inject.Singleton
 
-private val TOLERANCE = TimeUnit.SECONDS.toMillis(8)
-private val LOOK_AHEAD = TimeUnit.HOURS.toMillis(30)
-
-private fun eventMatchesRule(event: CalendarEvent, rule: CalendarRule): Boolean {
-    if (rule.calendarIds.isNotEmpty() && !rule.calendarIds.contains(event.calendarId)) {
-        return false
-    }
-    if (rule.matchBy.all) {
-        return true
-    }
-    var match = false
-    if (rule.matchBy.title && event.title != null && event.title.isNotBlank()) {
-        val title = event.title.toLowerCase()
-        match = rule.keywords.any { title.contains(it) }
-    }
-    if (!match && rule.matchBy.description && event.description != null && event.description.isNotBlank()) {
-        val desc = event.description.toLowerCase()
-        match = rule.keywords.any { desc.contains(it) }
-    }
-    return match.xor(rule.inverseMatch)
-}
-
 @Singleton
+@WorkerThread
 class PoliteStateManager
 @Inject constructor(
-    private val calendarFacade: CalendarFacade,
-    private val context: Context,
-    private val notificationManager: AppNotificationManager,
+    private val clock: Clock,
     private val permissionChecker: AppPermissionChecker,
+    private val politeModeController: PoliteModeController,
     private val preferences: AppPreferences,
-    private val ruleDao: RuleDao,
     private val refreshScheduler: RefreshScheduler,
-    private val ringerModeManager: RingerModeManager
+    private val ruleEventFinders: RuleEventFinders,
+    private val stateDao: PoliteStateDao,
+    private val timingConfig: AppTimingConfig
 ) {
 
-    private var activeEventsPreferences: SharedPreferences =
-        context.getSharedPreferences(SharedPreferencesNames.POLITE_MODE_EVENTS, 0)
-    private var activeScheduleRulesPreferences: SharedPreferences =
-        context.getSharedPreferences(SharedPreferencesNames.ACTIVE_SCHEDULE_RULES, 0)
-    private var cancelledEventsPreferences: SharedPreferences =
-        context.getSharedPreferences(SharedPreferencesNames.CANCELLED_EVENTS, 0)
-    private var cancelledScheduleRulesPreferences: SharedPreferences =
-        context.getSharedPreferences(SharedPreferencesNames.CANCELLED_SCHEDULE_RULES, 0)
-    private var audioManager: AudioManager = context.getSystemService(Context.AUDIO_SERVICE) as AudioManager
-
     fun cancel() {
-        // save cancelled schedule rules
-        val cancelledScheduleRules = cancelledScheduleRulesPreferences.all.entries
-                .associateBy({ it.key }, { it.value as Long }).toSortedMap()
-        activeScheduleRulesPreferences.all.entries
-                .associateByTo(cancelledScheduleRules, { it.key }, { it.value as Long })
-        activeScheduleRulesPreferences.edit().clear().apply()
-        val cancelledScheduledRulesEditor = cancelledScheduleRulesPreferences.edit()
-                .clear()
-        cancelledScheduleRules.forEach {
-            cancelledScheduledRulesEditor.putLong(it.key, it.value)
-        }
-        cancelledScheduledRulesEditor.apply()
-
-        // save cancelled events
-        val cancelledEvents = cancelledEventsPreferences.all.values.associateBy { it as Long }.keys.toHashSet()
-        activeEventsPreferences.all.values.mapTo(cancelledEvents, { it as Long })
-        activeEventsPreferences.edit().clear().apply()
-        val cancelledEventsPreferencesEditor = cancelledEventsPreferences.edit()
-                .clear()
-        cancelledEvents.forEachIndexed { i, id ->
-            cancelledEventsPreferencesEditor.putLong(i.toString(), id)
-        }
-        cancelledEventsPreferencesEditor.apply()
-        deactivate()
+        doRefresh(true)
     }
 
-    fun refresh(modifiedRuleId: Long?) {
+    fun refresh() {
+        doRefresh(false)
+    }
+
+    private fun doRefresh(cancel: Boolean) {
+        val now = clock.instant()
+
+        if (cancel) {
+            cancelCurrentEvents(now)
+        }
+
         if (!preferences.enable || !permissionChecker.checkNotificationPolicyAccess()) {
-            cancelledEventsPreferences.edit().clear().apply()
-            cancelledScheduleRulesPreferences.edit().clear().apply()
-            deactivate()
+            politeModeController.setCurrentEvent(null)
+            // No need to schedule a refresh since a refresh will occur when the user enables
+            // polite mode and/or gives needed permissions
+            refreshScheduler.cancelScheduledRefresh()
             return
         }
 
-        // get activation and deactivation preferences
-        val activation = TimeUnit.MINUTES.toMillis(preferences.activation.toLong())
-        val deactivation = TimeUnit.MINUTES.toMillis(preferences.deactivation.toLong())
+        val (currentEvent, nextEvent) = findCurrentAndNextEvents(now)
 
-        val now = Date().time // current time
-        var activate = false // whether Polite will be activated
-        var reactivate = false // whether Polite is active and ringer mode will be set again
-        var vibrate = true // whether vibrate mode should be used
-        var notificationText = String()
-        var nextRunTime = Long.MAX_VALUE
+        politeModeController.setCurrentEvent(currentEvent)
 
-        val calendarRules = ruleDao.getEnabledCalendarRules()
-        var scheduleRules = ruleDao.getEnabledScheduleRules()
+        refreshScheduler.scheduleRefresh(sequenceOf(currentEvent?.end, nextEvent?.begin).filterNotNull().min())
 
-        // cancelled schedule rules
-        val cancelledScheduleRules = cancelledScheduleRulesPreferences.all.entries
-                .associateBy({ it.key.toLong() }, { it.value as Long })
-                .filter { scheduleRules.any { rule -> rule.id == it.key } && now < it.value }
-                .toSortedMap()
-        val cancelledScheduleRulesEditor = cancelledScheduleRulesPreferences.edit().clear()
-        cancelledScheduleRules.forEach {
-            cancelledScheduleRulesEditor.putLong(it.key.toString(), it.value)
-        }
-        cancelledScheduleRulesEditor.apply()
-        scheduleRules = scheduleRules.filterNot { cancelledScheduleRules.contains(it.id) }
+        stateDao.deleteExpiredCancels()
+    }
 
-        // iterate schedule rules
-        val activeScheduleRulesEditor = activeScheduleRulesPreferences.edit()
-                .clear()
-        for (rule in scheduleRules) {
-            val calendar = GregorianCalendar()
-            val time = LocalTime.now()
-            val currentDayOfWeek = LocalDate.now().dayOfWeek
-            var dayAdjust = 0
-            val schedule = rule.schedule
-            if (time >= schedule.endTime)
-                ++dayAdjust
-            if (schedule.beginTime > schedule.endTime)
-                --dayAdjust
-            var dayOfWeek = DayOfWeek.MONDAY
-            for (i in 0..6) {
-                dayOfWeek = currentDayOfWeek + dayAdjust.toLong() + i.toLong()
-                if (schedule.daysOfWeek.contains(dayOfWeek)) {
-                    dayAdjust += i
-                    break
-                }
-            }
-            if (!schedule.daysOfWeek.contains(dayOfWeek))
-                continue
-            calendar.add(Calendar.DAY_OF_WEEK, dayAdjust)
-            calendar.set(Calendar.HOUR_OF_DAY, schedule.beginTime.hour)
-            calendar.set(Calendar.MINUTE, schedule.beginTime.minute)
-            calendar.set(Calendar.SECOND, 0)
-            calendar.set(Calendar.MILLISECOND, 0)
-            var begin = calendar.timeInMillis
-            var end = begin + Duration.between(schedule.beginTime, schedule.endTime).toMillis()
-            if (end < begin)
-                end += TimeUnit.DAYS.toMillis(1)
-            begin -= activation
-            end += deactivation
-            if (now < begin - TOLERANCE) {
-                nextRunTime = Math.min(nextRunTime, begin)
-            }
-            else if (now < end - TOLERANCE) {
-                activate = true
-                vibrate = vibrate && rule.vibrate
-                notificationText = rule.name
-                nextRunTime = Math.min(nextRunTime, end)
-                activeScheduleRulesEditor.putLong(rule.id.toString(), end)
-            }
-            else {
-                nextRunTime = Math.min(nextRunTime, begin + TimeUnit.DAYS.toMillis(1))
-            }
-        }
-        activeScheduleRulesEditor.apply()
+    private fun findCurrentAndNextEvents(now: Instant): CurrentAndNextEvents {
+        val events = ruleEventFinders.all.eventsInRange(
+            now + timingConfig.ruleEventBoundaryTolerance,
+            now + timingConfig.lookahead
+        )
 
-        // check calendar permission
-        val hasCalendarPermission = (ContextCompat.checkSelfPermission(context,
-                Manifest.permission.READ_CALENDAR) == PackageManager.PERMISSION_GRANTED)
-        if (hasCalendarPermission)
-            notificationManager.cancelCalendarPermissionRequired()
-        else if (calendarRules.isNotEmpty()) {
-            notificationManager.notifyCalendarPermissionRequired()
-        }
+        var currentEvent: RuleEvent? = null
+        var nextEvent: RuleEvent? = null
 
-        if (calendarRules.isEmpty() || !hasCalendarPermission) {
-            cancelledEventsPreferences.edit().clear().apply()
-            activeEventsPreferences.edit().clear().apply()
-        } else {
-            val activeEvents = activeEventsPreferences.all.values.map { it as Long }.toHashSet()
-            val cancelledEvents = cancelledEventsPreferences.all.values.map { it as Long }.toHashSet()
-            val currentEvents = hashSetOf<Long>()
-            val currentCancelledEvents = hashSetOf<Long>()
-
-            val events = calendarFacade.getEventsInRange(
-                Instant.ofEpochMilli(now - deactivation),
-                Instant.ofEpochMilli(now + LOOK_AHEAD))
-            for (event in events) {
-                val eventActivation = event.begin.toEpochMilli() - activation
-                val eventDeactivation = event.end.toEpochMilli() + deactivation
-
-                if (eventDeactivation < now + TOLERANCE) {
-                    continue
-                }
-
-                if (eventActivation >= now + TOLERANCE) {
-                    nextRunTime = Math.min(eventActivation, nextRunTime)
-                    break
-                }
-
-                val cancelled = cancelledEvents.contains(event.eventId)
-                val matchingRules = calendarRules.filter { eventMatchesRule(event, it) }
-                if (cancelled) {
-                    if (matchingRules.isNotEmpty()) {
-                        currentCancelledEvents.add(event.eventId)
-                    }
-                    continue
-                }
-                if (matchingRules.isEmpty())
-                    continue
-
-                activate = true
-                currentEvents.add(event.eventId)
-                val active = activeEvents.contains(event.eventId)
-                for (rule in matchingRules) {
-                    if (notificationText.isEmpty()) {
-                        notificationText = event.title ?: ""
-                    }
-                    vibrate = vibrate && rule.vibrate
-                    reactivate = reactivate || !active || rule.id == modifiedRuleId
-                    nextRunTime = Math.min(eventDeactivation, nextRunTime)
-                }
-            }
-
-            // save active events
-                val activeEventsPreferencesEditor = activeEventsPreferences.edit()
-                        .clear()
-                currentEvents.mapIndexed { i, id ->
-                    activeEventsPreferencesEditor.putLong(i.toString(), id)
-                }
-                activeEventsPreferencesEditor.apply()
-        }
-
-        // save active state
-        val active = preferences.politeMode
-        if (activate != active) {
-            preferences.politeMode = activate
-        }
-
-        // set ringer mode
-        if (active && !activate) {
-            deactivate()
-        } else if (activate) {
-            if (active) {
-                if (reactivate) {
-                    ringerModeManager.setRingerMode(vibrate)
+        for (event in events) {
+            // if the event is occurring now
+            if (event.begin <= now + timingConfig.ruleEventBoundaryTolerance) {
+                if (currentEvent == null || event.vibrate < currentEvent.vibrate) {
+                    currentEvent = event
                 }
             } else {
-                ringerModeManager.saveRingerMode()
-                ringerModeManager.setRingerMode(vibrate)
+                if (currentEvent == null
+                    || event.begin >= currentEvent.end
+                    || event.vibrate <= currentEvent.vibrate
+                ) {
+                    nextEvent = event
+                }
+                // disregard any events further in the future
+                break
             }
         }
 
-        // notification
-        val notificationsEnabled = preferences.notifications
-        if (activate && notificationsEnabled) {
-            if (!active) {
-                notificationManager.notifyPoliteActive(notificationText)
-            }
-        } else {
-            notificationManager.cancelPoliteActive()
+        return CurrentAndNextEvents(currentEvent, nextEvent)
+    }
+
+    private fun cancelCurrentEvents(now: Instant) {
+        val eventCancels = ruleEventFinders.calendarRules.allEventsAt(now)
+            .map { EventCancel(it.eventId, it.end) }
+        if (eventCancels.isNotEmpty()) {
+            stateDao.insertEventCancels(*eventCancels.toTypedArray())
         }
 
-        val maxRefreshTime =
-            if (nextRunTime == Long.MAX_VALUE) null else Instant.ofEpochMilli(nextRunTime)
-        refreshScheduler.scheduleRefresh(maxRefreshTime)
+        val scheduleRuleCancels = ruleEventFinders.scheduleRules.allEventsAt(now)
+            .map { ScheduleRuleCancel(it.rule.id, it.end) }
+        if (scheduleRuleCancels.isNotEmpty()) {
+            stateDao.insertScheduleRuleCancels(*scheduleRuleCancels.toTypedArray())
+        }
     }
-
-    private fun deactivate() {
-        preferences.politeMode = false
-        activeEventsPreferences.edit().clear().apply()
-        notificationManager.cancelPoliteActive()
-        ringerModeManager.restoreRingerMode()
-    }
-
 }
+
+private data class CurrentAndNextEvents(val currentEvent: RuleEvent?, val nextEvent: RuleEvent?)

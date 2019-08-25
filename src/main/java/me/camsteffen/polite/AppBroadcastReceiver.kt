@@ -15,12 +15,9 @@ class AppBroadcastReceiver : DaggerBroadcastReceiver() {
         private const val ACTION_CANCEL = "cancel"
         private const val ACTION_REFRESH = "refresh"
 
-        private const val MODIFIED_RULE_ID = "modified_rule_id"
-
-        fun refreshIntent(context: Context, modifiedRuleId: Long? = null): Intent {
+        fun refreshIntent(context: Context): Intent {
             return Intent(context, AppBroadcastReceiver::class.java)
                 .setAction(ACTION_REFRESH)
-                .putExtra(MODIFIED_RULE_ID, modifiedRuleId)
         }
 
         fun pendingCancelIntent(context: Context): PendingIntent {
@@ -32,14 +29,14 @@ class AppBroadcastReceiver : DaggerBroadcastReceiver() {
             )
         }
 
-        fun pendingRefreshIntent(context: Context, modifiedRuleId: Long? = null): PendingIntent {
-            val intent = refreshIntent(context, modifiedRuleId)
+        fun pendingRefreshIntent(context: Context): PendingIntent {
+            val intent = refreshIntent(context)
             return PendingIntent.getBroadcast(context, 0, intent, 0)
         }
 
-        fun sendRefresh(context: Context, modifiedRuleId: Long? = null) {
+        fun sendRefresh(context: Context) {
             context.sendBroadcast(
-                refreshIntent(context, modifiedRuleId)
+                refreshIntent(context)
             )
         }
 
@@ -53,12 +50,8 @@ class AppBroadcastReceiver : DaggerBroadcastReceiver() {
         when (intent.action) {
             NotificationManager.ACTION_NOTIFICATION_POLICY_ACCESS_GRANTED_CHANGED,
             Intent.ACTION_PROVIDER_CHANGED,
-            Intent.ACTION_BOOT_COMPLETED -> finishAsync { stateManager.refresh(null) }
-            ACTION_REFRESH -> {
-                val modifiedRuleId = intent.getLongExtra(MODIFIED_RULE_ID, -1L)
-                    .takeIf { it != -1L }
-                finishAsync { stateManager.refresh(modifiedRuleId) }
-            }
+            Intent.ACTION_BOOT_COMPLETED -> finishAsync { stateManager.refresh() }
+            ACTION_REFRESH -> finishAsync { stateManager.refresh() }
             ACTION_CANCEL -> finishAsync(stateManager::cancel)
         }
     }

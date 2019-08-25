@@ -19,7 +19,7 @@ class RuleService
     fun deleteRuleAsync(id: Long) {
         AsyncTask.execute {
             if (ruleDao.deleteRule(id) != 0) {
-                politeStateManager.refresh(null)
+                politeStateManager.refresh()
             }
         }
     }
@@ -27,14 +27,14 @@ class RuleService
     fun saveRuleAsync(rule: Rule) {
         AsyncTask.execute {
             ruleDao.saveRule(rule)
-            politeStateManager.refresh(rule.id)
+            politeStateManager.refresh()
         }
     }
 
     fun updateCalendarRulesEnabledAsync(enabled: Boolean) {
         AsyncTask.execute {
             if (ruleDao.updateCalendarRulesEnabled(enabled) != 0) {
-                politeStateManager.refresh(null)
+                politeStateManager.refresh()
             }
         }
     }
@@ -42,7 +42,7 @@ class RuleService
     fun updateRuleEnabledAsync(id: Long, enabled: Boolean) {
         AsyncTask.execute {
             if (ruleDao.updateRuleEnabled(id, enabled) != 0) {
-                politeStateManager.refresh(id)
+                politeStateManager.refresh()
             }
         }
     }
@@ -50,7 +50,7 @@ class RuleService
     fun updateRuleNameAsync(id: Long, name: String) {
         AsyncTask.execute {
             if (ruleDao.updateRuleName(id, name) != 0) {
-                politeStateManager.refresh(id)
+                politeStateManager.refresh()
             }
         }
     }

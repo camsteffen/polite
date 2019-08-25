@@ -6,19 +6,11 @@ import me.camsteffen.polite.R
 import javax.inject.Inject
 import javax.inject.Singleton
 
-object SharedPreferencesNames {
-    const val ACTIVE_SCHEDULE_RULES = "active_sched_rules"
-    const val CANCELLED_EVENTS = "cancelled_events"
-    const val CANCELLED_SCHEDULE_RULES = "cancelled_sched_rules"
-    const val POLITE_MODE_EVENTS = "polite_events"
-}
-
 object PreferenceDefaults {
     const val ENABLE = true
 }
 
 private object PreferenceKeys {
-    const val POLITE_MODE = "polite_mode"
     const val PREVIOUS_RINGER_MODE = "previous_ringer_mode"
     const val LAUNCH_COUNT = "launch_count"
     const val ASKED_TO_RATE = "asked_to_rate"
@@ -40,10 +32,6 @@ class AppPreferences
     var theme: String
         get() = preferences.getString(themeKey, defaultTheme)!!
         set(value) = editor.putString(themeKey, value).apply()
-
-    var politeMode: Boolean
-        get() = preferences.getBoolean(PreferenceKeys.POLITE_MODE, false)
-        set(value) = editor.putBoolean(PreferenceKeys.POLITE_MODE, value).apply()
 
     var notifications: Boolean
         get() = preferences.getBoolean(notificationsKey, true)
