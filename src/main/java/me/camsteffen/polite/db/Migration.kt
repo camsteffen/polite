@@ -15,7 +15,8 @@ fun allMigrations(context: Context): Array<Migration> {
         AssetMigration(context, 2, 3),
         AssetMigration(context, 3, 4),
         AssetMigration(context, 4, 5),
-        MIGRATION_5_6
+        MIGRATION_5_6,
+        AssetMigration(context, 6, 7)
     )
 }
 

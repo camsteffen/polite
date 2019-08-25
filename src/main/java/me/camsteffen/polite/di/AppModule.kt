@@ -23,6 +23,7 @@ import me.camsteffen.polite.MainActivity
 import me.camsteffen.polite.Polite
 import me.camsteffen.polite.R
 import me.camsteffen.polite.db.AppDatabase
+import me.camsteffen.polite.db.PoliteStateDao
 import me.camsteffen.polite.defaultAppTimingConfig
 import me.camsteffen.polite.rule.RuleMasterDetailViewModel
 import me.camsteffen.polite.rule.edit.EditCalendarRuleViewModel
@@ -83,6 +84,9 @@ abstract class AppModule {
 
         @JvmStatic @Provides
         fun ruleDao(database: AppDatabase) = database.ruleDao
+
+        @JvmStatic @Provides
+        fun politeStateDao(database: AppDatabase): PoliteStateDao = database.politeStateDao
 
         @JvmStatic @Provides
         fun provideResources(app: Application): Resources = app.resources
