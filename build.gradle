@@ -23,7 +23,7 @@ android {
 
     defaultConfig {
         applicationId "me.camsteffen.polite"
-        minSdkVersion 16
+        minSdkVersion 21
         targetSdkVersion 26
         versionCode 54
         versionName "1.3.3"
