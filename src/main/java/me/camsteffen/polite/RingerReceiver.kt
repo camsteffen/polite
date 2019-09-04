@@ -1,4 +1,5 @@
 package me.camsteffen.polite
+
 import android.Manifest
 import android.app.AlarmManager
 import android.app.Notification
@@ -29,7 +30,6 @@ import javax.inject.Singleton
 private val TOLERANCE = TimeUnit.SECONDS.toMillis(8)
 private val WINDOW_START = TimeUnit.HOURS.toMillis(4)
 private val WINDOW_LENGTH = TimeUnit.HOURS.toMillis(25)
-private val INTERVAL = TimeUnit.HOURS.toMillis(29)
 private val LOOK_AHEAD = TimeUnit.HOURS.toMillis(30)
 
 private val EVENT_PROJECTION = arrayOf(
