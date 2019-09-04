@@ -52,7 +52,7 @@ class RuleAdapter(val rulesFragment: RulesFragment, val rules: RuleList = RuleLi
         }
     }
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder? {
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
         val inflater = LayoutInflater.from(parent.context)
         return when(viewType) {
             SUBHEAD -> SubheadViewHolder(inflater.inflate(R.layout.subhead_rules, parent, false))
@@ -67,7 +67,7 @@ class RuleAdapter(val rulesFragment: RulesFragment, val rules: RuleList = RuleLi
         when(item) {
             is RuleList.Subhead -> {
                 holder as SubheadViewHolder
-                val drawable = DrawableCompat.wrap(ContextCompat.getDrawable(context, item.drawableId)).mutate()
+                val drawable = DrawableCompat.wrap(ContextCompat.getDrawable(context, item.drawableId)!!).mutate()
                 val attribute = TypedValue()
                 context.theme.resolveAttribute(android.R.attr.textColorSecondary, attribute, true)
                 val tint = ContextCompat.getColor(context, attribute.resourceId)

@@ -34,8 +34,8 @@ class MyRecyclerView(context: Context, attrs: AttributeSet? = null) : RecyclerVi
 
     class Divider: RecyclerView.ItemDecoration() {
 
-        override fun getItemOffsets(outRect: Rect?, view: View?, parent: RecyclerView?, state: State?) {
-            outRect!!.bottom = 1
+        override fun getItemOffsets(outRect: Rect, view: View, parent: RecyclerView, state: State) {
+            outRect.bottom = 1
         }
     }
 }

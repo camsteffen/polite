@@ -214,7 +214,7 @@ class MainActivity : AppCompatActivity(), FragmentManager.OnBackStackChangedList
     }
 
     fun setMenuIcon(menu: Menu, itemId: Int, iconId: Int) {
-        var drawable = ContextCompat.getDrawable(this, iconId)
+        var drawable = ContextCompat.getDrawable(this, iconId)!!
         drawable = DrawableCompat.wrap(drawable).mutate()
         DrawableCompat.setTint(drawable, Color.WHITE)
         menu.findItem(itemId).icon = drawable
