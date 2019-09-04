@@ -248,8 +248,8 @@ class RulesFragment : Fragment() {
                 .setView(view)
                 .create()
 
-        val calendarRuleView = view.findViewById(R.id.calendar_rule)
-        val scheduleRuleView = view.findViewById(R.id.schedule_rule)
+        val calendarRuleView = view.findViewById<View>(R.id.calendar_rule)
+        val scheduleRuleView = view.findViewById<View>(R.id.schedule_rule)
 
         calendarRuleView.setOnClickListener {
             dialog.dismiss()
