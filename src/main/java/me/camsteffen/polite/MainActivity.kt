@@ -101,10 +101,7 @@ class MainActivity : AppCompatActivity(), FragmentManager.OnBackStackChangedList
 
     override fun onDestroy() {
         super.onDestroy()
-        if(Build.VERSION.SDK_INT >= 18)
-            receiverThread.quitSafely()
-        else
-            receiverThread.quit()
+        receiverThread.quitSafely()
         unregisterReceiver(ringerReceiver)
     }
 

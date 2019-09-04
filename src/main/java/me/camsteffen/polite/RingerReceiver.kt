@@ -262,16 +262,14 @@ class RingerReceiver : BroadcastReceiver() {
         if (hasCalendarPermission)
             notificationManager.cancel(Polite.NOTIFY_ID_CALENDAR_PERMISSION)
         else if (calendarRules.isNotEmpty()) {
-            val builder = NotificationCompat.Builder(context)
+            val notification = NotificationCompat.Builder(context)
                     .setColor(ContextCompat.getColor(context, R.color.primary))
                     .setContentTitle(context.resources.getString(R.string.calendar_permission_required))
                     .setContentText(context.resources.getString(R.string.calendar_permission_explain))
                     .setSmallIcon(R.mipmap.notification_icon)
                     .setContentIntent(PendingIntent.getActivity(context, 0, Intent(context, MainActivity::class.java), 0))
-            if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-                builder.setVisibility(Notification.VISIBILITY_PUBLIC)
-            }
-            val notification = builder.build()
+                    .setVisibility(NotificationCompat.VISIBILITY_PUBLIC)
+                    .build()
             notificationManager.notify(Polite.NOTIFY_ID_CALENDAR_PERMISSION, notification)
         }
 
@@ -382,24 +380,22 @@ class RingerReceiver : BroadcastReceiver() {
         val notificationsEnabled = preferences.getBoolean(context.getString(R.string.preference_notifications), true)
         if (activate && notificationsEnabled) {
             if (!active) {
-                val builder = NotificationCompat.Builder(context)
+                val notification = NotificationCompat.Builder(context)
                         .setOngoing(true)
                         .setColor(ContextCompat.getColor(context, R.color.primary))
                         .setContentTitle(context.resources.getString(R.string.polite_active))
                         .setContentText(notificationText)
                         .setSmallIcon(R.mipmap.notification_icon)
                         .setContentIntent(PendingIntent.getActivity(context, 0, Intent(context, MainActivity::class.java), 0))
-                        .addAction(android.support.v4.app.NotificationCompat.Action.Builder(
+                        .setVisibility(NotificationCompat.VISIBILITY_PUBLIC)
+                        .addAction(NotificationCompat.Action.Builder(
                                 R.drawable.ic_cancel_black_24dp,
                                 context.resources.getString(android.R.string.cancel),
                                 PendingIntent.getBroadcast(context, 0, Intent(context,
                                         RingerReceiver::class.java).setAction(ACTION_CANCEL),
                                         PendingIntent.FLAG_UPDATE_CURRENT))
                                 .build())
-                if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-                    builder.setVisibility(Notification.VISIBILITY_PUBLIC)
-                }
-                val notification = builder.build()
+                        .build()
                 notificationManager.notify(Polite.NOTIFY_ID_ACTIVE, notification)
             }
         } else {
@@ -411,17 +407,11 @@ class RingerReceiver : BroadcastReceiver() {
         val pendingIntent = PendingIntent.getBroadcast(context, 0, Intent(context, RingerReceiver::class.java)
                 .setAction(ACTION_REFRESH), 0)
         if (nextRunTime == Long.MAX_VALUE) {
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
-                alarmManager.setWindow(AlarmManager.RTC_WAKEUP, now + WINDOW_START, WINDOW_LENGTH, pendingIntent)
-            } else {
-                alarmManager.set(AlarmManager.RTC_WAKEUP, now + INTERVAL, pendingIntent)
-            }
+            alarmManager.setWindow(AlarmManager.RTC_WAKEUP, now + WINDOW_START, WINDOW_LENGTH, pendingIntent)
         } else if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             alarmManager.setExactAndAllowWhileIdle(AlarmManager.RTC_WAKEUP, nextRunTime, pendingIntent)
-        } else if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
+        } else {
             alarmManager.setExact(AlarmManager.RTC_WAKEUP, nextRunTime, pendingIntent)
-        } else  {
-            alarmManager.set(AlarmManager.RTC_WAKEUP, nextRunTime, pendingIntent)
         }
     }
 
