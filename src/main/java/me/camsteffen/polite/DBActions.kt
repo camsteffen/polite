@@ -116,7 +116,7 @@ object DBActions {
         db.insertOrThrow(DB.CalendarRule.TABLE_NAME, null, values)
 
         // Calendar
-        for (calID in rule.calendars) {
+        for (calID in rule.calendarIds) {
             values.clear()
             values.put(DB.CalendarRuleCalendar.COLUMN_RULE, ruleID)
             values.put(DB.CalendarRuleCalendar.COLUMN_CALENDAR_ID, calID)

@@ -87,7 +87,7 @@ sealed class Rule : Parcelable, RuleList.RuleListItem {
 
 class CalendarRule : Rule {
 
-    val calendars: MutableList<Long>
+    val calendarIds: MutableList<Long>
     var match: Int
     var inverseMatch: Boolean
     val keywords: TreeSet<String>
@@ -102,7 +102,7 @@ class CalendarRule : Rule {
     constructor(context: Context) : super(context) {
         match = MATCH_ALL
         inverseMatch = false
-        calendars = mutableListOf()
+        calendarIds = mutableListOf()
         keywords = TreeSet()
     }
 
@@ -115,15 +115,15 @@ class CalendarRule : Rule {
             match: Int,
             inverseMatch: Boolean,
             keywords: Collection<String>) : super(id, name, enabled, vibrate) {
-        this.calendars = calendars.toMutableList()
+        this.calendarIds = calendars.toMutableList()
         this.match = match
         this.inverseMatch = inverseMatch
         this.keywords = TreeSet(keywords)
     }
 
     constructor(parcel: Parcel) : super(parcel) {
-        calendars = mutableListOf()
-        parcel.readList(calendars, null)
+        calendarIds = mutableListOf()
+        parcel.readList(calendarIds, null)
         match = parcel.readInt()
         inverseMatch = parcel.readInt() != 0
         val keywordsArr = mutableListOf<String>()
@@ -165,7 +165,7 @@ class CalendarRule : Rule {
 
     override fun writeToParcel(dest: Parcel, flags: Int) {
         super.writeToParcel(dest, flags)
-        dest.writeList(calendars)
+        dest.writeList(calendarIds)
         dest.writeInt(match)
         dest.writeInt(if(inverseMatch) 1 else 0)
         dest.writeStringList(keywords.toMutableList())

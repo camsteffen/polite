@@ -61,7 +61,7 @@ class Event(
         val end: Long)
 
 private fun eventMatchesRule(event: Event, rule: CalendarRule): Boolean {
-    if (rule.calendars.isNotEmpty() && !rule.calendars.contains(event.calendarId)) {
+    if (rule.calendarIds.isNotEmpty() && !rule.calendarIds.contains(event.calendarId)) {
         return false
     }
     if (rule.matchAll) {

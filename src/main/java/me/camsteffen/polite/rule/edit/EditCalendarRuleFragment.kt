@@ -162,7 +162,7 @@ class EditCalendarRuleFragment : EditRuleFragment<CalendarRule>() {
             val id = calCur.getLong(0)
             calIDs[i] = id
             calNames[i] = calCur.getString(1)
-            checked[i] = rule.calendars.contains(id)
+            checked[i] = rule.calendarIds.contains(id)
         }
         calCur.close()
 
@@ -172,14 +172,14 @@ class EditCalendarRuleFragment : EditRuleFragment<CalendarRule>() {
                     checked[which] = isChecked
                 }
                 .setNeutralButton(R.string.all) { _, _ ->
-                    rule.calendars.clear()
+                    rule.calendarIds.clear()
                     onUpdateCalendars()
                 }
                 .setPositiveButton(android.R.string.ok) { _, _ ->
-                    rule.calendars.clear()
+                    rule.calendarIds.clear()
                     checked.indices
                             .filter { checked[it] }
-                            .forEach { rule.calendars.add(calIDs[it]) }
+                            .forEach { rule.calendarIds.add(calIDs[it]) }
                     onUpdateCalendars()
                 }
                 .setNegativeButton(android.R.string.cancel, null)
@@ -190,10 +190,10 @@ class EditCalendarRuleFragment : EditRuleFragment<CalendarRule>() {
     private fun onUpdateCalendars() {
         val calendars = view.findViewById(R.id.calendars) as CaptionOption
         val calendarsCaption = calendars.caption
-        if (rule.calendars.size == 0) {
+        if (rule.calendarIds.size == 0) {
             calendarsCaption.setText(R.string.all)
         } else {
-            calendarsCaption.text = getString(R.string.n_selected, rule.calendars.size)
+            calendarsCaption.text = getString(R.string.n_selected, rule.calendarIds.size)
         }
     }
 
