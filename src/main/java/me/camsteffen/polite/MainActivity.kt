@@ -20,7 +20,6 @@ import android.support.v4.app.ActivityCompat
 import android.support.v4.content.ContextCompat
 import android.support.v4.graphics.drawable.DrawableCompat
 import android.support.v7.app.AlertDialog
-import android.support.v7.app.AppCompatActivity
 import android.support.v7.app.AppCompatDelegate
 import android.support.v7.widget.Toolbar
 import android.view.Menu
@@ -28,15 +27,16 @@ import android.view.View
 import android.view.inputmethod.EditorInfo
 import android.view.inputmethod.InputMethodManager
 import android.widget.EditText
+import dagger.android.support.DaggerAppCompatActivity
 import me.camsteffen.polite.model.CalendarRule
 import me.camsteffen.polite.rule.edit.EditRuleFragment
 import me.camsteffen.polite.rule.master.RulesFragment
-import me.camsteffen.polite.settings.AppPreferences
 import me.camsteffen.polite.util.RateAppPrompt
+import javax.inject.Inject
 
 private const val ACTIVITY_CALENDAR_PERMISSION = 1
 
-class MainActivity : AppCompatActivity(), FragmentManager.OnBackStackChangedListener, ActivityCompat.OnRequestPermissionsResultCallback {
+class MainActivity : DaggerAppCompatActivity(), FragmentManager.OnBackStackChangedListener, ActivityCompat.OnRequestPermissionsResultCallback {
 
     companion object {
         const val REQUEST_PERMISSION_CALENDAR = 0
@@ -47,9 +47,10 @@ class MainActivity : AppCompatActivity(), FragmentManager.OnBackStackChangedList
         }
     }
 
+    @Inject lateinit var rateAppPrompt: RateAppPrompt
+    @Inject lateinit var ringerReceiver: RingerReceiver
+
     private lateinit var receiverThread: HandlerThread
-    private lateinit var ringerReceiver: RingerReceiver
-    lateinit var rateAppPrompt: RateAppPrompt
     val notificationManager: NotificationManager
         get() = getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
     val titleET: EditText
@@ -75,9 +76,7 @@ class MainActivity : AppCompatActivity(), FragmentManager.OnBackStackChangedList
         receiverThread = HandlerThread("RingerReceiver")
         receiverThread.start()
         val receiverHandler = Handler(receiverThread.looper)
-        ringerReceiver = RingerReceiver()
         registerReceiver(ringerReceiver, IntentFilter(RingerReceiver.ACTION_REFRESH), null, receiverHandler)
-        rateAppPrompt = RateAppPrompt(this)
         rateAppPrompt.launchCount++
 
         fragmentManager.addOnBackStackChangedListener(this)

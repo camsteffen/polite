@@ -23,6 +23,8 @@ import java.util.Calendar
 import java.util.Date
 import java.util.GregorianCalendar
 import java.util.concurrent.TimeUnit
+import javax.inject.Inject
+import javax.inject.Singleton
 
 private val TOLERANCE = TimeUnit.SECONDS.toMillis(8)
 private val WINDOW_START = TimeUnit.HOURS.toMillis(4)
@@ -73,7 +75,9 @@ private fun eventMatchesRule(event: Event, rule: CalendarRule): Boolean {
     return match.xor(rule.inverseMatch)
 }
 
-class RingerReceiver : BroadcastReceiver() {
+@Singleton
+class RingerReceiver
+@Inject constructor() : BroadcastReceiver() {
 
     companion object {
         const val ACTION_CANCEL = "cancel"

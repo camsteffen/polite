@@ -10,11 +10,15 @@ import me.camsteffen.polite.Polite
 import me.camsteffen.polite.R
 import me.camsteffen.polite.settings.AppPreferences
 import java.util.concurrent.TimeUnit
+import javax.inject.Inject
+import javax.inject.Singleton
 
 private const val MIN_LAUNCHES = 12
 private const val MIN_DAYS_INSTALLED = 22
 
-class RateAppPrompt(context: Context) {
+@Singleton
+class RateAppPrompt
+@Inject constructor(context: Context) {
 
     private val preferences = Polite.preferences
     private val timeInstalled = context.packageManager.getPackageInfo(context.packageName, 0).firstInstallTime

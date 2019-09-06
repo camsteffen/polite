@@ -1,6 +1,5 @@
 package me.camsteffen.polite.rule.master
 
-import android.app.Fragment
 import android.content.Intent
 import android.os.AsyncTask
 import android.os.Build
@@ -16,6 +15,7 @@ import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
+import dagger.android.DaggerFragment
 import me.camsteffen.polite.DB
 import me.camsteffen.polite.DBActions
 import me.camsteffen.polite.HelpFragment
@@ -32,11 +32,15 @@ import me.camsteffen.polite.rule.edit.EditCalendarRuleFragment
 import me.camsteffen.polite.rule.edit.EditRuleFragment
 import me.camsteffen.polite.rule.edit.EditScheduleRuleFragment
 import me.camsteffen.polite.settings.SettingsFragment
+import me.camsteffen.polite.util.RateAppPrompt
+import javax.inject.Inject
 
 private const val RULE_LIST = "RuleList"
 private const val OPEN_RULE_POS = "openRulePos"
 
-class RulesFragment : Fragment() {
+class RulesFragment : DaggerFragment() {
+
+    @Inject lateinit var rateAppPrompt: RateAppPrompt
 
     val polite: Polite
         get() = activity!!.application as Polite
@@ -240,7 +244,7 @@ class RulesFragment : Fragment() {
         rule.saveDB(mainActivity, {
             rule.addToAdapter(adapter)
         })
-        mainActivity.rateAppPrompt.conditionalPrompt(mainActivity)
+        rateAppPrompt.conditionalPrompt(mainActivity)
     }
 
     fun renameRule(id: Long, position: Int, name: String) {
