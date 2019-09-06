@@ -1,14 +1,11 @@
 package me.camsteffen.polite.state
 
 import android.Manifest
-import android.app.AlarmManager
 import android.content.Context
 import android.content.SharedPreferences
 import android.content.pm.PackageManager
 import android.media.AudioManager
-import android.os.Build
 import androidx.core.content.ContextCompat
-import me.camsteffen.polite.AppBroadcastReceiver
 import me.camsteffen.polite.data.CalendarEvent
 import me.camsteffen.polite.data.CalendarFacade
 import me.camsteffen.polite.db.RuleDao
@@ -29,8 +26,6 @@ import javax.inject.Inject
 import javax.inject.Singleton
 
 private val TOLERANCE = TimeUnit.SECONDS.toMillis(8)
-private val WINDOW_START = TimeUnit.HOURS.toMillis(4)
-private val WINDOW_LENGTH = TimeUnit.HOURS.toMillis(25)
 private val LOOK_AHEAD = TimeUnit.HOURS.toMillis(30)
 
 private fun eventMatchesRule(event: CalendarEvent, rule: CalendarRule): Boolean {
@@ -59,7 +54,8 @@ class PoliteStateManager
     private val context: Context,
     private val notificationManager: AppNotificationManager,
     private val preferences: AppPreferences,
-    private val ruleDao: RuleDao
+    private val ruleDao: RuleDao,
+    private val refreshScheduler: RefreshScheduler
 ) {
 
     private var activeEventsPreferences: SharedPreferences =
@@ -293,16 +289,9 @@ class PoliteStateManager
             notificationManager.cancelPoliteActive()
         }
 
-        // schedule next task
-        val alarmManager = context.getSystemService(Context.ALARM_SERVICE) as AlarmManager
-        val pendingIntent = AppBroadcastReceiver.pendingRefreshIntent(context)
-        if (nextRunTime == Long.MAX_VALUE) {
-            alarmManager.setWindow(AlarmManager.RTC_WAKEUP, now + WINDOW_START, WINDOW_LENGTH, pendingIntent)
-        } else if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-            alarmManager.setExactAndAllowWhileIdle(AlarmManager.RTC_WAKEUP, nextRunTime, pendingIntent)
-        } else {
-            alarmManager.setExact(AlarmManager.RTC_WAKEUP, nextRunTime, pendingIntent)
-        }
+        val maxRefreshTime =
+            if (nextRunTime == Long.MAX_VALUE) null else Instant.ofEpochMilli(nextRunTime)
+        refreshScheduler.scheduleRefresh(maxRefreshTime)
     }
 
     private fun deactivate() {

@@ -1,5 +1,6 @@
 package me.camsteffen.polite.di
 
+import android.app.AlarmManager
 import android.app.Application
 import android.app.NotificationManager
 import android.content.ContentResolver
@@ -27,6 +28,7 @@ import me.camsteffen.polite.rule.edit.EditCalendarRuleViewModel
 import me.camsteffen.polite.rule.edit.EditScheduleRuleViewModel
 import me.camsteffen.polite.settings.PreferenceDefaults
 import me.camsteffen.polite.util.SharedPreferenceBooleanLiveData
+import org.threeten.bp.Clock
 import javax.inject.Singleton
 
 @Module
@@ -92,6 +94,16 @@ abstract class AppModule {
         fun provideEnableLiveData(sharedPreferences: SharedPreferences, resources: Resources): LiveData<Boolean> {
             val key = resources.getString(R.string.preference_enable)
             return SharedPreferenceBooleanLiveData(sharedPreferences, key, PreferenceDefaults.ENABLE)
+        }
+
+        @JvmStatic @Provides
+        fun provideAlarmManager(context: Context): AlarmManager {
+            return context.getSystemService(Context.ALARM_SERVICE) as AlarmManager
+        }
+
+        @JvmStatic @Provides
+        fun provideClock(): Clock {
+            return Clock.systemDefaultZone()
         }
 
         @JvmStatic @Provides
