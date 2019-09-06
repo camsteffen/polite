@@ -7,6 +7,7 @@ import dagger.Module
 import dagger.android.ContributesAndroidInjector
 import me.camsteffen.polite.MainActivity
 import me.camsteffen.polite.Polite
+import me.camsteffen.polite.RingerReceiver
 
 @Module
 abstract class AppModule {
@@ -19,4 +20,7 @@ abstract class AppModule {
 
     @ContributesAndroidInjector(modules = [MainActivityFragmentsModule::class])
     abstract fun contributeMainActivity(): MainActivity
+
+    @ContributesAndroidInjector
+    abstract fun contributeRingerReceiver(): RingerReceiver
 }
