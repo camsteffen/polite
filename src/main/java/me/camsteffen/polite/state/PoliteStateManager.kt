@@ -15,11 +15,11 @@ import android.os.Build
 import android.provider.CalendarContract
 import android.support.v4.app.NotificationCompat
 import android.support.v4.content.ContextCompat
+import me.camsteffen.polite.AppBroadcastReceiver
 import me.camsteffen.polite.DB
 import me.camsteffen.polite.MainActivity
 import me.camsteffen.polite.Polite
 import me.camsteffen.polite.R
-import me.camsteffen.polite.RingerReceiver
 import me.camsteffen.polite.model.CalendarRule
 import me.camsteffen.polite.model.ScheduleRule
 import me.camsteffen.polite.settings.AppPreferences
@@ -376,9 +376,7 @@ class PoliteStateManager
                         .addAction(NotificationCompat.Action.Builder(
                                 R.drawable.ic_cancel_black_24dp,
                                 context.resources.getString(android.R.string.cancel),
-                                PendingIntent.getBroadcast(context, 0, Intent(context,
-                                        RingerReceiver::class.java).setAction(RingerReceiver.ACTION_CANCEL),
-                                        PendingIntent.FLAG_UPDATE_CURRENT))
+                                AppBroadcastReceiver.pendingCancelIntent(context))
                                 .build())
                         .build()
                 notificationManager.notify(Polite.NOTIFY_ID_ACTIVE, notification)
@@ -389,8 +387,7 @@ class PoliteStateManager
 
         // schedule next task
         val alarmManager = context.getSystemService(Context.ALARM_SERVICE) as AlarmManager
-        val pendingIntent = PendingIntent.getBroadcast(context, 0, Intent(context, RingerReceiver::class.java)
-                .setAction(RingerReceiver.ACTION_REFRESH), 0)
+        val pendingIntent = AppBroadcastReceiver.pendingRefreshIntent(context)
         if (nextRunTime == Long.MAX_VALUE) {
             alarmManager.setWindow(AlarmManager.RTC_WAKEUP, now + WINDOW_START, WINDOW_LENGTH, pendingIntent)
         } else if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {

@@ -65,7 +65,7 @@ class MainActivity : DaggerAppCompatActivity(), FragmentManager.OnBackStackChang
                     .setCustomAnimations(android.R.animator.fade_in, 0)
                     .add(R.id.fragment_container, RulesFragment(), RulesFragment.FRAGMENT_TAG)
                     .commit()
-            sendBroadcast(Intent(this, RingerReceiver::class.java).setAction(RingerReceiver.ACTION_REFRESH))
+            AppBroadcastReceiver.sendRefresh(this)
         }
 
         rateAppPrompt.launchCount++
@@ -123,7 +123,7 @@ class MainActivity : DaggerAppCompatActivity(), FragmentManager.OnBackStackChang
                     rulesFragment?.openNewCalendarRule()
                 }
                 REQUEST_PERMISSION_CALENDAR -> {
-                    sendBroadcast(Intent(this, RingerReceiver::class.java).setAction(RingerReceiver.ACTION_REFRESH))
+                    AppBroadcastReceiver.sendRefresh(this)
                 }
             }
         } else {

@@ -2,7 +2,6 @@ package me.camsteffen.polite
 
 import android.content.ContentValues
 import android.content.Context
-import android.content.Intent
 import android.database.sqlite.SQLiteDatabase
 import android.os.AsyncTask
 import android.provider.BaseColumns
@@ -32,9 +31,7 @@ object DBActions {
 
         override fun onPostExecute(id: Long) {
             uiFunction?.invoke(id)
-            context.sendBroadcast(Intent(context, RingerReceiver::class.java)
-                    .setAction(RingerReceiver.ACTION_REFRESH)
-                    .putExtra(RingerReceiver.MODIFIED_RULE_ID, id))
+            AppBroadcastReceiver.sendRefresh(context, id)
         }
 
         abstract fun modify(db: SQLiteDatabase): Long

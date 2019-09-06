@@ -1,13 +1,12 @@
 package me.camsteffen.polite.settings
 
-import android.content.Intent
 import android.content.SharedPreferences
 import android.os.Bundle
 import android.preference.PreferenceFragment
 import android.view.MenuItem
+import me.camsteffen.polite.AppBroadcastReceiver
 import me.camsteffen.polite.MainActivity
 import me.camsteffen.polite.R
-import me.camsteffen.polite.RingerReceiver
 
 class SettingsFragment : PreferenceFragment(), SharedPreferences.OnSharedPreferenceChangeListener {
 
@@ -32,8 +31,7 @@ class SettingsFragment : PreferenceFragment(), SharedPreferences.OnSharedPrefere
 
     override fun onStop() {
         super.onStop()
-        activity.sendBroadcast(Intent(activity, RingerReceiver::class.java)
-                .setAction(RingerReceiver.ACTION_REFRESH))
+        AppBroadcastReceiver.sendRefresh(activity)
         preferenceManager.sharedPreferences.unregisterOnSharedPreferenceChangeListener(this)
     }
 
