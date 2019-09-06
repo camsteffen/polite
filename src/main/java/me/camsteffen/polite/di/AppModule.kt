@@ -1,6 +1,7 @@
 package me.camsteffen.polite.di
 
 import android.app.Application
+import android.app.NotificationManager
 import android.content.Context
 import android.content.SharedPreferences
 import android.content.res.Resources
@@ -30,6 +31,10 @@ abstract class AppModule {
 
     @Module
     companion object {
+
+        @JvmStatic @Provides
+        fun provideNotificationManager(app: Application): NotificationManager =
+                app.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
 
         @JvmStatic @Provides
         fun provideResources(app: Application): Resources = app.resources

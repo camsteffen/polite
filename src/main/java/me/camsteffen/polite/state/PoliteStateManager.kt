@@ -2,28 +2,22 @@ package me.camsteffen.polite.state
 
 import android.Manifest
 import android.app.AlarmManager
-import android.app.Notification
-import android.app.NotificationManager
-import android.app.PendingIntent
 import android.content.ContentUris
 import android.content.Context
-import android.content.Intent
 import android.content.SharedPreferences
 import android.content.pm.PackageManager
 import android.media.AudioManager
 import android.os.Build
 import android.provider.CalendarContract
-import android.support.v4.app.NotificationCompat
 import android.support.v4.content.ContextCompat
 import me.camsteffen.polite.AppBroadcastReceiver
 import me.camsteffen.polite.DB
-import me.camsteffen.polite.MainActivity
 import me.camsteffen.polite.Polite
-import me.camsteffen.polite.R
 import me.camsteffen.polite.model.CalendarRule
 import me.camsteffen.polite.model.ScheduleRule
 import me.camsteffen.polite.settings.AppPreferences
 import me.camsteffen.polite.settings.SharedPreferencesNames
+import me.camsteffen.polite.util.AppNotificationManager
 import me.camsteffen.polite.util.TimeOfDay
 import org.threeten.bp.DayOfWeek
 import org.threeten.bp.LocalDate
@@ -86,18 +80,10 @@ private fun eventMatchesRule(event: Event, rule: CalendarRule): Boolean {
 class PoliteStateManager
 @Inject constructor(
     private val context: Context,
+    private val notificationManager: AppNotificationManager,
     private val preferences: AppPreferences
 ) {
 
-    private var _notificationPolicyAccess: Boolean? = null
-    private val notificationPolicyAccess: Boolean
-        get() {
-            if (_notificationPolicyAccess == null) {
-                _notificationPolicyAccess = Build.VERSION.SDK_INT < Build.VERSION_CODES.M
-                        || notificationManager.isNotificationPolicyAccessGranted
-            }
-            return _notificationPolicyAccess!!
-        }
     private var activeEventsPreferences: SharedPreferences =
         context.getSharedPreferences(SharedPreferencesNames.POLITE_MODE_EVENTS, 0)
     private var activeScheduleRulesPreferences: SharedPreferences =
@@ -107,7 +93,6 @@ class PoliteStateManager
     private var cancelledScheduleRulesPreferences: SharedPreferences =
         context.getSharedPreferences(SharedPreferencesNames.CANCELLED_SCHEDULE_RULES, 0)
     private var audioManager: AudioManager = context.getSystemService(Context.AUDIO_SERVICE) as AudioManager
-    private var notificationManager: NotificationManager = context.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
 
     fun cancel() {
         // save cancelled schedule rules
@@ -141,29 +126,20 @@ class PoliteStateManager
         if (!preferences.enable) {
             cancelledEventsPreferences.edit().clear().apply()
             cancelledScheduleRulesPreferences.edit().clear().apply()
-            notificationManager.cancel(Polite.NOTIFY_ID_NOTIFICATION_POLICY_ACCESS)
+            notificationManager.cancelNotificationPolicyAccessRequired()
             deactivate()
             return
         }
 
         // check notification policy access
-        if (!notificationPolicyAccess) {
-            val notification = NotificationCompat.Builder(context)
-                    .setColor(ContextCompat.getColor(context, R.color.primary))
-                    .setContentTitle(context.resources.getString(R.string.notification_policy_access_required))
-                    .setContentText(context.resources.getString(R.string.notification_policy_access_explain))
-                    .setVisibility(Notification.VISIBILITY_PUBLIC)
-                    .setSmallIcon(R.mipmap.notification_icon)
-                    .setContentIntent(PendingIntent.getActivity(context, 0, Intent(android.provider.Settings.ACTION_NOTIFICATION_POLICY_ACCESS_SETTINGS), 0))
-                    .build()
-            notificationManager.notify(Polite.NOTIFY_ID_NOTIFICATION_POLICY_ACCESS, notification)
-
+        if (!notificationManager.isNotificationPolicyAccessGranted) {
+            notificationManager.notifyNotificationPolicyAccessRequired()
             cancelledEventsPreferences.edit().clear().apply()
             cancelledScheduleRulesPreferences.edit().clear().apply()
             deactivate()
             return
         } else {
-            notificationManager.cancel(Polite.NOTIFY_ID_NOTIFICATION_POLICY_ACCESS)
+            notificationManager.cancelNotificationPolicyAccessRequired()
         }
 
         // get activation and deactivation preferences
@@ -247,17 +223,9 @@ class PoliteStateManager
         val hasCalendarPermission = (ContextCompat.checkSelfPermission(context,
                 Manifest.permission.READ_CALENDAR) == PackageManager.PERMISSION_GRANTED)
         if (hasCalendarPermission)
-            notificationManager.cancel(Polite.NOTIFY_ID_CALENDAR_PERMISSION)
+            notificationManager.cancelCalendarPermissionRequired()
         else if (calendarRules.isNotEmpty()) {
-            val notification = NotificationCompat.Builder(context)
-                    .setColor(ContextCompat.getColor(context, R.color.primary))
-                    .setContentTitle(context.resources.getString(R.string.calendar_permission_required))
-                    .setContentText(context.resources.getString(R.string.calendar_permission_explain))
-                    .setSmallIcon(R.mipmap.notification_icon)
-                    .setContentIntent(PendingIntent.getActivity(context, 0, Intent(context, MainActivity::class.java), 0))
-                    .setVisibility(NotificationCompat.VISIBILITY_PUBLIC)
-                    .build()
-            notificationManager.notify(Polite.NOTIFY_ID_CALENDAR_PERMISSION, notification)
+            notificationManager.notifyCalendarPermissionRequired()
         }
 
         if (calendarRules.isEmpty() || !hasCalendarPermission) {
@@ -362,24 +330,10 @@ class PoliteStateManager
         val notificationsEnabled = preferences.notifications
         if (activate && notificationsEnabled) {
             if (!active) {
-                val notification = NotificationCompat.Builder(context)
-                        .setOngoing(true)
-                        .setColor(ContextCompat.getColor(context, R.color.primary))
-                        .setContentTitle(context.resources.getString(R.string.polite_active))
-                        .setContentText(notificationText)
-                        .setSmallIcon(R.mipmap.notification_icon)
-                        .setContentIntent(PendingIntent.getActivity(context, 0, Intent(context, MainActivity::class.java), 0))
-                        .setVisibility(NotificationCompat.VISIBILITY_PUBLIC)
-                        .addAction(NotificationCompat.Action.Builder(
-                                R.drawable.ic_cancel_black_24dp,
-                                context.resources.getString(android.R.string.cancel),
-                                AppBroadcastReceiver.pendingCancelIntent(context))
-                                .build())
-                        .build()
-                notificationManager.notify(Polite.NOTIFY_ID_ACTIVE, notification)
+                notificationManager.notifyPoliteActive(notificationText)
             }
         } else {
-            notificationManager.cancel(Polite.NOTIFY_ID_ACTIVE)
+            notificationManager.cancelPoliteActive()
         }
 
         // schedule next task
@@ -397,14 +351,14 @@ class PoliteStateManager
     private fun deactivate() {
         preferences.politeMode = false
         activeEventsPreferences.edit().clear().apply()
-        notificationManager.cancel(Polite.NOTIFY_ID_ACTIVE)
+        notificationManager.cancelPoliteActive()
 
         // change to previous ringer mode only if louder than current mode
         val previousRingerMode = preferences.previousRingerMode
         if ((previousRingerMode == AudioManager.RINGER_MODE_NORMAL
                 || previousRingerMode == AudioManager.RINGER_MODE_VIBRATE
                 && audioManager.ringerMode == AudioManager.RINGER_MODE_SILENT)
-                && notificationPolicyAccess) {
+                && notificationManager.isNotificationPolicyAccessGranted) {
             audioManager.ringerMode = previousRingerMode
         }
     }

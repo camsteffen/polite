@@ -4,8 +4,6 @@ import android.Manifest
 import android.annotation.TargetApi
 import android.app.Activity
 import android.app.FragmentManager
-import android.app.NotificationManager
-import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.graphics.Color
@@ -28,6 +26,7 @@ import me.camsteffen.polite.model.CalendarRule
 import me.camsteffen.polite.rule.edit.EditRuleFragment
 import me.camsteffen.polite.rule.master.RulesFragment
 import me.camsteffen.polite.settings.AppPreferences
+import me.camsteffen.polite.util.AppNotificationManager
 import me.camsteffen.polite.util.hideKeyboard
 import javax.inject.Inject
 
@@ -44,10 +43,8 @@ class MainActivity : DaggerAppCompatActivity(), FragmentManager.OnBackStackChang
         }
     }
 
-    private lateinit var preferences: AppPreferences
-
-    val notificationManager: NotificationManager
-        get() = getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
+    @Inject lateinit var notificationManager: AppNotificationManager
+    @Inject lateinit var preferences: AppPreferences
     val titleET: EditText
         get() = findViewById(R.id.title) as EditText
     private val rulesFragment: RulesFragment?
@@ -146,7 +143,7 @@ class MainActivity : DaggerAppCompatActivity(), FragmentManager.OnBackStackChang
                                         rulesFragment.ruleSetEnabled(it, false)
                                     }
                                 }
-                                notificationManager.cancel(Polite.NOTIFY_ID_CALENDAR_PERMISSION)
+                                notificationManager.cancelCalendarPermissionRequired()
                             }
 
                     // request calendar permission or open settings directly
@@ -183,7 +180,7 @@ class MainActivity : DaggerAppCompatActivity(), FragmentManager.OnBackStackChang
             requestPermissions(arrayOf(Manifest.permission.READ_CALENDAR), requestCode)
             return false
         }
-        notificationManager.cancel(Polite.NOTIFY_ID_CALENDAR_PERMISSION)
+        notificationManager.cancelCalendarPermissionRequired()
         return true
     }
 

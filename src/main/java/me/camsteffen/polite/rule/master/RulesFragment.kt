@@ -110,8 +110,8 @@ class RulesFragment : DaggerFragment() {
         if (Build.VERSION.SDK_INT < Build.VERSION_CODES.N)
             return
         val notificationManager = mainActivity.notificationManager
-        if(notificationManager.isNotificationPolicyAccessGranted) {
-            notificationManager.cancel(Polite.NOTIFY_ID_NOTIFICATION_POLICY_ACCESS)
+        if (notificationManager.isNotificationPolicyAccessGranted) {
+            notificationManager.cancelNotificationPolicyAccessRequired()
         } else if (preferences.enable) {
             AlertDialog.Builder(activity)
                     .setTitle(R.string.notification_policy_access_required)
