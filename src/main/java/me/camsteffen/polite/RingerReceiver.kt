@@ -5,12 +5,10 @@ import android.content.Context
 import android.content.Intent
 import dagger.android.DaggerBroadcastReceiver
 import me.camsteffen.polite.state.PoliteStateManager
+import me.camsteffen.polite.util.finishAsync
 import javax.inject.Inject
-import javax.inject.Singleton
 
-@Singleton
-class RingerReceiver
-@Inject constructor() : DaggerBroadcastReceiver() {
+class RingerReceiver : DaggerBroadcastReceiver() {
 
     companion object {
         const val ACTION_CANCEL = "cancel"
@@ -27,12 +25,13 @@ class RingerReceiver
         when (intent.action) {
             NotificationManager.ACTION_NOTIFICATION_POLICY_ACCESS_GRANTED_CHANGED,
             Intent.ACTION_PROVIDER_CHANGED,
-            Intent.ACTION_BOOT_COMPLETED -> stateManager.refresh(-1L)
+            Intent.ACTION_BOOT_COMPLETED -> finishAsync { stateManager.refresh(null) }
             ACTION_REFRESH -> {
                 val modifiedRuleId = intent.getLongExtra(MODIFIED_RULE_ID, -1L)
-                stateManager.refresh(modifiedRuleId)
+                    .takeIf { it != -1L }
+                finishAsync { stateManager.refresh(modifiedRuleId) }
             }
-            ACTION_CANCEL -> stateManager.cancel()
+            ACTION_CANCEL -> finishAsync(stateManager::cancel)
         }
     }
 

@@ -7,14 +7,11 @@ import android.app.FragmentManager
 import android.app.NotificationManager
 import android.content.Context
 import android.content.Intent
-import android.content.IntentFilter
 import android.content.pm.PackageManager
 import android.graphics.Color
 import android.net.Uri
 import android.os.Build
 import android.os.Bundle
-import android.os.Handler
-import android.os.HandlerThread
 import android.provider.Settings
 import android.support.v4.app.ActivityCompat
 import android.support.v4.content.ContextCompat
@@ -48,9 +45,7 @@ class MainActivity : DaggerAppCompatActivity(), FragmentManager.OnBackStackChang
     }
 
     @Inject lateinit var rateAppPrompt: RateAppPrompt
-    @Inject lateinit var ringerReceiver: RingerReceiver
 
-    private lateinit var receiverThread: HandlerThread
     val notificationManager: NotificationManager
         get() = getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
     val titleET: EditText
@@ -73,10 +68,6 @@ class MainActivity : DaggerAppCompatActivity(), FragmentManager.OnBackStackChang
             sendBroadcast(Intent(this, RingerReceiver::class.java).setAction(RingerReceiver.ACTION_REFRESH))
         }
 
-        receiverThread = HandlerThread("RingerReceiver")
-        receiverThread.start()
-        val receiverHandler = Handler(receiverThread.looper)
-        registerReceiver(ringerReceiver, IntentFilter(RingerReceiver.ACTION_REFRESH), null, receiverHandler)
         rateAppPrompt.launchCount++
 
         fragmentManager.addOnBackStackChangedListener(this)
@@ -96,12 +87,6 @@ class MainActivity : DaggerAppCompatActivity(), FragmentManager.OnBackStackChang
             supportActionBar!!.setDisplayShowTitleEnabled(false)
             titleET.visibility = View.VISIBLE
         }
-    }
-
-    override fun onDestroy() {
-        super.onDestroy()
-        receiverThread.quitSafely()
-        unregisterReceiver(ringerReceiver)
     }
 
     override fun onBackStackChanged() {
