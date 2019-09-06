@@ -4,9 +4,6 @@ import android.content.Intent
 import android.os.AsyncTask
 import android.os.Build
 import android.os.Bundle
-import android.support.design.widget.FloatingActionButton
-import android.support.v7.app.AlertDialog
-import android.support.v7.widget.RecyclerView
 import android.view.ContextMenu
 import android.view.LayoutInflater
 import android.view.Menu
@@ -15,6 +12,9 @@ import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
+import androidx.appcompat.app.AlertDialog
+import androidx.recyclerview.widget.RecyclerView
+import com.google.android.material.floatingactionbutton.FloatingActionButton
 import dagger.android.support.DaggerFragment
 import me.camsteffen.polite.DB
 import me.camsteffen.polite.DBActions

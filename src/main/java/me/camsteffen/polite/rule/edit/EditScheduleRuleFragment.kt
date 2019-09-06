@@ -2,13 +2,13 @@ package me.camsteffen.polite.rule.edit
 
 import android.content.Context
 import android.os.Bundle
-import android.support.v4.os.ConfigurationCompat.getLocales
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.LinearLayout
 import android.widget.TextView
 import android.widget.Toast
+import androidx.core.os.ConfigurationCompat.getLocales
 import me.camsteffen.polite.R
 import me.camsteffen.polite.model.ScheduleRule
 import me.camsteffen.polite.util.TimeOfDay

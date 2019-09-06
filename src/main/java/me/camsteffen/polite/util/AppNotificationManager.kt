@@ -6,9 +6,9 @@ import android.content.Context
 import android.content.Intent
 import android.os.Build
 import android.provider.Settings
-import android.support.annotation.RequiresApi
-import android.support.v4.app.NotificationCompat
-import android.support.v4.content.ContextCompat
+import androidx.annotation.RequiresApi
+import androidx.core.app.NotificationCompat
+import androidx.core.content.ContextCompat
 import me.camsteffen.polite.AppBroadcastReceiver
 import me.camsteffen.polite.MainActivity
 import me.camsteffen.polite.R

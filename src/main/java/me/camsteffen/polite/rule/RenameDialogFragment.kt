@@ -2,9 +2,9 @@ package me.camsteffen.polite.rule
 
 import android.app.Dialog
 import android.os.Bundle
-import android.support.v4.app.DialogFragment
-import android.support.v7.app.AlertDialog
 import android.widget.EditText
+import androidx.appcompat.app.AlertDialog
+import androidx.fragment.app.DialogFragment
 import me.camsteffen.polite.R
 import me.camsteffen.polite.rule.master.RulesFragment
 

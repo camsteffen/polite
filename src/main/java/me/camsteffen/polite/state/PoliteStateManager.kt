@@ -9,7 +9,7 @@ import android.content.pm.PackageManager
 import android.media.AudioManager
 import android.os.Build
 import android.provider.CalendarContract
-import android.support.v4.content.ContextCompat
+import androidx.core.content.ContextCompat
 import me.camsteffen.polite.AppBroadcastReceiver
 import me.camsteffen.polite.DB
 import me.camsteffen.polite.Polite

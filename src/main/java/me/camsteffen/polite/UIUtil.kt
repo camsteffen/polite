@@ -2,8 +2,8 @@ package me.camsteffen.polite.util
 
 import android.app.Activity
 import android.content.Context
-import android.support.annotation.ColorInt
-import android.support.v4.graphics.drawable.DrawableCompat
+import androidx.annotation.ColorInt
+import androidx.core.graphics.drawable.DrawableCompat
 import android.util.TypedValue
 import android.view.Menu
 import android.view.inputmethod.InputMethodManager

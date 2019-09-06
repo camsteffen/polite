@@ -7,6 +7,8 @@ import android.content.Context
 import android.content.SharedPreferences
 import android.content.res.Resources
 import android.preference.PreferenceManager
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.ViewModelProvider
 import dagger.Binds
 import dagger.Module
 import dagger.Provides

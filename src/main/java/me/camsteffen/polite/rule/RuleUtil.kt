@@ -2,7 +2,7 @@ package me.camsteffen.polite.rule
 
 import android.content.Context
 import android.content.res.Resources
-import android.support.v4.os.ConfigurationCompat.getLocales
+import androidx.core.os.ConfigurationCompat.getLocales
 import me.camsteffen.polite.R
 import me.camsteffen.polite.util.TimeOfDay
 import me.camsteffen.polite.util.daysAfter

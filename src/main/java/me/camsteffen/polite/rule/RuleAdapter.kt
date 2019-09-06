@@ -2,9 +2,6 @@ package me.camsteffen.polite.rule
 
 import android.graphics.Paint
 import android.os.Build
-import android.support.v4.content.ContextCompat
-import android.support.v4.graphics.drawable.DrawableCompat
-import android.support.v7.widget.RecyclerView
 import android.util.TypedValue
 import android.view.LayoutInflater
 import android.view.View
@@ -12,6 +9,9 @@ import android.view.ViewGroup
 import android.widget.CompoundButton
 import android.widget.Switch
 import android.widget.TextView
+import androidx.core.content.ContextCompat
+import androidx.core.graphics.drawable.DrawableCompat
+import androidx.recyclerview.widget.RecyclerView
 import me.camsteffen.polite.R
 import me.camsteffen.polite.model.CalendarRule
 import me.camsteffen.polite.model.Rule

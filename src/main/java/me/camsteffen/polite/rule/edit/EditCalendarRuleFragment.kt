@@ -1,7 +1,6 @@
 package me.camsteffen.polite.rule.edit
 
 import android.os.Bundle
-import android.support.v7.app.AlertDialog
 import android.text.SpannableStringBuilder
 import android.text.method.LinkMovementMethod
 import android.text.style.ClickableSpan
@@ -14,6 +13,7 @@ import android.widget.PopupMenu
 import android.widget.ScrollView
 import android.widget.TextView
 import android.widget.Toast
+import androidx.appcompat.app.AlertDialog
 import me.camsteffen.polite.R
 import me.camsteffen.polite.model.CalendarEventMatchBy
 import me.camsteffen.polite.model.CalendarRule
