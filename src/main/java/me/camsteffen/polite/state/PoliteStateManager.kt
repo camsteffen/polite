@@ -11,10 +11,8 @@ import android.os.Build
 import android.provider.CalendarContract
 import androidx.core.content.ContextCompat
 import me.camsteffen.polite.AppBroadcastReceiver
-import me.camsteffen.polite.DB
-import me.camsteffen.polite.Polite
+import me.camsteffen.polite.db.RuleDao
 import me.camsteffen.polite.model.CalendarRule
-import me.camsteffen.polite.model.ScheduleRule
 import me.camsteffen.polite.settings.AppPreferences
 import me.camsteffen.polite.settings.SharedPreferencesNames
 import me.camsteffen.polite.util.AppNotificationManager
@@ -81,7 +79,8 @@ class PoliteStateManager
 @Inject constructor(
     private val context: Context,
     private val notificationManager: AppNotificationManager,
-    private val preferences: AppPreferences
+    private val preferences: AppPreferences,
+    private val ruleDao: RuleDao
 ) {
 
     private var activeEventsPreferences: SharedPreferences =
@@ -153,11 +152,8 @@ class PoliteStateManager
         var notificationText = String()
         var nextRunTime = Long.MAX_VALUE
 
-        // get enabled rules
-        val db = Polite.db.readableDatabase
-        val selection = "${DB.Rule.COLUMN_ENABLE}=1"
-        val calendarRules = CalendarRule.queryList(db, selection)
-        var scheduleRules = ScheduleRule.queryList(db, selection)
+        val calendarRules = ruleDao.getEnabledCalendarRules()
+        var scheduleRules = ruleDao.getEnabledScheduleRules()
 
         // cancelled schedule rules
         val cancelledScheduleRules = cancelledScheduleRulesPreferences.all.entries

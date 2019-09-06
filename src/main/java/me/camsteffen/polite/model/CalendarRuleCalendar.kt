@@ -3,6 +3,7 @@ package me.camsteffen.polite.model
 import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.ForeignKey
+import androidx.room.Ignore
 import androidx.room.PrimaryKey
 
 @Entity(
@@ -26,4 +27,7 @@ class CalendarRuleCalendar(
 
     @ColumnInfo(name = "calendar_id")
     val calendarId: Long
-)
+) {
+    @Ignore
+    constructor(ruleId: Long, calendarId: Long) : this(0L, ruleId, calendarId)
+}

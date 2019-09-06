@@ -1,10 +1,16 @@
 package me.camsteffen.polite.db
 
+import androidx.room.Room
 import androidx.room.testing.MigrationTestHelper
 import androidx.sqlite.db.framework.FrameworkSQLiteOpenHelperFactory
 import androidx.test.platform.app.InstrumentationRegistry.getInstrumentation
 import me.camsteffen.polite.BuildConfig.DATABASE_VERSION
+import me.camsteffen.polite.model.CalendarEventMatchBy
+import me.camsteffen.polite.util.TimeOfDay
 import org.junit.After
+import org.junit.Assert.assertEquals
+import org.junit.Assert.assertFalse
+import org.junit.Assert.assertTrue
 import org.junit.Rule
 import org.junit.Test
 import org.threeten.bp.DayOfWeek
@@ -62,6 +68,31 @@ class MigrationTest {
             TEST_DATABASE_NAME, DATABASE_VERSION, true,
             *allMigrations
         )
+
+        val dao = getMigratedRoomDatabase().ruleDao
+
+        val calendarRules = dao.calendarRulesSortedByName()
+        assertEquals(2, calendarRules.size)
+        val calendarRule1 = calendarRules[0]
+        val calendarRule2 = calendarRules[1]
+
+        assertEquals(1, calendarRule1.id)
+        assertEquals("name1", calendarRule1.name)
+        assertTrue(calendarRule1.enabled)
+        assertFalse(calendarRule1.vibrate)
+        assertEquals(CalendarEventMatchBy.TITLE_AND_DESCRIPTION, calendarRule1.matchBy)
+        assertFalse(calendarRule1.inverseMatch)
+        assertEquals(setOf(11L, 12L), calendarRule1.calendarIds)
+        assertEquals(setOf("keyword1", "keyword2"), calendarRule1.keywords)
+
+        assertEquals(2, calendarRule2.id)
+        assertEquals("name2", calendarRule2.name)
+        assertFalse(calendarRule2.enabled)
+        assertTrue(calendarRule2.vibrate)
+        assertEquals(CalendarEventMatchBy.ALL, calendarRule2.matchBy)
+        assertFalse(calendarRule2.inverseMatch)
+        assertEquals(emptySet<Long>(), calendarRule2.calendarIds)
+        assertEquals(emptySet<String>(), calendarRule2.keywords)
     }
 
     @Test
@@ -176,6 +207,44 @@ class MigrationTest {
             TEST_DATABASE_NAME, DATABASE_VERSION, true,
             *allMigrations
         )
+
+        val dao = getMigratedRoomDatabase().ruleDao
+
+        val calendarRules = dao.calendarRulesSortedByName()
+        assertEquals(2, calendarRules.size)
+        val calendarRule1 = calendarRules[0]
+        val calendarRule2 = calendarRules[1]
+
+        assertEquals(1, calendarRule1.id)
+        assertEquals("name1", calendarRule1.name)
+        assertTrue(calendarRule1.enabled)
+        assertFalse(calendarRule1.vibrate)
+        assertEquals(CalendarEventMatchBy.TITLE_AND_DESCRIPTION, calendarRule1.matchBy)
+        assertTrue(calendarRule1.inverseMatch)
+        assertEquals(setOf(11L, 12L), calendarRule1.calendarIds)
+        assertEquals(setOf("keyword1", "keyword2"), calendarRule1.keywords)
+
+        assertEquals(2, calendarRule2.id)
+        assertEquals("name2", calendarRule2.name)
+        assertFalse(calendarRule2.enabled)
+        assertTrue(calendarRule2.vibrate)
+        assertEquals(CalendarEventMatchBy.ALL, calendarRule2.matchBy)
+        assertFalse(calendarRule2.inverseMatch)
+        assertEquals(emptySet<Long>(), calendarRule2.calendarIds)
+        assertEquals(emptySet<String>(), calendarRule2.keywords)
+
+        val scheduleRules = dao.scheduleRulesSortedByName()
+        assertEquals(1, scheduleRules.size)
+        val scheduleRule1 = scheduleRules[0]
+
+        assertEquals(3, scheduleRule1.id)
+        assertEquals("name3", scheduleRule1.name)
+        assertTrue(scheduleRule1.enabled)
+        assertTrue(scheduleRule1.vibrate)
+        assertEquals(TimeOfDay(13, 4), scheduleRule1.begin)
+        assertEquals(TimeOfDay(18, 59), scheduleRule1.end)
+        assertEquals(EnumSet.of(DayOfWeek.SUNDAY, DayOfWeek.SATURDAY, DayOfWeek.THURSDAY),
+            scheduleRule1.days)
     }
 
     private fun getSqliteTestDbOpenHelper(version: Int): SqliteTestDbOpenHelper {
@@ -183,5 +252,15 @@ class MigrationTest {
             getInstrumentation().context,
             getInstrumentation().targetContext,
             TEST_DATABASE_NAME, version)
+    }
+
+    private fun getMigratedRoomDatabase(): AppDatabase {
+        val database = Room.databaseBuilder(
+            getInstrumentation().targetContext,
+            AppDatabase::class.java, TEST_DATABASE_NAME)
+            .addMigrations(*allMigrations)
+            .build()
+        migrationHelper.closeWhenFinished(database)
+        return database
     }
 }

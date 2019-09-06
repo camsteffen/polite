@@ -17,7 +17,6 @@ import androidx.appcompat.app.AlertDialog
 import me.camsteffen.polite.R
 import me.camsteffen.polite.model.CalendarEventMatchBy
 import me.camsteffen.polite.model.CalendarRule
-import me.camsteffen.polite.model.Rule
 import me.camsteffen.polite.util.CalendarDao
 import me.camsteffen.polite.util.KeywordSpan
 import me.camsteffen.polite.view.CaptionOption
@@ -79,19 +78,13 @@ class EditCalendarRuleFragment : EditRuleFragment<CalendarRule>() {
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
-        if (rule.id != Rule.NEW_RULE) {
+        if (!newRule) {
             addKeywordEditText.requestFocus()
         }
         onUpdateCalendars()
         onUpdateEventMatch()
         onUpdateInverseMatch()
         onUpdateKeywords()
-    }
-
-    override fun createRule(): CalendarRule = CalendarRule(activity!!)
-
-    override fun save() {
-        rulesFragment.saveRule(mainActivity, rule)
     }
 
     private fun addKeyword() {

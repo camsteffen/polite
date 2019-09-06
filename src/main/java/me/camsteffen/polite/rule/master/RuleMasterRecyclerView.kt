@@ -7,8 +7,9 @@ import android.view.ContextMenu
 import android.view.View
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import me.camsteffen.polite.model.Rule
 
-class MyRecyclerView(context: Context, attrs: AttributeSet? = null) : RecyclerView(context, attrs) {
+class RuleMasterRecyclerView(context: Context, attrs: AttributeSet? = null) : RecyclerView(context, attrs) {
 
     init {
         setHasFixedSize(true)
@@ -16,21 +17,25 @@ class MyRecyclerView(context: Context, attrs: AttributeSet? = null) : RecyclerVi
         addItemDecoration(Divider())
     }
 
-    private var mContextMenuInfo: RecyclerViewContextMenuInfo? = null
+    var adapter: RuleMasterAdapter?
+        get() = super.getAdapter() as RuleMasterAdapter?
+        set(value) = super.setAdapter(value)
 
-    override fun getContextMenuInfo(): ContextMenu.ContextMenuInfo? = mContextMenuInfo
+    private var ruleContextMenuInfo: RuleContextMenuInfo? = null
+
+    override fun getContextMenuInfo(): RuleContextMenuInfo? = ruleContextMenuInfo
 
     override fun showContextMenuForChild(originalView: View): Boolean {
         val position = getChildAdapterPosition(originalView)
         if (position >= 0) {
-            val id = adapter!!.getItemId(position)
-            mContextMenuInfo = RecyclerViewContextMenuInfo(position, id)
+            val rule = adapter!!.getRuleAt(position)
+            ruleContextMenuInfo = RuleContextMenuInfo(rule)
             return super.showContextMenuForChild(originalView)
         }
         return false
     }
 
-    class RecyclerViewContextMenuInfo(val position: Int, val id: Long) : ContextMenu.ContextMenuInfo
+    class RuleContextMenuInfo(val rule: Rule) : ContextMenu.ContextMenuInfo
 
     class Divider: RecyclerView.ItemDecoration() {
 

@@ -18,7 +18,7 @@ import androidx.room.PrimaryKey
         )
     ]
 )
-class CalendarRuleEntity(
+data class CalendarRuleEntity(
     @PrimaryKey
     var id: Long,
 

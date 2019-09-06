@@ -23,10 +23,12 @@ import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleObserver
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.OnLifecycleEvent
+import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.ViewModelProviders
 import dagger.android.AndroidInjection
 import dagger.android.DispatchingAndroidInjector
 import dagger.android.HasAndroidInjector
-import me.camsteffen.polite.model.CalendarRule
+import me.camsteffen.polite.rule.RuleMasterDetailViewModel
 import me.camsteffen.polite.rule.edit.EditRuleFragment
 import me.camsteffen.polite.rule.master.RulesFragment
 import me.camsteffen.polite.settings.AppPreferences
@@ -52,6 +54,10 @@ class MainActivity : AppCompatActivity(), HasAndroidInjector, FragmentManager.On
     @Inject lateinit var dispatchingAndroidInjector: DispatchingAndroidInjector<Any>
     @Inject lateinit var notificationManager: AppNotificationManager
     @Inject lateinit var preferences: AppPreferences
+    @Inject lateinit var ruleService: RuleService
+    @Inject lateinit var viewModelProviderFactory: ViewModelProvider.Factory
+
+    private lateinit var model: RuleMasterDetailViewModel
     val titleET: EditText
         get() = findViewById(R.id.title) as EditText
     private val rulesFragment: RulesFragment?
@@ -72,6 +78,8 @@ class MainActivity : AppCompatActivity(), HasAndroidInjector, FragmentManager.On
         setThemeFromPreference()
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+        model = ViewModelProviders.of(this, viewModelProviderFactory)[RuleMasterDetailViewModel::class.java]
+        model.selectedRule.value = null
 
         if (savedInstanceState == null) {
             supportFragmentManager.beginTransaction()
@@ -150,13 +158,8 @@ class MainActivity : AppCompatActivity(), HasAndroidInjector, FragmentManager.On
                             .setMessage(R.string.calendar_permission_explain)
                             .setNegativeButton(android.R.string.no) { dialog, _ ->
                                 dialog.dismiss()
-                                val rulesFragment = rulesFragment
-                                rulesFragment?.adapter!!.rules.forEach {
-                                    if (it is CalendarRule && it.enabled) {
-                                        rulesFragment.ruleSetEnabled(it, false)
-                                    }
-                                }
                                 notificationManager.cancelCalendarPermissionRequired()
+                                ruleService.updateCalendarRulesEnabledAsync(false)
                             }
 
                     // request calendar permission or open settings directly

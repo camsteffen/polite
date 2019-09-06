@@ -14,6 +14,8 @@ enum class CalendarEventMatchBy(
     TITLE_AND_DESCRIPTION(false, true, true, R.string.match_by_title_desc),
     ;
 
+    fun asEntity() = CalendarEventMatchByEntity(all, title, description)
+
     companion object {
         fun having(all: Boolean, title: Boolean, description: Boolean): CalendarEventMatchBy? {
             return values().find { it.all == all && it.title == title && it.description == description }

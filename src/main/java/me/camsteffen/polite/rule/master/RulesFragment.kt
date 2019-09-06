@@ -1,7 +1,6 @@
 package me.camsteffen.polite.rule.master
 
 import android.content.Intent
-import android.os.AsyncTask
 import android.os.Build
 import android.os.Bundle
 import android.view.ContextMenu
@@ -13,36 +12,36 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import androidx.appcompat.app.AlertDialog
+import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import dagger.android.support.DaggerFragment
-import me.camsteffen.polite.DB
-import me.camsteffen.polite.DBActions
 import me.camsteffen.polite.HelpFragment
 import me.camsteffen.polite.MainActivity
 import me.camsteffen.polite.Polite
 import me.camsteffen.polite.R
+import me.camsteffen.polite.RuleService
 import me.camsteffen.polite.model.CalendarRule
 import me.camsteffen.polite.model.Rule
 import me.camsteffen.polite.model.ScheduleRule
 import me.camsteffen.polite.rule.RenameDialogFragment
-import me.camsteffen.polite.rule.RuleAdapter
-import me.camsteffen.polite.rule.RuleList
+import me.camsteffen.polite.rule.RuleMasterDetailViewModel
 import me.camsteffen.polite.rule.edit.EditCalendarRuleFragment
 import me.camsteffen.polite.rule.edit.EditRuleFragment
 import me.camsteffen.polite.rule.edit.EditScheduleRuleFragment
 import me.camsteffen.polite.settings.AppPreferences
 import me.camsteffen.polite.settings.SettingsFragment
-import me.camsteffen.polite.util.RateAppPrompt
 import javax.inject.Inject
-
-private const val RULE_LIST = "RuleList"
 
 class RulesFragment : DaggerFragment() {
 
     @Inject lateinit var preferences: AppPreferences
-    @Inject lateinit var rateAppPrompt: RateAppPrompt
+    @Inject lateinit var ruleService: RuleService
+    @Inject lateinit var viewModelProviderFactory: ViewModelProvider.Factory
 
+    lateinit var model: RuleMasterDetailViewModel
     val polite: Polite
         get() = activity!!.application as Polite
     val mainActivity: MainActivity
@@ -51,11 +50,10 @@ class RulesFragment : DaggerFragment() {
         get() = view?.findViewById(R.id.no_rules)
     private val fab: FloatingActionButton
         get() = activity!!.findViewById(R.id.fab) as FloatingActionButton
-    var rulesLoader: LoadRules? = null
 
-    lateinit var adapter: RuleAdapter
-    private val rulesView: MyRecyclerView?
-        get() = view?.findViewById(R.id.rules_view) as MyRecyclerView?
+    lateinit var adapter: RuleMasterAdapter
+    private val rulesView: RuleMasterRecyclerView?
+        get() = view?.findViewById(R.id.rules_view) as RuleMasterRecyclerView?
     private val disabledNotice: TextView?
         get() = view?.findViewById(R.id.disabled_notice) as TextView?
 
@@ -64,20 +62,14 @@ class RulesFragment : DaggerFragment() {
         setHasOptionsMenu(true)
         retainInstance = true
 
-        if (savedInstanceState != null) {
-            val rules = savedInstanceState.getParcelable<RuleList>(RULE_LIST)
-            adapter = RuleAdapter(this, rules)
-        } else {
-            adapter = RuleAdapter(this)
-            rulesLoader = LoadRules()
-            rulesLoader!!.execute()
-        }
+        model = ViewModelProviders.of(activity!!, viewModelProviderFactory)[RuleMasterDetailViewModel::class.java]
+        adapter = RuleMasterAdapter(this::openRule, this::onRuleCheckedChange)
 
         adapter.registerAdapterDataObserver(adapterObserver)
-    }
 
-    override fun onSaveInstanceState(outState: Bundle) {
-        outState.putParcelable(RULE_LIST, adapter.rules)
+        model.ruleMasterList.observe(this, Observer {
+            adapter.submitList(it)
+        })
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
@@ -93,10 +85,6 @@ class RulesFragment : DaggerFragment() {
         }
         registerForContextMenu(rulesView!!)
         fab.setOnClickListener(fabOnClick)
-        if(rulesLoader == null || rulesLoader!!.status == AsyncTask.Status.FINISHED) {
-            setNoRulesViewVisibility()
-            rulesLoader = null
-        }
         rulesView!!.adapter = adapter
     }
 
@@ -173,14 +161,15 @@ class RulesFragment : DaggerFragment() {
     }
 
     override fun onContextItemSelected(item: MenuItem): Boolean {
-        val info = item.menuInfo as MyRecyclerView.RecyclerViewContextMenuInfo
+        val info = item.menuInfo as RuleMasterRecyclerView.RuleContextMenuInfo
+        val rule = info.rule
         when(item.itemId) {
             R.id.rename -> {
-                RenameDialogFragment.newInstance(info.id, adapter.getRuleAt(info.position).name)
+                RenameDialogFragment.newInstance(rule.id, rule.name)
                         .show(fragmentManager!!, RenameDialogFragment.FRAGMENT_TAG)
             }
             R.id.delete -> {
-                deleteRule(info.id)
+                ruleService.deleteRuleAsync(rule.id)
             }
             else -> return false
         }
@@ -195,17 +184,6 @@ class RulesFragment : DaggerFragment() {
         fab.hide()
     }
 
-    fun ruleSetEnabled(rule: Rule, enable: Boolean) {
-        rule.enabled = enable
-        adapter.notifyRuleChanged(rule.id)
-        DBActions.RuleSetEnabled(activity!!.applicationContext, rule.id, enable).execute()
-    }
-
-    fun deleteRule(id: Long) {
-        DBActions.DeleteRule(activity!!.applicationContext, id).execute()
-        adapter.deleteRule(id)
-    }
-
     fun openRule(rule: Rule) {
         val fragment = when(rule) {
             is CalendarRule -> {
@@ -215,9 +193,7 @@ class RulesFragment : DaggerFragment() {
             }
             is ScheduleRule -> EditScheduleRuleFragment()
         }
-        val args = Bundle()
-        args.putParcelable(EditRuleFragment.KEY_RULE, rule)
-        fragment.arguments = args
+        model.selectedRule.value = rule
         fragmentManager!!.beginTransaction()
                 .setCustomAnimations(R.animator.slide_in_right, R.animator.slide_out_left, R.animator.slide_in_left, R.animator.slide_out_right)
                 .replace(R.id.fragment_container, fragment, EditRuleFragment.FRAGMENT_TAG)
@@ -226,24 +202,20 @@ class RulesFragment : DaggerFragment() {
         fab.hide()
     }
 
+    private fun onRuleCheckedChange(rule: Rule, isChecked: Boolean) {
+        if (rule.enabled != isChecked) {
+            if (isChecked && rule is CalendarRule)
+                mainActivity.checkCalendarPermission()
+            ruleService.updateRuleEnabledAsync(rule.id, isChecked)
+        }
+    }
+
     fun openNewCalendarRule() {
         openRule(CalendarRule(activity!!))
     }
 
     fun openNewScheduleRule() {
         openRule(ScheduleRule(activity!!))
-    }
-
-    fun saveRule(mainActivity: MainActivity, rule: Rule) {
-        rule.saveDB(mainActivity, {
-            rule.addToAdapter(adapter)
-        })
-        rateAppPrompt.conditionalPrompt(mainActivity)
-    }
-
-    fun renameRule(id: Long, name: String) {
-        DBActions.RenameRule(activity!!.applicationContext, id, name).execute()
-        adapter.renameRule(id, name)
     }
 
     private val fabOnClick = View.OnClickListener {
@@ -286,29 +258,6 @@ class RulesFragment : DaggerFragment() {
 
         override fun onItemRangeRemoved(positionStart: Int, itemCount: Int) {
             setNoRulesViewVisibility()
-        }
-    }
-
-    data class LoadRulesResult (
-            var scheduleRules: List<ScheduleRule>,
-            var calendarRules: List<CalendarRule>
-    )
-
-    inner class LoadRules : AsyncTask<Void, Void, LoadRulesResult>() {
-
-        override fun doInBackground(vararg params: Void?): LoadRulesResult {
-            val db = Polite.db.readableDatabase
-            val scheduleRules = ScheduleRule.queryList(db, null, null, "${DB.Rule.COLUMN_NAME} ASC")
-            val calendarRules = CalendarRule.queryList(db, null, null, "${DB.Rule.COLUMN_NAME} ASC")
-            return LoadRulesResult(scheduleRules, calendarRules)
-        }
-
-        override fun onPostExecute(result: LoadRulesResult) {
-            if(view != null)
-                rulesLoader = null
-            adapter.setRules(result.scheduleRules, result.calendarRules)
-            if (result.calendarRules.any { it.enabled })
-                mainActivity.checkCalendarPermission()
         }
     }
 

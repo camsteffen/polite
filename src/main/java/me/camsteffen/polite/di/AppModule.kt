@@ -13,9 +13,13 @@ import dagger.Binds
 import dagger.Module
 import dagger.Provides
 import dagger.android.ContributesAndroidInjector
+import dagger.multibindings.IntoMap
 import me.camsteffen.polite.AppBroadcastReceiver
 import me.camsteffen.polite.MainActivity
 import me.camsteffen.polite.Polite
+import me.camsteffen.polite.db.AppDatabase
+import me.camsteffen.polite.rule.RuleMasterDetailViewModel
+import javax.inject.Singleton
 
 @Module
 abstract class AppModule {
@@ -32,6 +36,14 @@ abstract class AppModule {
     @ContributesAndroidInjector
     abstract fun contributeAppBroadcastReceiver(): AppBroadcastReceiver
 
+    @Binds
+    abstract fun bindViewModelFactory(viewModelFactory: ViewModelFactory): ViewModelProvider.Factory
+
+    @Binds
+    @IntoMap
+    @ViewModelKey(RuleMasterDetailViewModel::class)
+    abstract fun bindRuleMasterDetailViewModel(ruleMasterDetailViewModel: RuleMasterDetailViewModel): ViewModel
+
     @Module
     companion object {
 
@@ -41,6 +53,14 @@ abstract class AppModule {
         @JvmStatic @Provides
         fun provideNotificationManager(app: Application): NotificationManager =
                 app.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
+
+        @JvmStatic @Provides @Singleton
+        fun database(context: Context): AppDatabase {
+            return AppDatabase.init(context)
+        }
+
+        @JvmStatic @Provides
+        fun ruleDao(database: AppDatabase) = database.ruleDao
 
         @JvmStatic @Provides
         fun provideResources(app: Application): Resources = app.resources

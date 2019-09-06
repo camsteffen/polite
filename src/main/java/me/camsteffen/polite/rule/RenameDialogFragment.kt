@@ -4,11 +4,14 @@ import android.app.Dialog
 import android.os.Bundle
 import android.widget.EditText
 import androidx.appcompat.app.AlertDialog
-import androidx.fragment.app.DialogFragment
+import dagger.android.support.DaggerDialogFragment
 import me.camsteffen.polite.R
-import me.camsteffen.polite.rule.master.RulesFragment
+import me.camsteffen.polite.RuleService
+import javax.inject.Inject
 
-class RenameDialogFragment : DialogFragment() {
+class RenameDialogFragment : DaggerDialogFragment() {
+
+    @Inject lateinit var ruleService: RuleService
 
     companion object {
         const val FRAGMENT_TAG = "RenameDialogFragment"
@@ -30,15 +33,14 @@ class RenameDialogFragment : DialogFragment() {
         val view = activity!!.layoutInflater.inflate(R.layout.rename_dialog, null)
         val editText = view.findViewById(R.id.name) as EditText
         editText.setText(name)
-        return AlertDialog.Builder(activity!!)
+        return AlertDialog.Builder(context!!)
                 .setTitle(R.string.rename_rule)
                 .setView(view)
                 .setNegativeButton(android.R.string.cancel, null)
-                .setPositiveButton(android.R.string.ok, { _, _ ->
+                .setPositiveButton(android.R.string.ok) { _, _ ->
                     val newName = editText.text.toString()
-                    val rulesFragment = fragmentManager!!.findFragmentByTag(RulesFragment.FRAGMENT_TAG) as RulesFragment
-                    rulesFragment.renameRule(id, newName)
-                })
+                    ruleService.updateRuleNameAsync(id, newName)
+                }
                 .create()
     }
 }

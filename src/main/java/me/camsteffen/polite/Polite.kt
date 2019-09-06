@@ -9,11 +9,6 @@ import javax.inject.Inject
 
 class Polite : Application(), HasAndroidInjector {
 
-    companion object {
-        lateinit var db: DB
-    }
-
-
     @Inject lateinit var dispatchingAndroidInjector: DispatchingAndroidInjector<Any>
 
     override fun androidInjector() = dispatchingAndroidInjector
@@ -21,7 +16,6 @@ class Polite : Application(), HasAndroidInjector {
     override fun onCreate() {
         super.onCreate()
         AndroidThreeTen.init(this)
-        db = DB(this)
         DaggerAppComponent.factory().create(this).inject(this)
     }
 

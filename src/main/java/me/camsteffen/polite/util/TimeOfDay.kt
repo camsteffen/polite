@@ -71,4 +71,8 @@ class TimeOfDay : Comparable<TimeOfDay> {
     override fun hashCode(): Int {
         return minutes
     }
+
+    companion object {
+        fun of(localTime: LocalTime) = TimeOfDay(localTime.hour, localTime.minute)
+    }
 }

@@ -33,7 +33,7 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent" />
 
-        <me.camsteffen.polite.rule.master.MyRecyclerView
+        <me.camsteffen.polite.rule.master.RuleMasterRecyclerView
             android:id="@+id/rules_view"
             tools:listitem="@layout/rule_list_item"
             android:layout_below="@id/disabled_notice"
