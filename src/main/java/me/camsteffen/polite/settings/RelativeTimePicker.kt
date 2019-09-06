@@ -8,9 +8,9 @@ import android.view.View
 import android.widget.NumberPicker
 import me.camsteffen.polite.R
 
-private val DEFAULT_VALUE = 0
-private val MAX_VALUE = 15
-private val MIN_VALUE = 0
+private const val DEFAULT_VALUE = 0
+private const val MAX_VALUE = 60
+private const val MIN_VALUE = 0
 
 internal abstract class RelativeTimePicker(context: Context, attrs: AttributeSet) : DialogPreference(context, attrs), Preference.OnPreferenceChangeListener {
 
