@@ -13,6 +13,7 @@ import me.camsteffen.polite.model.CalendarRule
 import me.camsteffen.polite.settings.AppPreferences
 import me.camsteffen.polite.settings.SharedPreferencesNames
 import me.camsteffen.polite.util.AppNotificationManager
+import me.camsteffen.polite.util.AppPermissionChecker
 import org.threeten.bp.DayOfWeek
 import org.threeten.bp.Duration
 import org.threeten.bp.Instant
@@ -53,6 +54,7 @@ class PoliteStateManager
     private val calendarFacade: CalendarFacade,
     private val context: Context,
     private val notificationManager: AppNotificationManager,
+    private val permissionChecker: AppPermissionChecker,
     private val preferences: AppPreferences,
     private val ruleDao: RuleDao,
     private val refreshScheduler: RefreshScheduler,
@@ -97,24 +99,11 @@ class PoliteStateManager
     }
 
     fun refresh(modifiedRuleId: Long?) {
-        // check enabled setting
-        if (!preferences.enable) {
-            cancelledEventsPreferences.edit().clear().apply()
-            cancelledScheduleRulesPreferences.edit().clear().apply()
-            notificationManager.cancelNotificationPolicyAccessRequired()
-            deactivate()
-            return
-        }
-
-        // check notification policy access
-        if (!notificationManager.isNotificationPolicyAccessGranted) {
-            notificationManager.notifyNotificationPolicyAccessRequired()
+        if (!preferences.enable || !permissionChecker.checkNotificationPolicyAccess()) {
             cancelledEventsPreferences.edit().clear().apply()
             cancelledScheduleRulesPreferences.edit().clear().apply()
             deactivate()
             return
-        } else {
-            notificationManager.cancelNotificationPolicyAccessRequired()
         }
 
         // get activation and deactivation preferences
