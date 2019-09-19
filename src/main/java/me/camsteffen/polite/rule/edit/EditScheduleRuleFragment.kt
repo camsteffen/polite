@@ -12,8 +12,8 @@ import me.camsteffen.polite.R
 import me.camsteffen.polite.databinding.DayButtonBinding
 import me.camsteffen.polite.databinding.EditScheduleRuleBinding
 import me.camsteffen.polite.model.ScheduleRule
-import me.camsteffen.polite.util.TimeOfDay
 import me.camsteffen.polite.util.TimePickerDialogFragment
+import org.threeten.bp.LocalTime
 import org.threeten.bp.format.TextStyle
 import org.threeten.bp.temporal.WeekFields
 
@@ -72,8 +72,8 @@ class EditScheduleRuleFragment : EditRuleFragment<ScheduleRule>(), TimePickerDia
         showTimePicker(END, model.end.get()!!)
     }
 
-    private fun showTimePicker(code: Int, time: TimeOfDay) {
-        TimePickerDialogFragment.newInstance(this, code, time)
+    private fun showTimePicker(code: Int, localTime: LocalTime) {
+        TimePickerDialogFragment.newInstance(this, code, localTime)
                 .show(fragmentManager!!, TimePickerDialogFragment.FRAGMENT_TAG)
     }
 
@@ -91,6 +91,6 @@ class EditScheduleRuleFragment : EditRuleFragment<ScheduleRule>(), TimePickerDia
             END -> model.end
             else -> throw IllegalArgumentException()
         }
-        timeOfDay.set(TimeOfDay(hourOfDay, minute))
+        timeOfDay.set(LocalTime.of(hourOfDay, minute))
     }
 }

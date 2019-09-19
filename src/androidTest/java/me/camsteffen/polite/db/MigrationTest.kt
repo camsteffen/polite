@@ -6,7 +6,6 @@ import androidx.sqlite.db.framework.FrameworkSQLiteOpenHelperFactory
 import androidx.test.platform.app.InstrumentationRegistry.getInstrumentation
 import me.camsteffen.polite.BuildConfig.DATABASE_VERSION
 import me.camsteffen.polite.model.CalendarEventMatchBy
-import me.camsteffen.polite.util.TimeOfDay
 import org.junit.After
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertFalse
@@ -183,10 +182,10 @@ class MigrationTest {
         assertEquals("name3", scheduleRule1.name)
         assertTrue(scheduleRule1.enabled)
         assertTrue(scheduleRule1.vibrate)
-        assertEquals(TimeOfDay(13, 4), scheduleRule1.begin)
-        assertEquals(TimeOfDay(18, 59), scheduleRule1.end)
+        assertEquals(LocalTime.of(13, 4), scheduleRule1.beginTime)
+        assertEquals(LocalTime.of(18, 59), scheduleRule1.endTime)
         assertEquals(EnumSet.of(DayOfWeek.SUNDAY, DayOfWeek.SATURDAY, DayOfWeek.THURSDAY),
-            scheduleRule1.days)
+            scheduleRule1.daysOfWeek)
     }
 
     @Test
@@ -279,10 +278,10 @@ class MigrationTest {
         assertEquals("name3", scheduleRule1.name)
         assertTrue(scheduleRule1.enabled)
         assertTrue(scheduleRule1.vibrate)
-        assertEquals(TimeOfDay(13, 4), scheduleRule1.begin)
-        assertEquals(TimeOfDay(18, 59), scheduleRule1.end)
+        assertEquals(LocalTime.of(13, 4), scheduleRule1.beginTime)
+        assertEquals(LocalTime.of(18, 59), scheduleRule1.endTime)
         assertEquals(EnumSet.of(DayOfWeek.SUNDAY, DayOfWeek.SATURDAY, DayOfWeek.THURSDAY),
-            scheduleRule1.days)
+            scheduleRule1.daysOfWeek)
     }
 
     private fun getSqliteTestDbOpenHelper(version: Int): SqliteTestDbOpenHelper {

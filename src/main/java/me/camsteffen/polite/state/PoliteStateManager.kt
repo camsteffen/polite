@@ -16,9 +16,10 @@ import me.camsteffen.polite.model.CalendarRule
 import me.camsteffen.polite.settings.AppPreferences
 import me.camsteffen.polite.settings.SharedPreferencesNames
 import me.camsteffen.polite.util.AppNotificationManager
-import me.camsteffen.polite.util.TimeOfDay
 import org.threeten.bp.DayOfWeek
+import org.threeten.bp.Duration
 import org.threeten.bp.LocalDate
+import org.threeten.bp.LocalTime
 import java.util.Calendar
 import java.util.Date
 import java.util.GregorianCalendar
@@ -172,29 +173,30 @@ class PoliteStateManager
                 .clear()
         for (rule in scheduleRules) {
             val calendar = GregorianCalendar()
+            val time = LocalTime.now()
             val currentDayOfWeek = LocalDate.now().dayOfWeek
             var dayAdjust = 0
-            if (TimeOfDay(calendar) >= rule.end)
+            if (time >= rule.endTime)
                 ++dayAdjust
-            if (rule.begin > rule.end)
+            if (rule.beginTime > rule.endTime)
                 --dayAdjust
             var dayOfWeek = DayOfWeek.MONDAY
             for (i in 0..6) {
                 dayOfWeek = currentDayOfWeek + dayAdjust.toLong() + i.toLong()
-                if (rule.days.contains(dayOfWeek)) {
+                if (rule.daysOfWeek.contains(dayOfWeek)) {
                     dayAdjust += i
                     break
                 }
             }
-            if (!rule.days.contains(dayOfWeek))
+            if (!rule.daysOfWeek.contains(dayOfWeek))
                 continue
             calendar.add(Calendar.DAY_OF_WEEK, dayAdjust)
-            calendar.set(Calendar.HOUR_OF_DAY, rule.begin.hour)
-            calendar.set(Calendar.MINUTE, rule.begin.minute)
+            calendar.set(Calendar.HOUR_OF_DAY, rule.beginTime.hour)
+            calendar.set(Calendar.MINUTE, rule.beginTime.minute)
             calendar.set(Calendar.SECOND, 0)
             calendar.set(Calendar.MILLISECOND, 0)
             var begin = calendar.timeInMillis
-            var end = begin + TimeUnit.MINUTES.toMillis((rule.end - rule.begin).toLong())
+            var end = begin + Duration.between(rule.beginTime, rule.endTime).toMillis()
             if (end < begin)
                 end += TimeUnit.DAYS.toMillis(1)
             begin -= activation

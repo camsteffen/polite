@@ -2,8 +2,8 @@ package me.camsteffen.polite.model
 
 import android.content.Context
 import me.camsteffen.polite.R
-import me.camsteffen.polite.util.TimeOfDay
 import org.threeten.bp.DayOfWeek
+import org.threeten.bp.LocalTime
 import java.util.EnumSet
 import javax.inject.Inject
 import javax.inject.Singleton
@@ -28,9 +28,9 @@ class DefaultRules
         name = context.getString(R.string.rule_default_name),
         enabled = RuleDefaults.enabled,
         vibrate = RuleDefaults.vibrate,
-        begin = TimeOfDay(12, 0),
-        end = TimeOfDay(13, 0),
-        days = EnumSet.of(
+        beginTime = LocalTime.of(12, 0),
+        endTime = LocalTime.of(13, 0),
+        daysOfWeek = EnumSet.of(
             DayOfWeek.MONDAY,
             DayOfWeek.TUESDAY,
             DayOfWeek.WEDNESDAY,

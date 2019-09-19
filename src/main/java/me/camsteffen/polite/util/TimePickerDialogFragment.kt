@@ -3,10 +3,11 @@ package me.camsteffen.polite.util
 import android.app.Dialog
 import android.app.TimePickerDialog
 import android.os.Bundle
-import androidx.fragment.app.DialogFragment
-import androidx.fragment.app.Fragment
 import android.text.format.DateFormat
 import android.widget.TimePicker
+import androidx.fragment.app.DialogFragment
+import androidx.fragment.app.Fragment
+import org.threeten.bp.LocalTime
 
 class TimePickerDialogFragment : DialogFragment(), TimePickerDialog.OnTimeSetListener {
 
@@ -15,11 +16,11 @@ class TimePickerDialogFragment : DialogFragment(), TimePickerDialog.OnTimeSetLis
         private const val KEY_TIME = "time"
         private const val KEY_REQUEST_CODE = "request code"
 
-        fun newInstance(target: Fragment, requestCode: Int, time: TimeOfDay): TimePickerDialogFragment {
+        fun newInstance(target: Fragment, requestCode: Int, localTime: LocalTime): TimePickerDialogFragment {
             val fragment = TimePickerDialogFragment()
             fragment.setTargetFragment(target, requestCode)
             val bundle = Bundle()
-            bundle.putInt(KEY_TIME, time.toInt())
+            bundle.putInt(KEY_TIME, localTime.toSecondOfDay())
             bundle.putInt(KEY_REQUEST_CODE, requestCode)
             fragment.arguments = bundle
             return fragment
@@ -27,7 +28,7 @@ class TimePickerDialogFragment : DialogFragment(), TimePickerDialog.OnTimeSetLis
     }
 
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
-        val time = TimeOfDay(arguments!!.getInt(KEY_TIME))
+        val time = LocalTime.ofSecondOfDay(arguments!!.getInt(KEY_TIME).toLong())
         return TimePickerDialog(activity, this, time.hour, time.minute, DateFormat.is24HourFormat(activity))
     }
 

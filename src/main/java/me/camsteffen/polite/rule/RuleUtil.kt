@@ -4,9 +4,11 @@ import android.content.Context
 import android.content.res.Resources
 import androidx.core.os.ConfigurationCompat.getLocales
 import me.camsteffen.polite.R
-import me.camsteffen.polite.util.TimeOfDay
 import me.camsteffen.polite.util.daysAfter
 import org.threeten.bp.DayOfWeek
+import org.threeten.bp.LocalTime
+import org.threeten.bp.format.DateTimeFormatter
+import org.threeten.bp.format.FormatStyle
 import org.threeten.bp.format.TextStyle
 import org.threeten.bp.temporal.WeekFields
 import java.util.Locale
@@ -14,18 +16,19 @@ import java.util.Locale
 fun scheduleSummary(
     context: Context,
     days: Set<DayOfWeek>,
-    beginTime: TimeOfDay,
-    endTime: TimeOfDay
+    beginTime: LocalTime,
+    endTime: LocalTime
 ): String {
     val resources = context.resources
     val locale = getLocales(resources.configuration)[0]
     val firstDayOfWeek = WeekFields.of(locale).firstDayOfWeek
+    val timeFormatter = DateTimeFormatter.ofLocalizedTime(FormatStyle.SHORT).withLocale(locale)
 
     val daysString = days.toDayRanges(firstDayOfWeek).joinToString { dayRange ->
         dayRange.displayName(resources, locale)
     }
 
-    return "$daysString ${beginTime.toString(context)} - ${endTime.toString(context)}"
+    return "$daysString ${beginTime.format(timeFormatter)} - ${endTime.format(timeFormatter)}"
 }
 
 /** Returns a list of all day ranges within a set of days ordered by the number of
