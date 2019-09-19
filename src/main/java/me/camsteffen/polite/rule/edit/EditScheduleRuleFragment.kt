@@ -89,7 +89,7 @@ class EditScheduleRuleFragment : EditRuleFragment<ScheduleRule>(), TimePickerDia
 
     private fun setTimeListener(code: Int, time: TimeOfDay) = View.OnClickListener {
         TimePickerDialogFragment.newInstance(this, code, time)
-                .show(fragmentManager, TimePickerDialogFragment.FRAGMENT_TAG)
+                .show(fragmentManager!!, TimePickerDialogFragment.FRAGMENT_TAG)
     }
 
     override fun validateSaveClose() {

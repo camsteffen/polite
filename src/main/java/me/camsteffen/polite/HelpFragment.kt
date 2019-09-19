@@ -67,12 +67,12 @@ class HelpFragment : Fragment() {
         webView = null
     }
 
-    override fun onCreateOptionsMenu(menu: Menu?, inflater: MenuInflater?) {
-        inflater!!.inflate(R.menu.menu_help, menu)
+    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
+        inflater.inflate(R.menu.menu_help, menu)
     }
 
-    override fun onOptionsItemSelected(item: MenuItem?): Boolean {
-        when(item!!.itemId) {
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        when(item.itemId) {
             android.R.id.home -> fragmentManager!!.popBackStack()
             R.id.email -> {
                 val intent = Intent(Intent.ACTION_SEND)

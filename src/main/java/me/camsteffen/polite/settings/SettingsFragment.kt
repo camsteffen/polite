@@ -39,8 +39,8 @@ class SettingsFragment : PreferenceFragmentCompat(), SharedPreferences.OnSharedP
         preferenceManager.sharedPreferences.unregisterOnSharedPreferenceChangeListener(this)
     }
 
-    override fun onOptionsItemSelected(item: MenuItem?): Boolean {
-        when (item!!.itemId) {
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        when (item.itemId) {
             android.R.id.home -> fragmentManager!!.popBackStack()
             else -> return false
         }
@@ -57,7 +57,7 @@ class SettingsFragment : PreferenceFragmentCompat(), SharedPreferences.OnSharedP
         if (preference is RelativeTimePreference) {
             val fragment = RelativeTimePreferenceFragment.newInstance(preference.key)
             fragment.setTargetFragment(this, 0)
-            fragment.show(fragmentManager, RelativeTimePreferenceFragment.TAG)
+            fragment.show(fragmentManager!!, RelativeTimePreferenceFragment.TAG)
         } else {
             super.onDisplayPreferenceDialog(preference)
         }

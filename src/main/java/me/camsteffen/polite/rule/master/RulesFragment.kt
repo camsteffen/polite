@@ -91,7 +91,7 @@ class RulesFragment : DaggerFragment() {
         disabledNotice!!.setOnClickListener {
             openSettings()
         }
-        registerForContextMenu(rulesView)
+        registerForContextMenu(rulesView!!)
         fab.setOnClickListener(fabOnClick)
         if(rulesLoader == null || rulesLoader!!.status == AsyncTask.Status.FINISHED) {
             setNoRulesViewVisibility()
@@ -168,16 +168,16 @@ class RulesFragment : DaggerFragment() {
         return true
     }
 
-    override fun onCreateContextMenu(menu: ContextMenu?, view: View?, menuInfo: ContextMenu.ContextMenuInfo?) {
+    override fun onCreateContextMenu(menu: ContextMenu, view: View, menuInfo: ContextMenu.ContextMenuInfo?) {
         activity!!.menuInflater.inflate(R.menu.rule_context, menu)
     }
 
-    override fun onContextItemSelected(item: MenuItem?): Boolean {
-        val info = item!!.menuInfo as MyRecyclerView.RecyclerViewContextMenuInfo
+    override fun onContextItemSelected(item: MenuItem): Boolean {
+        val info = item.menuInfo as MyRecyclerView.RecyclerViewContextMenuInfo
         when(item.itemId) {
             R.id.rename -> {
                 RenameDialogFragment.newInstance(info.id, adapter.getRuleAt(info.position).name)
-                        .show(fragmentManager, RenameDialogFragment.FRAGMENT_TAG)
+                        .show(fragmentManager!!, RenameDialogFragment.FRAGMENT_TAG)
             }
             R.id.delete -> {
                 deleteRule(info.id)

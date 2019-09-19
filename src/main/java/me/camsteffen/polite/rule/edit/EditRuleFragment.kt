@@ -31,7 +31,7 @@ abstract class EditRuleFragment<RuleType : Rule> : DaggerFragment() {
         get() = fragmentManager!!.findFragmentByTag(RulesFragment.FRAGMENT_TAG) as RulesFragment
     lateinit var rule: RuleType
 
-    override fun onAttach(context: Context?) {
+    override fun onAttach(context: Context) {
         super.onAttach(context)
         mainActivity.registerOnBackPressedListener(this, this::onBackPressed)
     }
@@ -68,7 +68,7 @@ abstract class EditRuleFragment<RuleType : Rule> : DaggerFragment() {
         inflater.inflate(R.menu.menu_edit_rule, menu)
     }
 
-    override fun onOptionsItemSelected(item: MenuItem?): Boolean {
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
         val rulesFragment = rulesFragment
         when(item!!.itemId) {
             android.R.id.home -> validateSaveClose()
