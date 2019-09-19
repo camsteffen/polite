@@ -1,6 +1,7 @@
 package me.camsteffen.polite.settings
 
 import android.content.SharedPreferences
+import android.os.AsyncTask
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.MenuItem
@@ -8,17 +9,22 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.preference.Preference
 import androidx.preference.PreferenceFragmentCompat
-import me.camsteffen.polite.AppBroadcastReceiver
+import dagger.android.support.AndroidSupportInjection
 import me.camsteffen.polite.MainActivity
 import me.camsteffen.polite.R
+import me.camsteffen.polite.state.PoliteStateManager
 import me.camsteffen.polite.view.AnimateFrame
+import javax.inject.Inject
 
 class SettingsFragment : PreferenceFragmentCompat(), SharedPreferences.OnSharedPreferenceChangeListener {
+
+    @Inject lateinit var politeStateManager: PoliteStateManager
 
     private val mainActivity: MainActivity
         get() = activity as MainActivity
 
     override fun onCreate(savedInstanceState: Bundle?) {
+        AndroidSupportInjection.inject(this)
         super.onCreate(savedInstanceState)
         setHasOptionsMenu(true)
     }
@@ -42,7 +48,7 @@ class SettingsFragment : PreferenceFragmentCompat(), SharedPreferences.OnSharedP
 
     override fun onStop() {
         super.onStop()
-        AppBroadcastReceiver.sendRefresh(activity!!)
+        AsyncTask.execute(politeStateManager::refresh)
         preferenceManager.sharedPreferences.unregisterOnSharedPreferenceChangeListener(this)
     }
 

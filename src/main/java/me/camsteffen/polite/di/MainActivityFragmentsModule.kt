@@ -6,6 +6,7 @@ import me.camsteffen.polite.rule.RenameDialogFragment
 import me.camsteffen.polite.rule.edit.EditCalendarRuleFragment
 import me.camsteffen.polite.rule.edit.EditScheduleRuleFragment
 import me.camsteffen.polite.rule.master.RulesFragment
+import me.camsteffen.polite.settings.SettingsFragment
 
 @Module
 abstract class MainActivityFragmentsModule {
@@ -21,5 +22,8 @@ abstract class MainActivityFragmentsModule {
 
     @ContributesAndroidInjector
     abstract fun contributeRenameDialogFragment(): RenameDialogFragment
+
+    @ContributesAndroidInjector
+    abstract fun contributeSettingsFragment(): SettingsFragment
 
 }

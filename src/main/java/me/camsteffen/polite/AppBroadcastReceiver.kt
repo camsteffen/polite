@@ -33,13 +33,6 @@ class AppBroadcastReceiver : DaggerBroadcastReceiver() {
             val intent = refreshIntent(context)
             return PendingIntent.getBroadcast(context, 0, intent, 0)
         }
-
-        fun sendRefresh(context: Context) {
-            context.sendBroadcast(
-                refreshIntent(context)
-            )
-        }
-
     }
 
     @Inject lateinit var stateManager: PoliteStateManager

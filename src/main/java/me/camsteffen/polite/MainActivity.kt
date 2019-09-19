@@ -6,6 +6,7 @@ import android.app.Activity
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.net.Uri
+import android.os.AsyncTask
 import android.os.Build
 import android.os.Bundle
 import android.provider.Settings
@@ -39,6 +40,7 @@ import me.camsteffen.polite.model.Rule
 import me.camsteffen.polite.model.ScheduleRule
 import me.camsteffen.polite.rule.RuleMasterDetailViewModel
 import me.camsteffen.polite.settings.AppPreferences
+import me.camsteffen.polite.state.PoliteStateManager
 import me.camsteffen.polite.util.AppNotificationManager
 import me.camsteffen.polite.util.hideKeyboard
 import me.camsteffen.polite.util.tintMenuIcons
@@ -65,6 +67,7 @@ class MainActivity : AppCompatActivity(), HasAndroidInjector,
     @Inject lateinit var dispatchingAndroidInjector: DispatchingAndroidInjector<Any>
     @Inject lateinit var navController: Lazy<NavController>
     @Inject lateinit var notificationManager: AppNotificationManager
+    @Inject lateinit var politeStateManager: PoliteStateManager
     @Inject lateinit var preferences: AppPreferences
     @Inject lateinit var ruleService: RuleService
     @Inject lateinit var viewModelProviderFactory: ViewModelProvider.Factory
@@ -118,7 +121,7 @@ class MainActivity : AppCompatActivity(), HasAndroidInjector,
         if (savedInstanceState == null) {
             fab.show()
             fab.bringToFront()
-            AppBroadcastReceiver.sendRefresh(this)
+            AsyncTask.execute(politeStateManager::refresh)
         }
 
         preferences.launchCount++
@@ -166,7 +169,7 @@ class MainActivity : AppCompatActivity(), HasAndroidInjector,
                     model.selectedRule.value = defaultRules.calendar()
                 }
                 REQUEST_PERMISSION_CALENDAR -> {
-                    AppBroadcastReceiver.sendRefresh(this)
+                    AsyncTask.execute(politeStateManager::refresh)
                 }
             }
         } else {
