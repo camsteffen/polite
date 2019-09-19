@@ -17,6 +17,7 @@ import me.camsteffen.polite.databinding.EditCalendarRuleBinding
 import me.camsteffen.polite.model.CalendarEventMatchBy
 import me.camsteffen.polite.model.CalendarRule
 import me.camsteffen.polite.util.CalendarDao
+import java.util.Locale
 import javax.inject.Inject
 
 class EditCalendarRuleFragment : EditRuleFragment<CalendarRule>() {
@@ -73,7 +74,7 @@ class EditCalendarRuleFragment : EditRuleFragment<CalendarRule>() {
         val addKeywordEditText = addKeywordEditText
         val word = addKeywordEditText.text.toString()
                 .trim()
-                .toLowerCase()
+                .toLowerCase(Locale.getDefault())
         if (word.isEmpty())
             return
         if (model.addKeyword(word)) {
