@@ -32,7 +32,7 @@ class PoliteModeController
             activate(currentEvent, false)
         } else {
             // just update the notification in case the text has changed
-            notificationManager.notifyPoliteActive(currentEvent.notificationText)
+            notificationManager.notifyPoliteActive(currentEvent.notificationText, true)
         }
     }
 
@@ -41,7 +41,7 @@ class PoliteModeController
             ringerModeManager.saveRingerMode()
         }
         ringerModeManager.setRingerMode(ruleEvent.vibrate)
-        notificationManager.notifyPoliteActive(ruleEvent.notificationText)
+        notificationManager.notifyPoliteActive(ruleEvent.notificationText, false)
         stateDao.setActiveRuleEvent(ActiveRuleEvent(ruleEvent))
     }
 

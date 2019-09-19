@@ -50,7 +50,7 @@ class AppNotificationManager
         notificationManager.createNotificationChannel(permissionNeededChannel)
     }
 
-    fun notifyPoliteActive(text: String) {
+    fun notifyPoliteActive(text: String, onlyAlertOnce: Boolean) {
         val notification = NotificationCompat.Builder(context, ChannelIds.POLITE_ACTIVE)
             .setCategory(NotificationCompat.CATEGORY_SERVICE)
             .setColor(ContextCompat.getColor(context, R.color.primary))
@@ -67,6 +67,7 @@ class AppNotificationManager
                     0
                 )
             )
+            .setOnlyAlertOnce(onlyAlertOnce)
             .addAction(
                 NotificationCompat.Action.Builder(
                     R.drawable.ic_cancel_black_24dp,
@@ -101,6 +102,7 @@ class AppNotificationManager
                     0
                 )
             )
+            .setOnlyAlertOnce(true)
             .build()
         notificationManager.notify(NotificationIds.NOTIFICATION_POLICY_ACCESS, notification)
     }
@@ -125,6 +127,7 @@ class AppNotificationManager
                     0
                 )
             )
+            .setOnlyAlertOnce(true)
             .build()
         notificationManager.notify(NotificationIds.CALENDAR_PERMISSION, notification)
     }
