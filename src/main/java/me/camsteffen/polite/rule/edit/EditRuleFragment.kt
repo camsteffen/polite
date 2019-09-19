@@ -13,8 +13,8 @@ import androidx.appcompat.app.AlertDialog
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.ViewModelProviders
+import androidx.navigation.NavController
 import dagger.android.support.DaggerFragment
-import me.camsteffen.polite.HelpFragment
 import me.camsteffen.polite.MainActivity
 import me.camsteffen.polite.R
 import me.camsteffen.polite.RuleService
@@ -27,10 +27,7 @@ import javax.inject.Inject
 
 abstract class EditRuleFragment<RuleType : Rule> : DaggerFragment() {
 
-    companion object {
-        const val FRAGMENT_TAG = "EditRule"
-    }
-
+    @Inject lateinit var navController: NavController
     @Inject lateinit var rateAppPrompt: RateAppPrompt
     @Inject lateinit var ruleService: RuleService
     @Inject lateinit var viewModelProviderFactory: ViewModelProvider.Factory
@@ -72,16 +69,6 @@ abstract class EditRuleFragment<RuleType : Rule> : DaggerFragment() {
         return binding.root
     }
 
-    override fun onActivityCreated(savedInstanceState: Bundle?) {
-        super.onActivityCreated(savedInstanceState)
-        mainActivity.supportActionBar!!.setDisplayShowTitleEnabled(false)
-    }
-
-    override fun onDestroyView() {
-        super.onDestroyView()
-        mainActivity.supportActionBar!!.setDisplayShowTitleEnabled(true)
-    }
-
     override fun onDetach() {
         super.onDetach()
         masterModel.toolbarEditText.value = ""
@@ -103,7 +90,6 @@ abstract class EditRuleFragment<RuleType : Rule> : DaggerFragment() {
                         .setTitle(R.string.delete_rule_title)
                         .setMessage(R.string.delete_rule_confirm)
                         .setPositiveButton(R.string.yes) { _, _ ->
-                            fragmentManager!!.popBackStack()
                             if (!newRule) {
                                 ruleService.deleteRuleAsync(rule.id)
                             }
@@ -114,10 +100,7 @@ abstract class EditRuleFragment<RuleType : Rule> : DaggerFragment() {
                         .show()
             }
             R.id.help -> {
-                fragmentManager!!.beginTransaction()
-                        .replace(R.id.fragment_container, HelpFragment())
-                        .addToBackStack(null)
-                        .commit()
+                navController.navigate(R.id.action_global_helpFragment)
             }
             else -> return false
         }
@@ -140,7 +123,6 @@ abstract class EditRuleFragment<RuleType : Rule> : DaggerFragment() {
             rateAppPrompt.conditionalPrompt(activity!!)
         }
         hideKeyboard(activity!!)
-        fragmentManager!!.popBackStack()
         masterModel.selectedRule.value = null
     }
 

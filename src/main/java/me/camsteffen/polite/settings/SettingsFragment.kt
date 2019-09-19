@@ -2,18 +2,18 @@ package me.camsteffen.polite.settings
 
 import android.content.SharedPreferences
 import android.os.Bundle
+import android.view.LayoutInflater
 import android.view.MenuItem
+import android.view.View
+import android.view.ViewGroup
 import androidx.preference.Preference
 import androidx.preference.PreferenceFragmentCompat
 import me.camsteffen.polite.AppBroadcastReceiver
 import me.camsteffen.polite.MainActivity
 import me.camsteffen.polite.R
+import me.camsteffen.polite.view.AnimateFrame
 
 class SettingsFragment : PreferenceFragmentCompat(), SharedPreferences.OnSharedPreferenceChangeListener {
-
-    companion object {
-        const val FRAGMENT_TAG = "settings"
-    }
 
     private val mainActivity: MainActivity
         get() = activity as MainActivity
@@ -21,6 +21,13 @@ class SettingsFragment : PreferenceFragmentCompat(), SharedPreferences.OnSharedP
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setHasOptionsMenu(true)
+    }
+
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+        val view = super.onCreateView(inflater, container, savedInstanceState)
+        val parent = AnimateFrame(inflater.context, null)
+        parent.addView(view)
+        return parent
     }
 
     override fun onCreatePreferences(savedInstanceState: Bundle?, rootKey: String?) {

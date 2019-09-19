@@ -15,9 +15,9 @@ import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.ViewModelProviders
-import com.google.android.material.floatingactionbutton.FloatingActionButton
+import androidx.navigation.NavController
+import dagger.Lazy
 import dagger.android.support.DaggerFragment
-import me.camsteffen.polite.HelpFragment
 import me.camsteffen.polite.MainActivity
 import me.camsteffen.polite.Polite
 import me.camsteffen.polite.R
@@ -25,18 +25,14 @@ import me.camsteffen.polite.RuleService
 import me.camsteffen.polite.databinding.RulesFragmentBinding
 import me.camsteffen.polite.model.CalendarRule
 import me.camsteffen.polite.model.Rule
-import me.camsteffen.polite.model.ScheduleRule
 import me.camsteffen.polite.rule.RenameDialogFragment
 import me.camsteffen.polite.rule.RuleMasterDetailViewModel
-import me.camsteffen.polite.rule.edit.EditCalendarRuleFragment
-import me.camsteffen.polite.rule.edit.EditRuleFragment
-import me.camsteffen.polite.rule.edit.EditScheduleRuleFragment
 import me.camsteffen.polite.settings.AppPreferences
-import me.camsteffen.polite.settings.SettingsFragment
 import javax.inject.Inject
 
 class RulesFragment : DaggerFragment() {
 
+    @Inject lateinit var navController: Lazy<NavController>
     @Inject lateinit var preferences: AppPreferences
     @Inject lateinit var ruleService: RuleService
     @Inject lateinit var viewModelProviderFactory: ViewModelProvider.Factory
@@ -46,8 +42,6 @@ class RulesFragment : DaggerFragment() {
         get() = activity!!.application as Polite
     private val mainActivity: MainActivity
         get() = activity as MainActivity
-    private val fab: FloatingActionButton
-        get() = activity!!.findViewById(R.id.fab) as FloatingActionButton
 
     private lateinit var adapter: RuleMasterAdapter
 
@@ -57,7 +51,7 @@ class RulesFragment : DaggerFragment() {
         retainInstance = true
 
         model = ViewModelProviders.of(activity!!, viewModelProviderFactory)[RuleMasterDetailViewModel::class.java]
-        adapter = RuleMasterAdapter(this::openRule, this::onRuleCheckedChange)
+        adapter = RuleMasterAdapter(this::onClickRule, this::onRuleCheckedChange)
 
         model.ruleMasterList.observe(this, Observer {
             adapter.submitList(it)
@@ -121,13 +115,7 @@ class RulesFragment : DaggerFragment() {
                 startActivity(Intent.createChooser(intent, getString(R.string.share_polite)))
             }
             R.id.settings -> openSettings()
-            R.id.help -> {
-                fragmentManager!!.beginTransaction()
-                        .replace(R.id.fragment_container, HelpFragment())
-                        .addToBackStack(null)
-                        .commit()
-                fab.hide()
-            }
+            R.id.help -> navController.get().navigate(R.id.action_global_helpFragment)
             else -> return false
         }
         return true
@@ -158,29 +146,13 @@ class RulesFragment : DaggerFragment() {
     }
 
     private fun openSettings() {
-        fragmentManager!!.beginTransaction()
-                .replace(R.id.fragment_container, SettingsFragment(), SettingsFragment.FRAGMENT_TAG)
-                .addToBackStack(null)
-                .commit()
-        fab.hide()
+        navController.get().navigate(R.id.action_rulesFragment_to_settingsFragment)
     }
 
-    fun openRule(rule: Rule) {
-        val fragment = when(rule) {
-            is CalendarRule -> {
-                if(!mainActivity.checkCalendarPermission())
-                    return
-                EditCalendarRuleFragment()
-            }
-            is ScheduleRule -> EditScheduleRuleFragment()
-        }
+    private fun onClickRule(rule: Rule) {
+        if (rule is CalendarRule && !mainActivity.checkCalendarPermission())
+            return
         model.selectedRule.value = rule
-        fragmentManager!!.beginTransaction()
-                .setCustomAnimations(R.animator.slide_in_right, R.animator.slide_out_left, R.animator.slide_in_left, R.animator.slide_out_right)
-                .replace(R.id.fragment_container, fragment, EditRuleFragment.FRAGMENT_TAG)
-                .addToBackStack(null)
-                .commit()
-        fab.hide()
     }
 
     private fun onRuleCheckedChange(rule: Rule, isChecked: Boolean) {
@@ -191,7 +163,4 @@ class RulesFragment : DaggerFragment() {
         }
     }
 
-    companion object {
-        const val FRAGMENT_TAG = "rules"
-    }
 }

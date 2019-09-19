@@ -12,12 +12,12 @@ import android.provider.Settings
 import android.view.Menu
 import android.view.View
 import android.view.inputmethod.EditorInfo
+import androidx.appcompat.app.ActionBar
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.core.app.ActivityCompat
 import androidx.databinding.DataBindingUtil
-import androidx.fragment.app.FragmentManager
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleObserver
 import androidx.lifecycle.LifecycleOwner
@@ -25,13 +25,19 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.OnLifecycleEvent
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.ViewModelProviders
+import androidx.navigation.NavController
+import androidx.navigation.NavDestination
+import com.google.android.material.floatingactionbutton.FloatingActionButton
+import dagger.Lazy
 import dagger.android.AndroidInjection
 import dagger.android.DispatchingAndroidInjector
 import dagger.android.HasAndroidInjector
 import me.camsteffen.polite.databinding.ActivityMainBinding
+import me.camsteffen.polite.model.CalendarRule
 import me.camsteffen.polite.model.DefaultRules
+import me.camsteffen.polite.model.Rule
+import me.camsteffen.polite.model.ScheduleRule
 import me.camsteffen.polite.rule.RuleMasterDetailViewModel
-import me.camsteffen.polite.rule.master.RulesFragment
 import me.camsteffen.polite.settings.AppPreferences
 import me.camsteffen.polite.util.AppNotificationManager
 import me.camsteffen.polite.util.hideKeyboard
@@ -40,9 +46,12 @@ import javax.inject.Inject
 
 private const val ACTIVITY_CALENDAR_PERMISSION = 1
 
-class MainActivity : AppCompatActivity(), HasAndroidInjector, FragmentManager.OnBackStackChangedListener,
-        ActivityCompat.OnRequestPermissionsResultCallback {
+private val EDIT_RULE_DESTINATIONS: Set<Int> =
+    hashSetOf(R.id.editCalendarRuleFragment, R.id.editScheduleRuleFragment)
 
+class MainActivity : AppCompatActivity(), HasAndroidInjector,
+        ActivityCompat.OnRequestPermissionsResultCallback
+{
     companion object {
         const val REQUEST_PERMISSION_CALENDAR = 0
         const val REQUEST_PERMISSION_CREATE_CALENDAR_RULE = 1
@@ -54,6 +63,7 @@ class MainActivity : AppCompatActivity(), HasAndroidInjector, FragmentManager.On
 
     @Inject lateinit var defaultRules: DefaultRules
     @Inject lateinit var dispatchingAndroidInjector: DispatchingAndroidInjector<Any>
+    @Inject lateinit var navController: Lazy<NavController>
     @Inject lateinit var notificationManager: AppNotificationManager
     @Inject lateinit var preferences: AppPreferences
     @Inject lateinit var ruleService: RuleService
@@ -85,6 +95,20 @@ class MainActivity : AppCompatActivity(), HasAndroidInjector, FragmentManager.On
             onClickFloatingActionButton()
         }
 
+        // TODO use AppBarConfiguration, FragmentNavigator, FragmentFactory
+        navController.get().addOnDestinationChangedListener(
+            OnDestinationChangedListener(supportActionBar!!, fab, model))
+
+        model.selectedRule.observe(this, Observer { rule ->
+            if (rule == null) {
+                if(EDIT_RULE_DESTINATIONS.contains(navController.get().currentDestination?.id)) {
+                    navController.get().popBackStack()
+                }
+            } else {
+                openRule(rule)
+            }
+        })
+
         model.enabledCalendarRulesExist.observe(this, Observer { enabledCalendarRulesExist ->
             if (enabledCalendarRulesExist!!) {
                 checkCalendarPermission()
@@ -92,18 +116,12 @@ class MainActivity : AppCompatActivity(), HasAndroidInjector, FragmentManager.On
         })
 
         if (savedInstanceState == null) {
-            supportFragmentManager.beginTransaction()
-                    .setCustomAnimations(android.R.animator.fade_in, 0)
-                    .add(R.id.fragment_container, RulesFragment(), RulesFragment.FRAGMENT_TAG)
-                    .commit()
             fab.show()
             fab.bringToFront()
             AppBroadcastReceiver.sendRefresh(this)
         }
 
         preferences.launchCount++
-
-        supportFragmentManager.addOnBackStackChangedListener(this)
 
         binding.toolbarEditText.setOnEditorActionListener { view, actionId, _ ->
             if (actionId == EditorInfo.IME_ACTION_DONE) {
@@ -114,9 +132,7 @@ class MainActivity : AppCompatActivity(), HasAndroidInjector, FragmentManager.On
         }
     }
 
-    override fun onBackStackChanged() {
-        setHomeAsUp()
-    }
+    override fun onSupportNavigateUp() = navController.get().navigateUp()
 
     override fun onPrepareOptionsMenu(menu: Menu): Boolean {
         super.onPrepareOptionsMenu(menu)
@@ -203,6 +219,14 @@ class MainActivity : AppCompatActivity(), HasAndroidInjector, FragmentManager.On
         }
     }
 
+    private fun openRule(rule: Rule) {
+        val id = when(rule) {
+            is CalendarRule -> R.id.action_rulesFragment_to_editCalendarRuleFragment
+            is ScheduleRule -> R.id.action_rulesFragment_to_editScheduleRuleFragment
+        }
+        navController.get().navigate(id)
+    }
+
     fun setThemeFromPreference() {
         val themeDark = getString(R.string.theme_dark)
         val theme = when (preferences.theme) {
@@ -221,11 +245,6 @@ class MainActivity : AppCompatActivity(), HasAndroidInjector, FragmentManager.On
         }
         notificationManager.cancelCalendarPermissionRequired()
         return true
-    }
-
-    private fun setHomeAsUp() {
-        val backStackEntryCount = supportFragmentManager.backStackEntryCount
-        supportActionBar!!.setDisplayHomeAsUpEnabled(backStackEntryCount > 0)
     }
 
     private fun onClickFloatingActionButton() {
@@ -253,6 +272,28 @@ class MainActivity : AppCompatActivity(), HasAndroidInjector, FragmentManager.On
         dialog.show()
     }
 
+}
+
+private class OnDestinationChangedListener(
+        val actionBar: ActionBar,
+        val fab: FloatingActionButton,
+        val model: RuleMasterDetailViewModel
+) : NavController.OnDestinationChangedListener {
+    override fun onDestinationChanged(
+        controller: NavController,
+        destination: NavDestination,
+        arguments: Bundle?
+    ) {
+        if (EDIT_RULE_DESTINATIONS.contains(destination.id)) {
+            fab.hide()
+            actionBar.setDisplayHomeAsUpEnabled(true)
+            actionBar.setDisplayShowTitleEnabled(false)
+        } else {
+            fab.show()
+            actionBar.setDisplayHomeAsUpEnabled(false)
+            actionBar.setDisplayShowTitleEnabled(true)
+        }
+    }
 }
 
 typealias OnBackPressedListener = () -> Boolean
