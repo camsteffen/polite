@@ -200,7 +200,7 @@ class MainActivity : AppCompatActivity(), HasAndroidInjector, FragmentManager.On
         val themeDark = getString(R.string.theme_dark)
         val theme = when (preferences.theme) {
             themeDark -> R.style.AppTheme
-            else -> R.style.AppThemeLight
+            else -> R.style.AppTheme_Light
         }
         setTheme(theme)
     }
