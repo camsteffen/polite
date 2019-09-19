@@ -51,6 +51,7 @@ abstract class EditRuleFragment<RuleType : Rule> : DaggerFragment() {
         @Suppress("UNCHECKED_CAST")
         rule = masterModel.selectedRule.value!! as RuleType
         newRule = rule.id == Rule.NEW_RULE
+        masterModel.toolbarEditText.value = rule.name
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -74,16 +75,16 @@ abstract class EditRuleFragment<RuleType : Rule> : DaggerFragment() {
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
         mainActivity.supportActionBar!!.setDisplayShowTitleEnabled(false)
-        val titleET = mainActivity.titleET
-        titleET.visibility = View.VISIBLE
-        titleET.setText(rule.name)
     }
 
     override fun onDestroyView() {
         super.onDestroyView()
-        val titleET = mainActivity.titleET
-        titleET.visibility = View.GONE
         mainActivity.supportActionBar!!.setDisplayShowTitleEnabled(true)
+    }
+
+    override fun onDetach() {
+        super.onDetach()
+        masterModel.toolbarEditText.value = ""
     }
 
     abstract fun onCreateEditRuleViewModel(): EditRuleViewModel<RuleType>
@@ -146,7 +147,7 @@ abstract class EditRuleFragment<RuleType : Rule> : DaggerFragment() {
     abstract fun ruleFromUi(id: Long, name: String, enabled: Boolean, vibrate: Boolean): RuleType
 
     private fun ruleFromUi(): RuleType {
-        val name = mainActivity.titleET.text.toString()
+        val name = masterModel.toolbarEditText.value!!
         val enabled = editRuleModel.enabled.get()
         val vibrate = editRuleModel.vibrate.get()
         return ruleFromUi(rule.id, name, enabled, vibrate)

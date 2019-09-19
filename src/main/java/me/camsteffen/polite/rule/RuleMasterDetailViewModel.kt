@@ -1,8 +1,10 @@
 package me.camsteffen.polite.rule
 
+import android.view.View
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MediatorLiveData
 import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.Transformations
 import androidx.lifecycle.ViewModel
 import me.camsteffen.polite.db.RuleDao
 import me.camsteffen.polite.model.CalendarRule
@@ -14,6 +16,8 @@ import javax.inject.Inject
 
 class RuleMasterDetailViewModel
 @Inject constructor(ruleDao: RuleDao, enableLiveData: LiveData<Boolean>) : ViewModel() {
+
+    val toolbarEditText = MutableLiveData<String>()
 
     val politeEnabled: LiveData<Boolean> = enableLiveData
 
@@ -37,4 +41,8 @@ class RuleMasterDetailViewModel
     }
 
     val enabledCalendarRulesExist: LiveData<Boolean> = ruleDao.getEnabledCalendarRulesExistLive()
+
+    val toolbarEditTextVisibility: LiveData<Int> = Transformations.map(selectedRule) {
+        if (it == null) View.GONE else View.VISIBLE
+    }
 }

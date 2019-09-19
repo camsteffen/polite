@@ -74,14 +74,8 @@ class RulesFragment : DaggerFragment() {
         return binding.root
     }
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-        fab.setOnClickListener(fabOnClick)
-    }
-
     override fun onResume() {
         super.onResume()
-        fab.show()
         checkNotificationPolicyAccess()
     }
 
@@ -195,39 +189,6 @@ class RulesFragment : DaggerFragment() {
                 mainActivity.checkCalendarPermission()
             ruleService.updateRuleEnabledAsync(rule.id, isChecked)
         }
-    }
-
-    fun openNewCalendarRule() {
-        openRule(CalendarRule(activity!!))
-    }
-
-    fun openNewScheduleRule() {
-        openRule(ScheduleRule(activity!!))
-    }
-
-    private val fabOnClick = View.OnClickListener {
-        val view = activity!!.layoutInflater.inflate(R.layout.create_rule, null)
-
-        val dialog = AlertDialog.Builder(activity!!)
-                .setTitle(R.string.create_a_rule)
-                .setView(view)
-                .create()
-
-        val calendarRuleView = view.findViewById<View>(R.id.calendar_rule)
-        val scheduleRuleView = view.findViewById<View>(R.id.schedule_rule)
-
-        calendarRuleView.setOnClickListener {
-            dialog.dismiss()
-            if(mainActivity.checkCalendarPermission(MainActivity.REQUEST_PERMISSION_CREATE_CALENDAR_RULE))
-                openNewCalendarRule()
-        }
-
-        scheduleRuleView.setOnClickListener {
-            dialog.dismiss()
-            openNewScheduleRule()
-        }
-
-        dialog.show()
     }
 
     companion object {

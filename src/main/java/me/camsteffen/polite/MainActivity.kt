@@ -12,12 +12,11 @@ import android.provider.Settings
 import android.view.Menu
 import android.view.View
 import android.view.inputmethod.EditorInfo
-import android.widget.EditText
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.app.AppCompatDelegate
-import androidx.appcompat.widget.Toolbar
 import androidx.core.app.ActivityCompat
+import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.FragmentManager
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleObserver
@@ -29,9 +28,10 @@ import androidx.lifecycle.ViewModelProviders
 import dagger.android.AndroidInjection
 import dagger.android.DispatchingAndroidInjector
 import dagger.android.HasAndroidInjector
+import me.camsteffen.polite.databinding.ActivityMainBinding
 import me.camsteffen.polite.model.CalendarRule
+import me.camsteffen.polite.model.ScheduleRule
 import me.camsteffen.polite.rule.RuleMasterDetailViewModel
-import me.camsteffen.polite.rule.edit.EditRuleFragment
 import me.camsteffen.polite.rule.master.RulesFragment
 import me.camsteffen.polite.settings.AppPreferences
 import me.camsteffen.polite.util.AppNotificationManager
@@ -60,12 +60,6 @@ class MainActivity : AppCompatActivity(), HasAndroidInjector, FragmentManager.On
     @Inject lateinit var viewModelProviderFactory: ViewModelProvider.Factory
 
     private lateinit var model: RuleMasterDetailViewModel
-    val titleET: EditText
-        get() = findViewById(R.id.title) as EditText
-    private val rulesFragment: RulesFragment?
-        get() = supportFragmentManager.findFragmentByTag(RulesFragment.FRAGMENT_TAG) as RulesFragment?
-    private val editRuleFragment: EditRuleFragment<*>?
-        get() = supportFragmentManager.findFragmentByTag(EditRuleFragment.FRAGMENT_TAG) as EditRuleFragment<*>?
     private var onBackPressedListener: OnBackPressedListener? = null
 
     @Inject
@@ -79,9 +73,17 @@ class MainActivity : AppCompatActivity(), HasAndroidInjector, FragmentManager.On
         AndroidInjection.inject(this)
         setThemeFromPreference()
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main)
         model = ViewModelProviders.of(this, viewModelProviderFactory)[RuleMasterDetailViewModel::class.java]
         model.selectedRule.value = null
+        val binding = DataBindingUtil.setContentView<ActivityMainBinding>(this, R.layout.activity_main)
+        binding.lifecycleOwner = this
+        binding.model = model
+        setSupportActionBar(binding.toolbar)
+        val fab = binding.fab
+
+        fab.setOnClickListener {
+            onClickFloatingActionButton()
+        }
 
         model.enabledCalendarRulesExist.observe(this, Observer { enabledCalendarRulesExist ->
             if (enabledCalendarRulesExist!!) {
@@ -94,6 +96,8 @@ class MainActivity : AppCompatActivity(), HasAndroidInjector, FragmentManager.On
                     .setCustomAnimations(android.R.animator.fade_in, 0)
                     .add(R.id.fragment_container, RulesFragment(), RulesFragment.FRAGMENT_TAG)
                     .commit()
+            fab.show()
+            fab.bringToFront()
             AppBroadcastReceiver.sendRefresh(this)
         }
 
@@ -101,20 +105,12 @@ class MainActivity : AppCompatActivity(), HasAndroidInjector, FragmentManager.On
 
         supportFragmentManager.addOnBackStackChangedListener(this)
 
-        setSupportActionBar(findViewById(R.id.toolbar) as Toolbar)
-        setHomeAsUp()
-
-        titleET.setOnEditorActionListener { _, actionId, _ ->
+        binding.toolbarEditText.setOnEditorActionListener { view, actionId, _ ->
             if (actionId == EditorInfo.IME_ACTION_DONE) {
                 hideKeyboard(this)
-                titleET.clearFocus()
+                view!!.clearFocus()
             }
             false
-        }
-
-        if (editRuleFragment != null) {
-            supportActionBar!!.setDisplayShowTitleEnabled(false)
-            titleET.visibility = View.VISIBLE
         }
     }
 
@@ -230,6 +226,31 @@ class MainActivity : AppCompatActivity(), HasAndroidInjector, FragmentManager.On
     private fun setHomeAsUp() {
         val backStackEntryCount = supportFragmentManager.backStackEntryCount
         supportActionBar!!.setDisplayHomeAsUpEnabled(backStackEntryCount > 0)
+    }
+
+    private fun onClickFloatingActionButton() {
+        val view = layoutInflater.inflate(R.layout.create_rule, null)
+
+        val dialog = AlertDialog.Builder(this)
+                .setTitle(R.string.create_a_rule)
+                .setView(view)
+                .create()
+
+        val calendarRuleView = view.findViewById<View>(R.id.calendar_rule)
+        val scheduleRuleView = view.findViewById<View>(R.id.schedule_rule)
+
+        calendarRuleView.setOnClickListener {
+            dialog.dismiss()
+            if(checkCalendarPermission(REQUEST_PERMISSION_CREATE_CALENDAR_RULE))
+                model.selectedRule.value = CalendarRule(this)
+        }
+
+        scheduleRuleView.setOnClickListener {
+            dialog.dismiss()
+            model.selectedRule.value = ScheduleRule(this)
+        }
+
+        dialog.show()
     }
 
 }
