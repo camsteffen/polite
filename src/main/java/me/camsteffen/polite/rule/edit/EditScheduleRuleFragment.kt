@@ -60,7 +60,7 @@ class EditScheduleRuleFragment : EditRuleFragment<ScheduleRule>(), TimePickerDia
         val days = model.days.asSequence()
             .filter { it.value.get() }
             .map { it.key }
-            .toMutableSet()
+            .toSet()
         return ScheduleRule(id, name, enabled, vibrate, model.begin.get()!!, model.end.get()!!, days)
     }
 

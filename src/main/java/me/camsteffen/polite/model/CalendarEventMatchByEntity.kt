@@ -1,9 +1,9 @@
 package me.camsteffen.polite.model
 
 class CalendarEventMatchByEntity(
-    var all: Boolean = false,
-    var title: Boolean = false,
-    var description: Boolean = false
+    val all: Boolean = false,
+    val title: Boolean = false,
+    val description: Boolean = false
 ) {
     fun asCalendarEventMatchBy() = CalendarEventMatchBy.having(all, title, description)
 }

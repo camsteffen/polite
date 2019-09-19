@@ -50,7 +50,7 @@ abstract class EditRuleFragment<RuleType : Rule> : DaggerFragment() {
         masterModel = ViewModelProviders.of(activity!!, viewModelProviderFactory)[RuleMasterDetailViewModel::class.java]
         @Suppress("UNCHECKED_CAST")
         rule = masterModel.selectedRule.value!! as RuleType
-        newRule = rule.id == Rule.NEW_RULE
+        newRule = rule.id == Rule.NEW_ID
         masterModel.toolbarEditText.value = rule.name
     }
 

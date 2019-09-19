@@ -66,7 +66,7 @@ class EditCalendarRuleFragment : EditRuleFragment<CalendarRule>() {
 
     override fun ruleFromUi(id: Long, name: String, enabled: Boolean, vibrate: Boolean): CalendarRule {
         return CalendarRule(id, name, enabled, vibrate, model.matchBy.value!!, model.inverseMatch.value!!,
-                model.calendarIds.value!!.toMutableSet(), model.keywords.value!!.toMutableSet())
+                model.calendarIds.value!!, model.keywords.value!!)
     }
 
     private fun addKeyword() {

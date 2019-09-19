@@ -20,11 +20,11 @@ import androidx.room.PrimaryKey
 )
 data class CalendarRuleEntity(
     @PrimaryKey
-    var id: Long,
+    val id: Long,
 
     @Embedded(prefix = "match_")
-    var matchBy: CalendarEventMatchByEntity,
+    val matchBy: CalendarEventMatchByEntity,
 
     @ColumnInfo(name = "inverse_match")
-    var inverseMatch: Boolean
+    val inverseMatch: Boolean
 )

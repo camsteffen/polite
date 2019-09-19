@@ -29,8 +29,7 @@ import dagger.android.AndroidInjection
 import dagger.android.DispatchingAndroidInjector
 import dagger.android.HasAndroidInjector
 import me.camsteffen.polite.databinding.ActivityMainBinding
-import me.camsteffen.polite.model.CalendarRule
-import me.camsteffen.polite.model.ScheduleRule
+import me.camsteffen.polite.model.DefaultRules
 import me.camsteffen.polite.rule.RuleMasterDetailViewModel
 import me.camsteffen.polite.rule.master.RulesFragment
 import me.camsteffen.polite.settings.AppPreferences
@@ -53,6 +52,7 @@ class MainActivity : AppCompatActivity(), HasAndroidInjector, FragmentManager.On
         }
     }
 
+    @Inject lateinit var defaultRules: DefaultRules
     @Inject lateinit var dispatchingAndroidInjector: DispatchingAndroidInjector<Any>
     @Inject lateinit var notificationManager: AppNotificationManager
     @Inject lateinit var preferences: AppPreferences
@@ -147,7 +147,7 @@ class MainActivity : AppCompatActivity(), HasAndroidInjector, FragmentManager.On
         if(allGranted) {
             when(requestCode) {
                 REQUEST_PERMISSION_CREATE_CALENDAR_RULE -> {
-                    model.selectedRule.value = CalendarRule(this)
+                    model.selectedRule.value = defaultRules.calendar()
                 }
                 REQUEST_PERMISSION_CALENDAR -> {
                     AppBroadcastReceiver.sendRefresh(this)
@@ -242,12 +242,12 @@ class MainActivity : AppCompatActivity(), HasAndroidInjector, FragmentManager.On
         calendarRuleView.setOnClickListener {
             dialog.dismiss()
             if(checkCalendarPermission(REQUEST_PERMISSION_CREATE_CALENDAR_RULE))
-                model.selectedRule.value = CalendarRule(this)
+                model.selectedRule.value = defaultRules.calendar()
         }
 
         scheduleRuleView.setOnClickListener {
             dialog.dismiss()
-            model.selectedRule.value = ScheduleRule(this)
+            model.selectedRule.value = defaultRules.schedule()
         }
 
         dialog.show()

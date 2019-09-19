@@ -23,7 +23,7 @@ class ScheduleRuleEntry(
             vibrate = ruleBase.vibrate,
             begin = TimeOfDay.of(beginTime),
             end = TimeOfDay.of(endTime),
-            days = days.toDayOfWeekSet().toMutableSet()
+            days = days.toDayOfWeekSet()
         )
     }
 }
