@@ -22,12 +22,14 @@ import androidx.fragment.app.FragmentManager
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleObserver
 import androidx.lifecycle.LifecycleOwner
+import androidx.lifecycle.Observer
 import androidx.lifecycle.OnLifecycleEvent
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.ViewModelProviders
 import dagger.android.AndroidInjection
 import dagger.android.DispatchingAndroidInjector
 import dagger.android.HasAndroidInjector
+import me.camsteffen.polite.model.CalendarRule
 import me.camsteffen.polite.rule.RuleMasterDetailViewModel
 import me.camsteffen.polite.rule.edit.EditRuleFragment
 import me.camsteffen.polite.rule.master.RulesFragment
@@ -80,6 +82,12 @@ class MainActivity : AppCompatActivity(), HasAndroidInjector, FragmentManager.On
         setContentView(R.layout.activity_main)
         model = ViewModelProviders.of(this, viewModelProviderFactory)[RuleMasterDetailViewModel::class.java]
         model.selectedRule.value = null
+
+        model.enabledCalendarRulesExist.observe(this, Observer { enabledCalendarRulesExist ->
+            if (enabledCalendarRulesExist!!) {
+                checkCalendarPermission()
+            }
+        })
 
         if (savedInstanceState == null) {
             supportFragmentManager.beginTransaction()
@@ -143,7 +151,7 @@ class MainActivity : AppCompatActivity(), HasAndroidInjector, FragmentManager.On
         if(allGranted) {
             when(requestCode) {
                 REQUEST_PERMISSION_CREATE_CALENDAR_RULE -> {
-                    rulesFragment?.openNewCalendarRule()
+                    model.selectedRule.value = CalendarRule(this)
                 }
                 REQUEST_PERMISSION_CALENDAR -> {
                     AppBroadcastReceiver.sendRefresh(this)

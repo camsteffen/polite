@@ -1,47 +1,60 @@
-<me.camsteffen.polite.view.AnimateFrame
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent">
-
-    <RelativeLayout
+<layout>
+    <data>
+        <import type="android.view.View" />
+        <variable
+            name="model"
+            type="me.camsteffen.polite.rule.RuleMasterDetailViewModel" />
+        <variable
+            name="handlers"
+            type="me.camsteffen.polite.rule.master.RulesFragment" />
+    </data>
+    <me.camsteffen.polite.view.AnimateFrame
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <TextView
-            android:id="@+id/disabled_notice"
-            android:elevation="4dp"
-            android:text="@string/disabled_notice"
-            android:textSize="16sp"
-            android:textStyle="bold"
-            android:background="@color/red"
-            android:textColor="@android:color/white"
-            android:padding="16dp"
+        <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"/>
+            android:layout_height="match_parent">
 
-        <TextView
-            android:id="@+id/no_rules"
-            tools:visibility="visible"
-            android:visibility="gone"
-            android:text="@string/no_rules"
-            android:textSize="20sp"
-            android:textStyle="italic"
-            android:lineSpacingMultiplier="1.4"
-            android:layout_below="@id/disabled_notice"
-            android:gravity="center"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent" />
+            <TextView
+                android:id="@+id/disabled_notice"
+                android:onClick="@{_ -> handlers.onClickDisabledNotice()}"
+                android:visibility="@{model.politeEnabled ? View.GONE : View.VISIBLE}"
+                android:elevation="4dp"
+                android:text="@string/disabled_notice"
+                android:textSize="16sp"
+                android:textStyle="bold"
+                android:background="@color/red"
+                android:textColor="@android:color/white"
+                android:padding="16dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"/>
 
-        <me.camsteffen.polite.rule.master.RuleMasterRecyclerView
-            android:id="@+id/rules_view"
-            tools:listitem="@layout/rule_list_item"
-            android:layout_below="@id/disabled_notice"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:paddingBottom="88dp"
-            android:clipToPadding="false"/>
+            <TextView
+                android:id="@+id/no_rules"
+                tools:visibility="visible"
+                android:visibility="@{model.ruleMasterList.isEmpty() ? View.VISIBLE : View.GONE}"
+                android:text="@string/no_rules"
+                android:textSize="20sp"
+                android:textStyle="italic"
+                android:lineSpacingMultiplier="1.4"
+                android:layout_below="@id/disabled_notice"
+                android:gravity="center"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent" />
 
-    </RelativeLayout>
+            <me.camsteffen.polite.rule.master.RuleMasterRecyclerView
+                android:id="@+id/rules_view"
+                tools:listitem="@layout/rule_list_item"
+                android:layout_below="@id/disabled_notice"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:paddingBottom="88dp"
+                android:clipToPadding="false"/>
 
-</me.camsteffen.polite.view.AnimateFrame>
+        </RelativeLayout>
+
+    </me.camsteffen.polite.view.AnimateFrame>
+</layout>

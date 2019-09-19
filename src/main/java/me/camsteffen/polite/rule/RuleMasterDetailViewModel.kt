@@ -13,7 +13,9 @@ import me.camsteffen.polite.rule.master.RuleMasterList
 import javax.inject.Inject
 
 class RuleMasterDetailViewModel
-@Inject constructor(ruleDao: RuleDao) : ViewModel() {
+@Inject constructor(ruleDao: RuleDao, enableLiveData: LiveData<Boolean>) : ViewModel() {
+
+    val politeEnabled: LiveData<Boolean> = enableLiveData
 
     val selectedRule = MutableLiveData<Rule>()
 
@@ -33,4 +35,6 @@ class RuleMasterDetailViewModel
 
         value = emptyList()
     }
+
+    val enabledCalendarRulesExist: LiveData<Boolean> = ruleDao.getEnabledCalendarRulesExistLive()
 }

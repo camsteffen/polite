@@ -10,12 +10,11 @@ import android.view.MenuInflater
 import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
-import android.widget.TextView
 import androidx.appcompat.app.AlertDialog
+import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.ViewModelProviders
-import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import dagger.android.support.DaggerFragment
 import me.camsteffen.polite.HelpFragment
@@ -23,6 +22,7 @@ import me.camsteffen.polite.MainActivity
 import me.camsteffen.polite.Polite
 import me.camsteffen.polite.R
 import me.camsteffen.polite.RuleService
+import me.camsteffen.polite.databinding.RulesFragmentBinding
 import me.camsteffen.polite.model.CalendarRule
 import me.camsteffen.polite.model.Rule
 import me.camsteffen.polite.model.ScheduleRule
@@ -44,18 +44,12 @@ class RulesFragment : DaggerFragment() {
     lateinit var model: RuleMasterDetailViewModel
     val polite: Polite
         get() = activity!!.application as Polite
-    val mainActivity: MainActivity
+    private val mainActivity: MainActivity
         get() = activity as MainActivity
-    private val noRulesView: View?
-        get() = view?.findViewById(R.id.no_rules)
     private val fab: FloatingActionButton
         get() = activity!!.findViewById(R.id.fab) as FloatingActionButton
 
-    lateinit var adapter: RuleMasterAdapter
-    private val rulesView: RuleMasterRecyclerView?
-        get() = view?.findViewById(R.id.rules_view) as RuleMasterRecyclerView?
-    private val disabledNotice: TextView?
-        get() = view?.findViewById(R.id.disabled_notice) as TextView?
+    private lateinit var adapter: RuleMasterAdapter
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -65,27 +59,24 @@ class RulesFragment : DaggerFragment() {
         model = ViewModelProviders.of(activity!!, viewModelProviderFactory)[RuleMasterDetailViewModel::class.java]
         adapter = RuleMasterAdapter(this::openRule, this::onRuleCheckedChange)
 
-        adapter.registerAdapterDataObserver(adapterObserver)
-
         model.ruleMasterList.observe(this, Observer {
             adapter.submitList(it)
         })
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        return inflater.inflate(R.layout.rules_fragment, container, false)
+        val binding = DataBindingUtil.inflate<RulesFragmentBinding>(inflater, R.layout.rules_fragment, container, false)
+        binding.lifecycleOwner = this
+        binding.handlers = this
+        binding.model = model
+        registerForContextMenu(binding.rulesView)
+        binding.rulesView.adapter = adapter
+        return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
-        setDisabledNoticeVisibility()
-        disabledNotice!!.setOnClickListener {
-            openSettings()
-        }
-        registerForContextMenu(rulesView!!)
         fab.setOnClickListener(fabOnClick)
-        rulesView!!.adapter = adapter
     }
 
     override fun onResume() {
@@ -115,14 +106,6 @@ class RulesFragment : DaggerFragment() {
                     .create()
                     .show()
         }
-    }
-
-    private fun setDisabledNoticeVisibility() {
-        disabledNotice?.visibility =
-                if (preferences.enable)
-                    View.GONE
-                else
-                    View.VISIBLE
     }
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
@@ -174,6 +157,10 @@ class RulesFragment : DaggerFragment() {
             else -> return false
         }
         return true
+    }
+
+    fun onClickDisabledNotice() {
+        openSettings()
     }
 
     private fun openSettings() {
@@ -241,24 +228,6 @@ class RulesFragment : DaggerFragment() {
         }
 
         dialog.show()
-    }
-
-    fun setNoRulesViewVisibility() {
-        noRulesView?.visibility = if(adapter.itemCount == 0) View.VISIBLE else View.GONE
-    }
-
-    private val adapterObserver = object : RecyclerView.AdapterDataObserver() {
-        override fun onChanged() {
-            setNoRulesViewVisibility()
-        }
-
-        override fun onItemRangeInserted(positionStart: Int, itemCount: Int) {
-            setNoRulesViewVisibility()
-        }
-
-        override fun onItemRangeRemoved(positionStart: Int, itemCount: Int) {
-            setNoRulesViewVisibility()
-        }
     }
 
     companion object {

@@ -7,6 +7,7 @@ import android.content.Context
 import android.content.SharedPreferences
 import android.content.res.Resources
 import android.preference.PreferenceManager
+import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import dagger.Binds
@@ -17,10 +18,13 @@ import dagger.multibindings.IntoMap
 import me.camsteffen.polite.AppBroadcastReceiver
 import me.camsteffen.polite.MainActivity
 import me.camsteffen.polite.Polite
+import me.camsteffen.polite.R
 import me.camsteffen.polite.db.AppDatabase
 import me.camsteffen.polite.rule.RuleMasterDetailViewModel
 import me.camsteffen.polite.rule.edit.EditCalendarRuleViewModel
 import me.camsteffen.polite.rule.edit.EditScheduleRuleViewModel
+import me.camsteffen.polite.settings.PreferenceDefaults
+import me.camsteffen.polite.util.SharedPreferenceBooleanLiveData
 import javax.inject.Singleton
 
 @Module
@@ -80,5 +84,11 @@ abstract class AppModule {
         @JvmStatic @Provides
         fun provideSharedPreferences(app: Application): SharedPreferences =
                 PreferenceManager.getDefaultSharedPreferences(app)
+
+        @JvmStatic @Provides
+        fun provideEnableLiveData(sharedPreferences: SharedPreferences, resources: Resources): LiveData<Boolean> {
+            val key = resources.getString(R.string.preference_enable)
+            return SharedPreferenceBooleanLiveData(sharedPreferences, key, PreferenceDefaults.ENABLE)
+        }
     }
 }
