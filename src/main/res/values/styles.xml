@@ -7,8 +7,6 @@
         <item name="colorAccentBackground">@color/accent</item>
         <item name="colorControlNormal">@android:color/white</item>
         <item name="colorRuleListItemBackground">@color/rule_list_item_dark</item>
-        <item name="alertDialogTheme">@style/AppTheme.AlertDialog</item>
-        <item name="dayStateList">@drawable/day_state_list_dark</item>
         <item name="preferenceTheme">@style/PreferenceThemeOverlay.v14.Material</item>
     </style>
 
@@ -18,8 +16,6 @@
         <item name="colorAccent">@color/accent</item>
         <item name="colorAccentBackground">@color/accent_300</item>
         <item name="colorRuleListItemBackground">@android:color/white</item>
-        <item name="alertDialogTheme">@style/AppTheme.Light.AlertDialog</item>
-        <item name="dayStateList">@drawable/day_state_list_light</item>
         <item name="preferenceTheme">@style/PreferenceThemeOverlay.v14.Material</item>
     </style>
 
@@ -27,14 +23,9 @@
         <item name="android:windowBackground">@drawable/launch_screen</item>
     </style>
 
-    <style name="AppTheme.AlertDialog" parent="Theme.AppCompat.Dialog.Alert"/>
-
-    <style name="AppTheme.Light.AlertDialog" parent="Theme.AppCompat.Light.Dialog.Alert"/>
-
-    <style name="Toolbar" parent="@style/Widget.AppCompat.Toolbar">
+    <style name="Toolbar">
         <item name="android:background">@color/primary</item>
         <item name="android:elevation" tools:targetApi="lollipop">4dp</item>
-        <item name="android:theme">@style/ThemeOverlay.AppCompat.Dark</item>
     </style>
 
     <style name="Divider">

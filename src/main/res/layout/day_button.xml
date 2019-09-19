@@ -6,7 +6,7 @@
     tools:text="@string/day_symbol_sunday"
     android:textSize="18sp"
     android:textColor="?android:textColorPrimary"
-    android:background="?dayStateList"
+    android:background="@drawable/day_state_list"
     android:layout_width="36dp"
     android:layout_height="36dp"
     android:gravity="center"/>
