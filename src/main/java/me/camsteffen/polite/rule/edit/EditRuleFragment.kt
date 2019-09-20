@@ -132,15 +132,11 @@ abstract class EditRuleFragment<RuleType : Rule> : DaggerFragment() {
         saveClose()
     }
 
-    private fun save(rule: RuleType) {
-        ruleService.saveRuleAsync(rule)
-        rateAppPrompt.conditionalPrompt(activity!!)
-    }
-
     fun saveClose() {
         val rule = ruleFromUi()
-        if (rule != masterModel.selectedRule) {
-            save(rule)
+        if (newRule || rule != masterModel.selectedRule.value) {
+            ruleService.saveRuleAsync(rule)
+            rateAppPrompt.conditionalPrompt(activity!!)
         }
         hideKeyboard(activity!!)
         fragmentManager!!.popBackStack()
