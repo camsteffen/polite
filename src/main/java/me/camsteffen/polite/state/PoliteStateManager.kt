@@ -97,7 +97,7 @@ class PoliteStateManager
 
     private fun cancelCurrentEvents(now: Instant) {
         val eventCancels = ruleEventFinders.calendarRules.allEventsAt(now)
-            .map { EventCancel(it.eventId, it.end) }
+            .map { EventCancel(it.event.eventId, it.end) }
         if (eventCancels.isNotEmpty()) {
             stateDao.insertEventCancels(*eventCancels.toTypedArray())
         }

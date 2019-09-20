@@ -6,7 +6,9 @@ import me.camsteffen.polite.data.CalendarFacade
 import me.camsteffen.polite.db.PoliteStateDao
 import me.camsteffen.polite.db.RuleDao
 import me.camsteffen.polite.model.CalendarRule
+import me.camsteffen.polite.settings.AppPreferences
 import org.threeten.bp.Clock
+import org.threeten.bp.Duration
 import org.threeten.bp.Instant
 import org.threeten.bp.LocalDateTime
 import javax.inject.Inject
@@ -50,6 +52,7 @@ class AllRuleEventFinder
 @WorkerThread
 class CalendarRuleEventFinder
 @Inject constructor(
+    private val appPreferences: AppPreferences,
     private val permissionChecker: AppPermissionChecker,
     private val politeStateDao: PoliteStateDao,
     private val ruleDao: RuleDao,
@@ -63,17 +66,20 @@ class CalendarRuleEventFinder
             return emptySequence()
         }
 
+        val deactivation = Duration.ofMinutes(appPreferences.deactivation.toLong())
+        val activation = Duration.ofMinutes(appPreferences.activation.toLong())
+
         val eventCancels = politeStateDao.getEventCancels().associate { it.eventId to it.end }
-        val events = calendarFacade.getEventsInRange(begin, end)
+        val events = calendarFacade.getEventsInRange(begin - deactivation, end + activation)
         return events.asSequence()
             .filter { event ->
                 val cancelEnd = eventCancels[event.eventId]
-                cancelEnd == null || event.begin >= cancelEnd
+                cancelEnd == null || event.begin - activation >= cancelEnd
             }
             .flatMap { event ->
                 calendarRules.asSequence()
                     .filter { rule -> rule.matches(event) }
-                    .map { rule -> CalendarRuleEvent(rule, event) }
+                    .map { rule -> CalendarRuleEvent(rule, event, activation, deactivation) }
             }
     }
 }

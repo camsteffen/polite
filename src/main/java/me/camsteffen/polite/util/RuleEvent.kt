@@ -19,12 +19,23 @@ interface RuleEvent {
 
 data class CalendarRuleEvent(
     override val rule: CalendarRule,
+    override val begin: Instant,
+    override val end: Instant,
     val event: CalendarEvent
 ) : RuleEvent {
-    val eventId = event.eventId
-    override val begin get() = event.begin
-    override val end get() = event.end
     override val notificationText get() = event.title ?: rule.name
+
+    constructor(
+        rule: CalendarRule,
+        event: CalendarEvent,
+        activation: Duration,
+        deactivation: Duration
+    ) : this(
+        rule,
+        event.begin - activation,
+        event.end + deactivation,
+        event
+    )
 }
 
 data class ScheduleRuleEvent(
