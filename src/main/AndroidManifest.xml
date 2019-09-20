@@ -30,6 +30,12 @@
             </intent-filter>
         </receiver>
 
+        <receiver android:name=".receiver.AlarmClockChangeReceiver" android:enabled="false">
+            <intent-filter>
+                <action android:name="android.app.action.NEXT_ALARM_CLOCK_CHANGED" />
+            </intent-filter>
+        </receiver>
+
         <receiver android:name=".receiver.CalendarChangeReceiver" android:enabled="false">
             <intent-filter>
                 <action android:name="android.intent.action.PROVIDER_CHANGED" />

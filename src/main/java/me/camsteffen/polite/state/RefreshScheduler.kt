@@ -9,6 +9,7 @@ import android.os.Build
 import me.camsteffen.polite.AppBroadcastReceiver
 import me.camsteffen.polite.AppTimingConfig
 import me.camsteffen.polite.AppWorkManager
+import me.camsteffen.polite.receiver.AlarmClockChangeReceiver
 import me.camsteffen.polite.receiver.CalendarChangeReceiver
 import me.camsteffen.polite.util.componentName
 import org.threeten.bp.Clock
@@ -69,6 +70,10 @@ class RefreshScheduler
         } else {
             setReceiverEnabled<CalendarChangeReceiver>(refreshOnCalendarChange)
         }
+    }
+
+    fun setRefreshOnNextAlarmChange(refreshOnNextAlarmChange: Boolean) {
+        setReceiverEnabled<AlarmClockChangeReceiver>(refreshOnNextAlarmChange)
     }
 
     private inline fun <reified T> setReceiverEnabled(enabled: Boolean) {

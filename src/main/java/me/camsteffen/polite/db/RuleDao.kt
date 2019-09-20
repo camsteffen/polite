@@ -41,6 +41,14 @@ abstract class RuleDao {
     )
     abstract fun getEnabledCalendarRulesExistLive(): LiveData<Boolean>
 
+    @Query(
+        """select exists(
+             select 1 from rule join schedule_rule on rule.id = schedule_rule.id
+             where enabled = 1 and cancel_on_alarm = 1
+           )"""
+    )
+    abstract fun getEnabledCancelOnAlarmRulesExist(): Boolean
+
     fun calendarRulesSortedByNameLive(): LiveData<List<CalendarRule>> {
         return Transformations.map(calendarRuleEntriesSortedByNameLive()) { entries ->
             entries.map(CalendarRuleEntry::asCalendarRule)

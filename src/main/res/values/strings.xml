@@ -20,6 +20,7 @@
     <string name="calendar_rule_desc">Silence your phone during calendar events</string>
     <string name="calendar_rules">Calendar Rules</string>
     <string name="calendars">Calendars</string>
+    <string name="cancel_on_alarm">Cancel On Alarm</string>
     <string name="create_a_rule">Create A Rule</string>
     <string name="continue_">Continue</string>
     <string name="days">Days</string>

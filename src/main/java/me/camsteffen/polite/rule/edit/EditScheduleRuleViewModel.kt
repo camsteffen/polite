@@ -21,6 +21,8 @@ class EditScheduleRuleViewModel
 
     val daysOfWeek = EnumMap<DayOfWeek, ObservableBoolean>(DayOfWeek::class.java)
 
+    val cancelOnAlarm = ObservableField<Boolean>()
+
     init {
         for (day in DayOfWeek.values()) {
             daysOfWeek[day] = ObservableBoolean()
@@ -44,6 +46,7 @@ class EditScheduleRuleViewModel
         for ((dayOfWeek, value) in daysOfWeek) {
             value.set(rule.schedule.daysOfWeek.contains(dayOfWeek))
         }
+        cancelOnAlarm.set(rule.cancelOnAlarm)
     }
 
     private fun localTimeDisplay(localTime: ObservableField<LocalTime>): ObservableField<String> {

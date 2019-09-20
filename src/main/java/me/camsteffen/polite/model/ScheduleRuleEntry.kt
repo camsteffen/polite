@@ -13,7 +13,9 @@ class ScheduleRuleEntry(
     @ColumnInfo(name = "end_time")
     val endTime: LocalTime,
     @Embedded
-    val days: DaysOfWeekEntity
+    val days: DaysOfWeekEntity,
+    @ColumnInfo(name = "cancel_on_alarm")
+    val cancelOnAlarm: Boolean
 ) {
     fun asScheduleRule(): ScheduleRule {
         return ScheduleRule(
@@ -21,7 +23,8 @@ class ScheduleRuleEntry(
             name = ruleBase.name,
             enabled = ruleBase.enabled,
             vibrate = ruleBase.vibrate,
-            schedule = ScheduleRuleSchedule(beginTime, endTime, days.toDayOfWeekSet())
+            schedule = ScheduleRuleSchedule(beginTime, endTime, days.toDayOfWeekSet()),
+            cancelOnAlarm = cancelOnAlarm
         )
     }
 }

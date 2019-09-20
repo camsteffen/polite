@@ -15,6 +15,7 @@ private object PreferenceKeys {
     const val PREVIOUS_RINGER_MODE = "previous_ringer_mode"
     const val LAUNCH_COUNT = "launch_count"
     const val ASKED_TO_RATE = "asked_to_rate"
+    const val NEXT_ALARM_CLOCK = "next_alarm_clock"
 }
 
 @Singleton
@@ -68,4 +69,8 @@ class AppPreferences
     var deactivation: Int
         get() = preferences.getInt(deactivationKey, 0)
         set(value) = editor.putInt(deactivationKey, value).apply()
+
+    var nextAlarmClock: Long?
+        get() = preferences.getLong(PreferenceKeys.NEXT_ALARM_CLOCK, -1L).takeIf { it != -1L }
+        set(value) = editor.putLong(PreferenceKeys.NEXT_ALARM_CLOCK, value ?: -1L).apply()
 }

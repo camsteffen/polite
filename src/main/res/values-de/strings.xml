@@ -20,6 +20,7 @@
     <string name="calendar_rule_desc">Schalten Sie Ihr Telefon während eines Kalendereintrages stumm.</string>
     <string name="calendar_rules">Kalenderregeln</string>
     <string name="calendars">Kalender</string>
+    <string name="cancel_on_alarm">Bei Weckruf stoppen</string>
     <string name="create_a_rule">Neue Regel erstellen</string>
     <string name="continue_">Weiter</string> <!-- Alternatively: "Fortfahren" -->
     <string name="days">Tage</string>

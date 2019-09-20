@@ -85,5 +85,13 @@
                 android:layout_height="wrap_content"/>
         </LinearLayout>
         <View style="@style/Divider" />
+        <Switch
+            android:id="@+id/cancel_on_alarm"
+            style="@style/Option.Switch"
+            android:checked="@={model.cancelOnAlarm}"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/cancel_on_alarm"/>
+        <View style="@style/Divider"/>
     </LinearLayout>
 </layout>

@@ -1,5 +1,6 @@
 package me.camsteffen.polite.state
 
+import android.app.AlarmManager
 import androidx.annotation.WorkerThread
 import me.camsteffen.polite.AppTimingConfig
 import me.camsteffen.polite.db.PoliteStateDao
@@ -11,6 +12,7 @@ import me.camsteffen.polite.util.AppPermissionChecker
 import me.camsteffen.polite.util.RuleEvent
 import me.camsteffen.polite.util.RuleEventFinders
 import org.threeten.bp.Clock
+import org.threeten.bp.Duration
 import org.threeten.bp.Instant
 import javax.inject.Inject
 import javax.inject.Singleton
@@ -20,6 +22,7 @@ import javax.inject.Singleton
 class PoliteStateManager
 @Inject constructor(
     private val clock: Clock,
+    private val alarmManager: AlarmManager,
     private val permissionChecker: AppPermissionChecker,
     private val politeModeController: PoliteModeController,
     private val preferences: AppPreferences,
@@ -41,7 +44,12 @@ class PoliteStateManager
     private fun doRefresh(cancel: Boolean) {
         val now = clock.instant()
 
-        if (cancel) {
+        val alarmClockTime = preferences.nextAlarmClock?.let(Instant::ofEpochMilli)
+        preferences.nextAlarmClock = alarmManager.nextAlarmClock?.triggerTime
+        val isAlarmClockFiring = (alarmClockTime != null
+                && Duration.between(now, alarmClockTime).abs() <= timingConfig.alarmTolerance)
+
+        if (cancel || isAlarmClockFiring) {
             cancelCurrentEvents(now)
         }
 
@@ -60,6 +68,7 @@ class PoliteStateManager
         refreshScheduler.run {
             scheduleRefresh(sequenceOf(currentEvent?.end, nextEvent?.begin).filterNotNull().min())
             setRefreshOnCalendarChange(ruleDao.getEnabledCalendarRulesExist())
+            setRefreshOnNextAlarmChange(ruleDao.getEnabledCancelOnAlarmRulesExist())
         }
 
         stateDao.deleteExpiredCancels()

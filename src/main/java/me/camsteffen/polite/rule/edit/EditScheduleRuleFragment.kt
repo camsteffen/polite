@@ -60,7 +60,14 @@ class EditScheduleRuleFragment : EditRuleFragment<ScheduleRule>(), TimePickerDia
             .map { it.key }
             .toSet()
         val schedule = ScheduleRuleSchedule(model.beginTime.get()!!, model.endTime.get()!!, days)
-        return ScheduleRule(id, name, enabled, vibrate, schedule)
+        return ScheduleRule(
+            id = id,
+            name = name,
+            enabled = enabled,
+            vibrate = vibrate,
+            schedule = schedule,
+            cancelOnAlarm = model.cancelOnAlarm.get()!!
+        )
     }
 
     fun onClickBeginTime() {

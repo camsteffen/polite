@@ -27,5 +27,7 @@ data class ScheduleRuleEntity(
     @ColumnInfo(name = "end_time")
     val endTime: LocalTime,
     @Embedded
-    val daysOfWeek: DaysOfWeekEntity
+    val daysOfWeek: DaysOfWeekEntity,
+    @ColumnInfo(name = "cancel_on_alarm")
+    val cancelOnAlarm: Boolean
 )

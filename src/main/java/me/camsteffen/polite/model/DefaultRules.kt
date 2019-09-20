@@ -36,7 +36,8 @@ class DefaultRules
             DayOfWeek.WEDNESDAY,
             DayOfWeek.THURSDAY,
             DayOfWeek.FRIDAY
-        )
+        ),
+        cancelOnAlarm = false
     )
 }
 

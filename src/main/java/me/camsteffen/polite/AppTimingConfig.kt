@@ -3,6 +3,7 @@ package me.camsteffen.polite
 import org.threeten.bp.Duration
 
 val defaultAppTimingConfig = AppTimingConfig(
+    alarmTolerance = Duration.ofMinutes(1),
     lookahead = Duration.ofHours(30),
     refreshWindowDelay = Duration.ofHours(4),
     refreshWindowLength = Duration.ofHours(25),
@@ -10,6 +11,12 @@ val defaultAppTimingConfig = AppTimingConfig(
 )
 
 class AppTimingConfig(
+
+    /**
+     * How close the current time must be to a previously recorded "next alarm clock" in order for
+     * a cancel on alarm to be triggered.
+     */
+    val alarmTolerance: Duration,
 
     /**
      * How far to look into the future for upcoming calendar events or schedule events.

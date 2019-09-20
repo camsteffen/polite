@@ -27,6 +27,7 @@ import me.camsteffen.polite.R
 import me.camsteffen.polite.db.AppDatabase
 import me.camsteffen.polite.db.PoliteStateDao
 import me.camsteffen.polite.defaultAppTimingConfig
+import me.camsteffen.polite.receiver.AlarmClockChangeReceiver
 import me.camsteffen.polite.receiver.CalendarChangeReceiver
 import me.camsteffen.polite.rule.RuleMasterDetailViewModel
 import me.camsteffen.polite.rule.edit.EditCalendarRuleViewModel
@@ -54,6 +55,9 @@ abstract class AppModule {
 
     @ContributesAndroidInjector
     abstract fun contributeAppBroadcastReceiver(): AppBroadcastReceiver
+
+    @ContributesAndroidInjector
+    abstract fun contributeAlarmClockChangeReceiver(): AlarmClockChangeReceiver
 
     @ContributesAndroidInjector
     abstract fun contributeCalendarChangeReceiver(): CalendarChangeReceiver

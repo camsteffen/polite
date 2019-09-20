@@ -55,7 +55,8 @@ data class ScheduleRule(
     override val name: String,
     override val enabled: Boolean,
     override val vibrate: Boolean,
-    val schedule: ScheduleRuleSchedule
+    val schedule: ScheduleRuleSchedule,
+    val cancelOnAlarm: Boolean
 ) : Rule() {
     override fun getCaption(context: Context) = schedule.summary(context)
 
@@ -63,7 +64,8 @@ data class ScheduleRule(
         id = id,
         beginTime = schedule.beginTime,
         endTime = schedule.endTime,
-        daysOfWeek = DaysOfWeekEntity(schedule.daysOfWeek)
+        daysOfWeek = DaysOfWeekEntity(schedule.daysOfWeek),
+        cancelOnAlarm = cancelOnAlarm
     )
 }
 
