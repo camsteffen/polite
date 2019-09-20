@@ -2,9 +2,14 @@ package me.camsteffen.polite.state
 
 import android.app.AlarmManager
 import android.content.Context
+import android.content.pm.PackageManager
+import android.content.pm.PackageManager.COMPONENT_ENABLED_STATE_DISABLED
+import android.content.pm.PackageManager.COMPONENT_ENABLED_STATE_ENABLED
 import android.os.Build
 import me.camsteffen.polite.AppBroadcastReceiver
 import me.camsteffen.polite.AppTimingConfig
+import me.camsteffen.polite.receiver.CalendarChangeReceiver
+import me.camsteffen.polite.util.componentName
 import org.threeten.bp.Clock
 import org.threeten.bp.Instant
 import javax.inject.Inject
@@ -18,6 +23,11 @@ class RefreshScheduler
     private val alarmManager: AlarmManager,
     private val timingConfig: AppTimingConfig
 ) {
+    fun cancelAll() {
+        alarmManager.cancel(AppBroadcastReceiver.pendingCancelIntent(context))
+        setRefreshOnCalendarChange(false)
+    }
+
     fun scheduleRefresh(refreshTime: Instant? = null) {
         val pendingIntent = AppBroadcastReceiver.pendingRefreshIntent(context)
         when {
@@ -47,7 +57,19 @@ class RefreshScheduler
         }
     }
 
-    fun cancelScheduledRefresh() {
-        alarmManager.cancel(AppBroadcastReceiver.pendingRefreshIntent(context))
+    fun setRefreshOnCalendarChange(refreshOnCalendarChange: Boolean) {
+        setReceiverEnabled<CalendarChangeReceiver>(refreshOnCalendarChange)
+    }
+
+    private inline fun <reified T> setReceiverEnabled(enabled: Boolean) {
+        val state = if (enabled) {
+            COMPONENT_ENABLED_STATE_ENABLED
+        } else {
+            COMPONENT_ENABLED_STATE_DISABLED
+        }
+        context.packageManager.setComponentEnabledSetting(
+            componentName<T>(context), state,
+            PackageManager.DONT_KILL_APP
+        )
     }
 }

@@ -16,21 +16,20 @@
         android:supportsRtl="false">
 
         <receiver android:name=".AppBroadcastReceiver">
-            
+            <intent-filter>
+                <action android:name="android.intent.action.BOOT_COMPLETED" />
+            </intent-filter>
+            <intent-filter>
+                <action android:name="android.app.action.NOTIFICATION_POLICY_ACCESS_GRANTED_CHANGED" />
+            </intent-filter>
+        </receiver>
+
+        <receiver android:name=".receiver.CalendarChangeReceiver" android:enabled="false">
             <intent-filter>
                 <action android:name="android.intent.action.PROVIDER_CHANGED" />
                 <data android:scheme="content" />
                 <data android:host="com.android.calendar" />
             </intent-filter>
-
-            <intent-filter>
-                <action android:name="android.intent.action.BOOT_COMPLETED" />
-            </intent-filter>
-
-            <intent-filter>
-                <action android:name="android.app.action.NOTIFICATION_POLICY_ACCESS_GRANTED_CHANGED" />
-            </intent-filter>
-
         </receiver>
 
         <activity

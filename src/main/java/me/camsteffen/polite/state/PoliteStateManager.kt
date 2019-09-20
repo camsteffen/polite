@@ -3,6 +3,7 @@ package me.camsteffen.polite.state
 import androidx.annotation.WorkerThread
 import me.camsteffen.polite.AppTimingConfig
 import me.camsteffen.polite.db.PoliteStateDao
+import me.camsteffen.polite.db.RuleDao
 import me.camsteffen.polite.model.EventCancel
 import me.camsteffen.polite.model.ScheduleRuleCancel
 import me.camsteffen.polite.settings.AppPreferences
@@ -23,6 +24,7 @@ class PoliteStateManager
     private val politeModeController: PoliteModeController,
     private val preferences: AppPreferences,
     private val refreshScheduler: RefreshScheduler,
+    private val ruleDao: RuleDao,
     private val ruleEventFinders: RuleEventFinders,
     private val stateDao: PoliteStateDao,
     private val timingConfig: AppTimingConfig
@@ -47,7 +49,7 @@ class PoliteStateManager
             politeModeController.setCurrentEvent(null)
             // No need to schedule a refresh since a refresh will occur when the user enables
             // polite mode and/or gives needed permissions
-            refreshScheduler.cancelScheduledRefresh()
+            refreshScheduler.cancelAll()
             return
         }
 
@@ -55,7 +57,10 @@ class PoliteStateManager
 
         politeModeController.setCurrentEvent(currentEvent)
 
-        refreshScheduler.scheduleRefresh(sequenceOf(currentEvent?.end, nextEvent?.begin).filterNotNull().min())
+        refreshScheduler.run {
+            scheduleRefresh(sequenceOf(currentEvent?.end, nextEvent?.begin).filterNotNull().min())
+            setRefreshOnCalendarChange(ruleDao.getEnabledCalendarRulesExist())
+        }
 
         stateDao.deleteExpiredCancels()
     }

@@ -42,7 +42,6 @@ class AppBroadcastReceiver : DaggerBroadcastReceiver() {
 
         when (intent.action) {
             NotificationManager.ACTION_NOTIFICATION_POLICY_ACCESS_GRANTED_CHANGED,
-            Intent.ACTION_PROVIDER_CHANGED,
             Intent.ACTION_BOOT_COMPLETED -> finishAsync { stateManager.refresh() }
             ACTION_REFRESH -> finishAsync { stateManager.refresh() }
             ACTION_CANCEL -> finishAsync(stateManager::cancel)
