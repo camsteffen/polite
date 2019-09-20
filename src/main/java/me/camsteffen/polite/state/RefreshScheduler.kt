@@ -8,6 +8,7 @@ import android.content.pm.PackageManager.COMPONENT_ENABLED_STATE_ENABLED
 import android.os.Build
 import me.camsteffen.polite.AppBroadcastReceiver
 import me.camsteffen.polite.AppTimingConfig
+import me.camsteffen.polite.AppWorkManager
 import me.camsteffen.polite.receiver.CalendarChangeReceiver
 import me.camsteffen.polite.util.componentName
 import org.threeten.bp.Clock
@@ -21,7 +22,8 @@ class RefreshScheduler
     private val clock: Clock,
     private val context: Context,
     private val alarmManager: AlarmManager,
-    private val timingConfig: AppTimingConfig
+    private val timingConfig: AppTimingConfig,
+    private val workManager: AppWorkManager
 ) {
     fun cancelAll() {
         alarmManager.cancel(AppBroadcastReceiver.pendingCancelIntent(context))
@@ -58,7 +60,15 @@ class RefreshScheduler
     }
 
     fun setRefreshOnCalendarChange(refreshOnCalendarChange: Boolean) {
-        setReceiverEnabled<CalendarChangeReceiver>(refreshOnCalendarChange)
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+            if (refreshOnCalendarChange) {
+                workManager.refreshOnCalendarChange()
+            } else {
+                workManager.cancelRefreshOnCalendarChange()
+            }
+        } else {
+            setReceiverEnabled<CalendarChangeReceiver>(refreshOnCalendarChange)
+        }
     }
 
     private inline fun <reified T> setReceiverEnabled(enabled: Boolean) {

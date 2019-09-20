@@ -12,6 +12,7 @@ import android.preference.PreferenceManager
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
+import androidx.work.WorkManager
 import dagger.Binds
 import dagger.Module
 import dagger.Provides
@@ -133,6 +134,11 @@ abstract class AppModule {
         @JvmStatic @Provides
         fun provideAppTimingConfig(): AppTimingConfig {
             return defaultAppTimingConfig
+        }
+
+        @JvmStatic @Provides
+        fun provideWorkManager(context: Context): WorkManager {
+            return WorkManager.getInstance(context)
         }
     }
 }
