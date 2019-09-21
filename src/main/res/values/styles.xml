@@ -35,9 +35,9 @@
     </style>
 
     <style name="TextSubhead">
+        <item name="android:fontFamily">sans-serif-medium</item>
         <item name="android:textColor">?android:textColorSecondary</item>
         <item name="android:textSize">14sp</item>
-        <item name="android:textStyle">bold</item>
     </style>
 
     <style name="TextCaption">
