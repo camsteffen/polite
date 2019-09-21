@@ -28,8 +28,8 @@ data class CalendarRuleEvent(
     constructor(
         rule: CalendarRule,
         event: CalendarEvent,
-        activation: Duration,
-        deactivation: Duration
+        activation: Duration = Duration.ZERO,
+        deactivation: Duration = Duration.ZERO
     ) : this(
         rule,
         event.begin - activation,

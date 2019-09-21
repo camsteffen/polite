@@ -11,14 +11,6 @@ private val ALL_TABLES = listOf("Rule", "RuleCalendar", "RuleKeyword", "Calendar
     "CalendarRuleCalendar", "CalendarRuleKeyword", "ScheduleRule"
 )
 
-fun clearDatabase(helper: SQLiteOpenHelper) {
-    helper.writableDatabase.use { db ->
-        ALL_TABLES.forEach { tableName ->
-            db.execSQL("DROP TABLE IF EXISTS $tableName")
-        }
-    }
-}
-
 fun insertRuleV1(
     id: Int, name: String, enable: Boolean, vibrate: Boolean,
     matchAll: Boolean,
