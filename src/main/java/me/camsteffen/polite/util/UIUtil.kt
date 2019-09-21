@@ -2,11 +2,11 @@ package me.camsteffen.polite.util
 
 import android.app.Activity
 import android.content.Context
-import androidx.annotation.ColorInt
-import androidx.core.graphics.drawable.DrawableCompat
 import android.util.TypedValue
 import android.view.Menu
 import android.view.inputmethod.InputMethodManager
+import androidx.annotation.ColorInt
+import androidx.core.graphics.drawable.DrawableCompat
 import me.camsteffen.polite.R
 
 fun hideKeyboard(activity: Activity) {
