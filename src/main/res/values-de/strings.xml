@@ -13,7 +13,7 @@
     <string name="all">Alle</string>
     <string name="all_events">Alle Einträge</string>
     <string name="app_name">Polite</string>
-    <string name="busy_events_only">Nur bei beschäftigten Einträgen</string>
+    <string name="busy_events_only">Nur bei Status "beschäftigt"</string>
     <string name="calendar_permission_explain">Polite benötigt Berechtigungen um Ihre Kalendereinträge zu lesen, damit Kalender Regeln funktionieren. Ihre Kalenderdaten werden nicht gespeichert oder mit Anderen geteilt.</string>
     <string name="calendar_permission_required">Kalender Berechtigung benötigt</string>
     <string name="calendar_rule">Kalenderregel</string>
