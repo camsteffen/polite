@@ -14,6 +14,7 @@ import android.webkit.WebView
 import android.webkit.WebViewClient
 import androidx.core.os.ConfigurationCompat.getLocales
 import androidx.fragment.app.Fragment
+import androidx.navigation.fragment.findNavController
 import me.camsteffen.polite.view.AnimateFrame
 import java.io.IOException
 
@@ -76,7 +77,7 @@ class HelpFragment : Fragment() {
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when(item.itemId) {
-            android.R.id.home -> fragmentManager!!.popBackStack()
+            android.R.id.home -> findNavController().popBackStack()
             R.id.email -> {
                 val intent = Intent(Intent.ACTION_SEND)
                 intent.type = "message/rfc822"

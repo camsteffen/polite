@@ -26,6 +26,11 @@
     <style name="Toolbar">
         <item name="android:background">@color/primary</item>
         <item name="android:elevation" tools:targetApi="lollipop">4dp</item>
+        <item name="theme">@style/ToolbarTheme</item>
+    </style>
+
+    <style name="ToolbarTheme" parent="@style/ThemeOverlay.AppCompat.Dark.ActionBar">
+        <item name="iconTint">@android:color/white</item>
     </style>
 
     <style name="Divider">

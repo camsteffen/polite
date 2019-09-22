@@ -10,7 +10,6 @@ import android.os.AsyncTask
 import android.os.Build
 import android.os.Bundle
 import android.provider.Settings
-import android.view.Menu
 import android.view.View
 import android.view.inputmethod.EditorInfo
 import androidx.appcompat.app.ActionBar
@@ -43,7 +42,6 @@ import me.camsteffen.polite.settings.AppPreferences
 import me.camsteffen.polite.state.PoliteStateManager
 import me.camsteffen.polite.util.AppNotificationManager
 import me.camsteffen.polite.util.hideKeyboard
-import me.camsteffen.polite.util.tintMenuIcons
 import javax.inject.Inject
 
 private const val ACTIVITY_CALENDAR_PERMISSION = 1
@@ -136,12 +134,6 @@ class MainActivity : AppCompatActivity(), HasAndroidInjector,
     }
 
     override fun onSupportNavigateUp() = navController.get().navigateUp()
-
-    override fun onPrepareOptionsMenu(menu: Menu): Boolean {
-        super.onPrepareOptionsMenu(menu)
-        tintMenuIcons(this, menu)
-        return true
-    }
 
     override fun onBackPressed() {
         when {
@@ -288,15 +280,15 @@ private class OnDestinationChangedListener(
         destination: NavDestination,
         arguments: Bundle?
     ) {
-        if (EDIT_RULE_DESTINATIONS.contains(destination.id)) {
-            fab.hide()
-            actionBar.setDisplayHomeAsUpEnabled(true)
-            actionBar.setDisplayShowTitleEnabled(false)
-        } else {
+        if (destination.id == R.id.rulesFragment) {
             fab.show()
-            actionBar.setDisplayHomeAsUpEnabled(false)
-            actionBar.setDisplayShowTitleEnabled(true)
+        } else {
+            fab.hide()
         }
+        actionBar.setDisplayHomeAsUpEnabled(destination.id != R.id.rulesFragment)
+        val isEditRule = EDIT_RULE_DESTINATIONS.contains(destination.id)
+        actionBar.setDisplayShowTitleEnabled(!isEditRule)
+        model.toolbarEditTextVisibility.set(if (isEditRule) View.VISIBLE else View.GONE)
     }
 }
 
