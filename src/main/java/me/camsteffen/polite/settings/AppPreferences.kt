@@ -14,6 +14,7 @@ private object PreferenceKeys {
     const val PREVIOUS_RINGER_MODE = "previous_ringer_mode"
     const val LAUNCH_COUNT = "launch_count"
     const val ASKED_TO_RATE = "asked_to_rate"
+    const val NOTIFICATION_VOLUME = "notification_volume"
 }
 
 @Singleton
@@ -62,4 +63,9 @@ class AppPreferences
     var deactivation: Int
         get() = preferences.getInt(deactivationKey, 0)
         set(value) = editor.putInt(deactivationKey, value).apply()
+
+    var notificationVolume: Int?
+        get() = preferences.getString(PreferenceKeys.NOTIFICATION_VOLUME, null)?.toIntOrNull()
+        set(value) = editor.putString(PreferenceKeys.NOTIFICATION_VOLUME, value?.toString(10))
+            .apply()
 }

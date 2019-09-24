@@ -11,12 +11,16 @@ class RingerModeManager
     private val audioManager: AudioManager,
     private val preferences: AppPreferences
 ) {
+
     fun clearSavedRingerMode() {
         preferences.previousRingerMode = -1
+        preferences.notificationVolume = null
     }
 
     fun saveRingerMode() {
         preferences.previousRingerMode = audioManager.ringerMode
+        preferences.notificationVolume =
+            audioManager.getStreamVolume(AudioManager.STREAM_NOTIFICATION)
     }
 
     fun setRingerMode(vibrate: Boolean) {
@@ -34,6 +38,13 @@ class RingerModeManager
             && audioManager.ringerMode == AudioManager.RINGER_MODE_SILENT
         ) {
             audioManager.ringerMode = previousRingerMode
+        }
+        // restore notifications volume, only necessary for devices which have separate volume
+        // controls for ringer and notifications
+        val notificationVol = audioManager.getStreamVolume(AudioManager.STREAM_NOTIFICATION)
+        val prevNotificationVol = preferences.notificationVolume
+        if (prevNotificationVol != null && notificationVol < prevNotificationVol) {
+            audioManager.setStreamVolume(AudioManager.STREAM_NOTIFICATION, prevNotificationVol, 0)
         }
         clearSavedRingerMode()
     }
