@@ -4,6 +4,7 @@ import org.threeten.bp.Duration
 
 val defaultAppTimingConfig = AppTimingConfig(
     lookahead = Duration.ofHours(30),
+    maxRingerRestoreDelay = Duration.ofHours(4),
     refreshWindowDelay = Duration.ofHours(4),
     refreshWindowLength = Duration.ofHours(25),
     ruleEventBoundaryTolerance = Duration.ofMinutes(1)
@@ -16,6 +17,12 @@ class AppTimingConfig(
      * This determines how often Polite will need to refresh.
      */
     val lookahead: Duration,
+
+    /**
+     * If Polite Mode is deactivated more than this duration after the rule event is supposed to
+     * end, the ringer mode will not be restored.
+     */
+    val maxRingerRestoreDelay: Duration,
 
     /**
      * If no rule event begins or ends in the near future, the next refresh time is determined by

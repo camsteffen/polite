@@ -11,6 +11,10 @@ class RingerModeManager
     private val audioManager: AudioManager,
     private val preferences: AppPreferences
 ) {
+    fun clearSavedRingerMode() {
+        preferences.previousRingerMode = -1
+    }
+
     fun saveRingerMode() {
         preferences.previousRingerMode = audioManager.ringerMode
     }
@@ -31,6 +35,6 @@ class RingerModeManager
         ) {
             audioManager.ringerMode = previousRingerMode
         }
-        preferences.previousRingerMode = -1
+        clearSavedRingerMode()
     }
 }
