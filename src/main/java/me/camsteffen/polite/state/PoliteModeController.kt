@@ -1,8 +1,10 @@
 package me.camsteffen.polite.state
 
+import android.os.Build
 import me.camsteffen.polite.AppTimingConfig
 import me.camsteffen.polite.db.PoliteStateDao
 import me.camsteffen.polite.model.ActiveRuleEvent
+import me.camsteffen.polite.settings.AppPreferences
 import me.camsteffen.polite.util.AppNotificationManager
 import me.camsteffen.polite.util.RuleEvent
 import org.threeten.bp.Instant
@@ -14,6 +16,7 @@ import javax.inject.Inject
 class PoliteModeController
 @Inject constructor(
     private val notificationManager: AppNotificationManager,
+    private val preferences: AppPreferences,
     private val ringerModeManager: RingerModeManager,
     private val stateDao: PoliteStateDao,
     private val timingConfig: AppTimingConfig
@@ -43,7 +46,9 @@ class PoliteModeController
             ringerModeManager.saveRingerMode()
         }
         ringerModeManager.setRingerMode(ruleEvent.vibrate)
-        notificationManager.notifyPoliteActive(ruleEvent.notificationText, false)
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O || preferences.notifications) {
+            notificationManager.notifyPoliteActive(ruleEvent.notificationText, false)
+        }
         stateDao.setActiveRuleEvent(ActiveRuleEvent(ruleEvent))
     }
 
