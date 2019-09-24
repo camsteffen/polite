@@ -5,8 +5,8 @@ import io.mockk.Called
 import io.mockk.every
 import io.mockk.mockk
 import io.mockk.verify
+import me.camsteffen.polite.data.CalendarDao
 import me.camsteffen.polite.data.CalendarEvent
-import me.camsteffen.polite.data.CalendarFacade
 import me.camsteffen.polite.db.PoliteStateDao
 import me.camsteffen.polite.db.RuleDao
 import me.camsteffen.polite.model.CalendarEventMatchBy
@@ -20,7 +20,7 @@ import org.threeten.bp.Instant
 class CalendarRuleEventFinderTest {
 
     private val appPreferences: AppPreferences = mockk()
-    private val calendarFacade: CalendarFacade = mockk()
+    private val calendarDao: CalendarDao = mockk()
     private val permissionChecker: AppPermissionChecker = mockk()
     private val politeStateDao: PoliteStateDao = mockk()
     private val ruleDao: RuleDao = mockk()
@@ -38,7 +38,7 @@ class CalendarRuleEventFinderTest {
             permissionChecker = permissionChecker,
             politeStateDao = politeStateDao,
             ruleDao = ruleDao,
-            calendarFacade = calendarFacade
+            calendarDao = calendarDao
         )
     }
 
@@ -66,7 +66,7 @@ class CalendarRuleEventFinderTest {
         assertThat(events).isEmpty()
         verify {
             permissionChecker.checkReadCalendarPermission()
-            calendarFacade wasNot Called
+            calendarDao wasNot Called
         }
     }
 
@@ -248,7 +248,7 @@ class CalendarRuleEventFinderTest {
         every { permissionChecker.checkReadCalendarPermission() } returns hasReadCalendarPermission
         every { politeStateDao.getEventCancels() } returns
                 eventCancels.map { EventCancel(it.key, it.value) }
-        every { calendarFacade.getEventsInRange(begin, end) } returns calendarEvents
+        every { calendarDao.getEventsInRange(begin, end) } returns calendarEvents
         every { appPreferences.activation } returns activation
         every { appPreferences.deactivation }  returns deactivation
     }

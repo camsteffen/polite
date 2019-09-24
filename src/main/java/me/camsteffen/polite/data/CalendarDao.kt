@@ -1,23 +1,51 @@
 package me.camsteffen.polite.data
 
 import android.Manifest.permission.READ_CALENDAR
+import android.annotation.SuppressLint
 import android.content.ContentResolver
 import android.content.ContentUris
 import android.database.Cursor
+import android.provider.CalendarContract
 import android.provider.CalendarContract.Instances
 import androidx.annotation.RequiresPermission
 import androidx.annotation.WorkerThread
 import me.camsteffen.polite.data.Query.calendarEventOf
+import me.camsteffen.polite.model.CalendarEntity
 import org.threeten.bp.Instant
 import javax.inject.Inject
 import javax.inject.Singleton
 
+private val CALENDAR_PROJECTION = arrayOf(
+    CalendarContract.Calendars._ID,
+    CalendarContract.Calendars.CALENDAR_DISPLAY_NAME)
+
+private const val CALENDAR_ORDER_BY = "${CalendarContract.Calendars.NAME} COLLATE NOCASE ASC"
+
 @Singleton
 @WorkerThread
-class CalendarFacade
+class CalendarDao
 @Inject constructor(
     private val contentResolver: ContentResolver
 ) {
+
+    @SuppressLint("MissingPermission")
+    fun getCalendars(): List<CalendarEntity>? {
+        val cursor = contentResolver.query(
+            CalendarContract.Calendars.CONTENT_URI, CALENDAR_PROJECTION, null, null,
+            CALENDAR_ORDER_BY
+        )
+            ?: return null
+        cursor.use {
+            val calendars = mutableListOf<CalendarEntity>()
+            while (cursor.moveToNext()) {
+                val id = cursor.getLong(0)
+                val name = cursor.getString(1)
+                val calendar = CalendarEntity(id, name)
+                calendars.add(calendar)
+            }
+            return calendars
+        }
+    }
 
     @RequiresPermission(READ_CALENDAR)
     fun getEventsInRange(begin: Instant, end: Instant): List<CalendarEvent> {

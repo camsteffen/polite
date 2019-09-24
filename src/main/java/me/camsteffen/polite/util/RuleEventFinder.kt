@@ -1,8 +1,8 @@
 package me.camsteffen.polite.util
 
 import androidx.annotation.WorkerThread
+import me.camsteffen.polite.data.CalendarDao
 import me.camsteffen.polite.data.CalendarEvent
-import me.camsteffen.polite.data.CalendarFacade
 import me.camsteffen.polite.db.PoliteStateDao
 import me.camsteffen.polite.db.RuleDao
 import me.camsteffen.polite.model.CalendarRule
@@ -56,7 +56,7 @@ class CalendarRuleEventFinder
     private val permissionChecker: AppPermissionChecker,
     private val politeStateDao: PoliteStateDao,
     private val ruleDao: RuleDao,
-    private val calendarFacade: CalendarFacade
+    private val calendarDao: CalendarDao
 ) : RuleEventFinder<CalendarRuleEvent> {
 
     override fun eventsInRange(begin: Instant, end: Instant): Sequence<CalendarRuleEvent> {
@@ -70,7 +70,7 @@ class CalendarRuleEventFinder
         val activation = Duration.ofMinutes(appPreferences.activation.toLong())
 
         val eventCancels = politeStateDao.getEventCancels().associate { it.eventId to it.end }
-        val events = calendarFacade.getEventsInRange(begin - deactivation, end + activation)
+        val events = calendarDao.getEventsInRange(begin - deactivation, end + activation)
         return events.asSequence()
             .filter { event ->
                 val cancelEnd = eventCancels[event.eventId]
