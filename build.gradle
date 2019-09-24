@@ -32,8 +32,8 @@ android {
         applicationId "me.camsteffen.polite"
         minSdkVersion 21
         targetSdkVersion 28
-        versionCode 56
-        versionName "1.4.1"
+        versionCode 57
+        versionName "1.4.2"
         resConfigs "en", "de"
         vectorDrawables.useSupportLibrary = true
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
