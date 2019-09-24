@@ -41,9 +41,10 @@ class AppBroadcastReceiver : DaggerBroadcastReceiver() {
         super.onReceive(context, intent)
 
         when (intent.action) {
+            Intent.ACTION_BOOT_COMPLETED,
+            Intent.ACTION_MY_PACKAGE_REPLACED,
             NotificationManager.ACTION_NOTIFICATION_POLICY_ACCESS_GRANTED_CHANGED,
-            Intent.ACTION_BOOT_COMPLETED -> finishAsync { stateManager.refresh() }
-            ACTION_REFRESH -> finishAsync { stateManager.refresh() }
+            ACTION_REFRESH -> finishAsync(stateManager::refresh)
             ACTION_CANCEL -> finishAsync(stateManager::cancel)
         }
     }
