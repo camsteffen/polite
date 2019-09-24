@@ -12,6 +12,7 @@ import androidx.annotation.WorkerThread
 import me.camsteffen.polite.data.Query.calendarEventOf
 import me.camsteffen.polite.model.CalendarEntity
 import org.threeten.bp.Instant
+import java.util.concurrent.TimeUnit
 import javax.inject.Inject
 import javax.inject.Singleton
 
@@ -73,7 +74,9 @@ private object Query {
         Instances.AVAILABILITY
     )
 
-    const val SELECTION = "${Instances.ALL_DAY}=0"
+    val MAX_DURATION = TimeUnit.HOURS.toMillis(8)
+    val SELECTION = "${Instances.ALL_DAY}=0" +
+            " AND ${Instances.END} - ${Instances.BEGIN} < $MAX_DURATION"
     const val SORT = "${Instances.BEGIN} ASC"
 
     object Index {
