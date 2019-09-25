@@ -118,6 +118,8 @@ dependencies {
     kapt "androidx.room:room-compiler:$room_version"
     androidTestImplementation "androidx.room:room-testing:$room_version"
 
+    implementation 'androidx.webkit:webkit:1.0.0'
+
     testImplementation 'junit:junit:4.12'
     testImplementation 'io.mockk:mockk:1.9.3'
     testImplementation 'com.google.truth:truth:1.0'

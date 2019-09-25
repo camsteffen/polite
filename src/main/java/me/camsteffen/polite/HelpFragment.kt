@@ -11,19 +11,16 @@ import android.view.View
 import android.view.ViewGroup
 import android.webkit.WebResourceRequest
 import android.webkit.WebView
-import android.webkit.WebViewClient
 import androidx.core.os.ConfigurationCompat.getLocales
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
-import me.camsteffen.polite.view.AnimateFrame
+import androidx.webkit.WebViewClientCompat
 import java.io.IOException
 
 class HelpFragment : Fragment() {
 
     private val mainActivity: MainActivity
         get() = activity as MainActivity
-
-    private var webView: WebView? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -35,7 +32,8 @@ class HelpFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        val webView = WebView(activity!!)
+        val view = inflater.inflate(R.layout.help, container, false)
+        val webView = view.findViewById<WebView>(R.id.webview)
         val language = getLocales(resources.configuration)[0].language
         var path = "help-$language.html"
         if(!assetExists(path)) {
@@ -43,32 +41,13 @@ class HelpFragment : Fragment() {
         }
         val url = "file:///android_asset/$path"
         webView.loadUrl(url)
-        webView.webViewClient = webViewClient
-        this.webView = webView
-        val animateFrame = AnimateFrame(inflater.context, null)
-        animateFrame.addView(webView)
-        return animateFrame
+        webView.webViewClient = HelpWebViewClient
+        return view
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         mainActivity.supportActionBar!!.setTitle(R.string.help)
-    }
-
-    override fun onPause() {
-        super.onPause()
-        webView!!.onPause()
-    }
-
-    override fun onResume() {
-        super.onResume()
-        webView!!.onResume()
-    }
-
-    override fun onDestroyView() {
-        super.onDestroyView()
-        webView!!.destroy()
-        webView = null
     }
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
@@ -97,26 +76,6 @@ class HelpFragment : Fragment() {
         return true
     }
 
-    private val webViewClient = object : WebViewClient() {
-
-        override fun shouldOverrideUrlLoading(view: WebView?, request: WebResourceRequest): Boolean {
-            @Suppress("DEPRECATION")
-            return shouldOverrideUrlLoading(view, request.url.toString())
-        }
-
-        @Suppress("OverridingDeprecatedMember")
-        override fun shouldOverrideUrlLoading(view: WebView?, url: String?): Boolean {
-            if (url =="help://sound_settings") {
-                val intent = Intent(android.provider.Settings.ACTION_SOUND_SETTINGS)
-                if (intent.resolveActivity(activity!!.packageManager) != null) {
-                    activity!!.startActivity(intent)
-                }
-                return true
-            }
-            return false
-        }
-    }
-
     private fun assetExists(path: String): Boolean {
         val inputStream = try {
             resources.assets.open(path)
@@ -128,3 +87,18 @@ class HelpFragment : Fragment() {
     }
 
 }
+
+private object HelpWebViewClient : WebViewClientCompat() {
+
+    override fun shouldOverrideUrlLoading(view: WebView, request: WebResourceRequest): Boolean {
+        if (request.url.toString() == "help://sound_settings") {
+            val intent = Intent(android.provider.Settings.ACTION_SOUND_SETTINGS)
+            if (intent.resolveActivity(view.context.packageManager) != null) {
+                view.context.startActivity(intent)
+            }
+            return true
+        }
+        return false
+    }
+}
+
