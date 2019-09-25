@@ -4,6 +4,7 @@ import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
+import androidx.room.Transaction
 import me.camsteffen.polite.model.ActiveRuleEvent
 import me.camsteffen.polite.model.EventCancel
 import me.camsteffen.polite.model.ScheduleRuleCancel
@@ -14,7 +15,8 @@ abstract class PoliteStateDao {
     @Query("select * from active_rule_event")
     abstract fun getActiveRuleEvent(): ActiveRuleEvent?
 
-    fun setActiveRuleEvent(activeRuleEvent: ActiveRuleEvent?) {
+    @Transaction
+    open fun setActiveRuleEvent(activeRuleEvent: ActiveRuleEvent?) {
         deleteActiveRuleEvent()
         if (activeRuleEvent != null) {
             insertActiveRuleEvent(activeRuleEvent)
