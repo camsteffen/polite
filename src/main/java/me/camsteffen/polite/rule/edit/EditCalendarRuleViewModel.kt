@@ -42,6 +42,7 @@ class EditCalendarRuleViewModel
         super.setRule(rule)
         inverseMatchMutable.value = rule.inverseMatch
         matchBy.value = rule.matchBy
+        calendarIds.value = rule.calendarIds
         keywordSet.clear()
         keywordSet.addAll(rule.keywords)
         invalidateKeywordsLiveData()
