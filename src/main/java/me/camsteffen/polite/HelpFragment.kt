@@ -15,7 +15,6 @@ import android.webkit.WebViewClient
 import androidx.core.os.ConfigurationCompat.getLocales
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
-import me.camsteffen.polite.view.AnimateFrame
 import java.io.IOException
 
 class HelpFragment : Fragment() {
@@ -45,9 +44,7 @@ class HelpFragment : Fragment() {
         webView.loadUrl(url)
         webView.webViewClient = webViewClient
         this.webView = webView
-        val animateFrame = AnimateFrame(inflater.context, null)
-        animateFrame.addView(webView)
-        return animateFrame
+        return webView
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {

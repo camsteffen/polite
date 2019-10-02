@@ -3,10 +3,7 @@ package me.camsteffen.polite.settings
 import android.content.SharedPreferences
 import android.os.AsyncTask
 import android.os.Bundle
-import android.view.LayoutInflater
 import android.view.MenuItem
-import android.view.View
-import android.view.ViewGroup
 import androidx.navigation.fragment.findNavController
 import androidx.preference.Preference
 import androidx.preference.PreferenceFragmentCompat
@@ -14,7 +11,6 @@ import dagger.android.support.AndroidSupportInjection
 import me.camsteffen.polite.MainActivity
 import me.camsteffen.polite.R
 import me.camsteffen.polite.state.PoliteStateManager
-import me.camsteffen.polite.view.AnimateFrame
 import javax.inject.Inject
 
 class SettingsFragment : PreferenceFragmentCompat(), SharedPreferences.OnSharedPreferenceChangeListener {
@@ -28,13 +24,6 @@ class SettingsFragment : PreferenceFragmentCompat(), SharedPreferences.OnSharedP
         AndroidSupportInjection.inject(this)
         super.onCreate(savedInstanceState)
         setHasOptionsMenu(true)
-    }
-
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        val view = super.onCreateView(inflater, container, savedInstanceState)
-        val parent = AnimateFrame(inflater.context, null)
-        parent.addView(view)
-        return parent
     }
 
     override fun onCreatePreferences(savedInstanceState: Bundle?, rootKey: String?) {

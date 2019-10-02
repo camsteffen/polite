@@ -7,38 +7,34 @@
             name="model"
             type="me.camsteffen.polite.rule.edit.EditRuleViewModel" />
     </data>
-    <me.camsteffen.polite.view.AnimateFrame
+    <ScrollView
+        android:id="@+id/scroll_view"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
-        <ScrollView
-            android:id="@+id/scroll_view"
+        <LinearLayout
+            android:orientation="vertical"
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
-            <LinearLayout
-                android:orientation="vertical"
+            android:layout_height="wrap_content">
+            <Switch
+                android:id="@+id/enable"
+                style="@style/Option.Switch"
+                android:checked="@={model.enabled}"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
-                <Switch
-                    android:id="@+id/enable"
-                    style="@style/Option.Switch"
-                    android:checked="@={model.enabled}"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="@string/enable"/>
-                <View style="@style/Divider"/>
-                <Switch
-                    android:id="@+id/vibrate"
-                    style="@style/Option.Switch"
-                    android:checked="@={model.vibrate}"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="@string/vibrate"/>
-                <View style="@style/Divider"/>
-                <FrameLayout
-                    android:id="@+id/editRule"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content" />
-            </LinearLayout>
-        </ScrollView>
-    </me.camsteffen.polite.view.AnimateFrame>
+                android:layout_height="wrap_content"
+                android:text="@string/enable"/>
+            <View style="@style/Divider"/>
+            <Switch
+                android:id="@+id/vibrate"
+                style="@style/Option.Switch"
+                android:checked="@={model.vibrate}"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/vibrate"/>
+            <View style="@style/Divider"/>
+            <FrameLayout
+                android:id="@+id/editRule"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+        </LinearLayout>
+    </ScrollView>
 </layout>
