@@ -155,6 +155,8 @@ class MainActivity : AppCompatActivity(), HasAndroidInjector,
     @TargetApi(Build.VERSION_CODES.M)
     override fun onRequestPermissionsResult(requestCode: Int,
                                             permissions: Array<String>, grantResults: IntArray) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
+
         val allGranted = grantResults.all { it == PackageManager.PERMISSION_GRANTED }
         if(allGranted) {
             when(requestCode) {
