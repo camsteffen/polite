@@ -62,7 +62,7 @@ class PoliteStateManager
             setRefreshOnCalendarChange(ruleDao.getEnabledCalendarRulesExist())
         }
 
-        stateDao.deleteExpiredCancels()
+        stateDao.deleteDeadCancels(now)
     }
 
     private fun findCurrentAndNextEvents(now: Instant): CurrentAndNextEvents {
@@ -97,7 +97,7 @@ class PoliteStateManager
 
     private fun cancelCurrentEvents(now: Instant) {
         val eventCancels = ruleEventFinders.calendarRules.allEventsAt(now)
-            .map { EventCancel(it.event.eventId, it.end) }
+            .map { EventCancel(it.rule.id, it.event.eventId, it.end) }
         if (eventCancels.isNotEmpty()) {
             stateDao.insertEventCancels(*eventCancels.toTypedArray())
         }

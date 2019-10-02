@@ -6,6 +6,7 @@ import me.camsteffen.polite.data.CalendarEvent
 import me.camsteffen.polite.db.PoliteStateDao
 import me.camsteffen.polite.db.RuleDao
 import me.camsteffen.polite.model.CalendarRule
+import me.camsteffen.polite.model.EventCancel
 import me.camsteffen.polite.settings.AppPreferences
 import org.threeten.bp.Clock
 import org.threeten.bp.Duration
@@ -69,16 +70,17 @@ class CalendarRuleEventFinder
         val deactivation = Duration.ofMinutes(appPreferences.deactivation.toLong())
         val activation = Duration.ofMinutes(appPreferences.activation.toLong())
 
-        val eventCancels = politeStateDao.getEventCancels().associate { it.eventId to it.end }
+        val eventCancels = politeStateDao.getEventCancels()
+            .associate { it.key() to it.end }
         val events = calendarDao.getEventsInRange(begin - deactivation, end + activation)
         return events.asSequence()
-            .filter { event ->
-                val cancelEnd = eventCancels[event.eventId]
-                cancelEnd == null || event.begin - activation >= cancelEnd
-            }
             .flatMap { event ->
                 calendarRules.asSequence()
-                    .filter { rule -> rule.matches(event) }
+                    .filter { rule ->
+                        val cancelEnd = eventCancels[EventCancel.Key(rule.id, event.eventId)]
+                        val cancelled = cancelEnd != null && event.begin - activation < cancelEnd
+                        !cancelled && rule.matches(event)
+                    }
                     .map { rule -> CalendarRuleEvent(rule, event, activation, deactivation) }
             }
     }
@@ -113,7 +115,7 @@ class ScheduleRuleEventFinder
     override fun eventsInRange(begin: Instant, end: Instant): Sequence<ScheduleRuleEvent> {
         val rules = ruleDao.getEnabledScheduleRules()
         if (rules.isEmpty()) return emptySequence()
-        val cancels = stateDao.getScheduleRuleCancels().associate { it.rule_id to it.end }
+        val cancels = stateDao.getScheduleRuleCancels().associate { it.ruleId to it.end }
 
         val beginLocal = LocalDateTime.ofInstant(begin, clock.zone)
         val endLocal = LocalDateTime.ofInstant(end, clock.zone)

@@ -8,6 +8,7 @@ import androidx.room.Transaction
 import me.camsteffen.polite.model.ActiveRuleEvent
 import me.camsteffen.polite.model.EventCancel
 import me.camsteffen.polite.model.ScheduleRuleCancel
+import org.threeten.bp.Instant
 
 @Dao
 abstract class PoliteStateDao {
@@ -35,9 +36,9 @@ abstract class PoliteStateDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     abstract fun insertScheduleRuleCancels(vararg scheduleRuleCancels: ScheduleRuleCancel)
 
-    fun deleteExpiredCancels() {
-        deleteExpiredEventCancels()
-        deleteExpiredScheduleRuleCancels()
+    fun deleteDeadCancels(now: Instant) {
+        deleteDeadEventCancels(now)
+        deleteDeadScheduleRuleCancels(now)
     }
 
     @Insert
@@ -46,9 +47,19 @@ abstract class PoliteStateDao {
     @Query("delete from active_rule_event")
     protected abstract fun deleteActiveRuleEvent(): Int
 
-    @Query("delete from event_cancel where `end` <= current_timestamp")
-    protected abstract fun deleteExpiredEventCancels(): Int
+    @Query(
+        """delete from event_cancel where `end` <= :now
+           or rule_id in (select rule_id from event_cancel c
+             left join rule r on c.rule_id = r.id
+             where enabled != 1)""")
+    protected abstract fun deleteDeadEventCancels(now: Instant): Int
 
-    @Query("delete from schedule_rule_cancel where `end` <= current_timestamp")
-    protected abstract fun deleteExpiredScheduleRuleCancels(): Int
+    @Query(
+        """delete from schedule_rule_cancel where `end` <= :now
+           or rule_id in (
+             select rule_id from schedule_rule_cancel c left join rule r on c.rule_id = r.id
+               where enabled != 1
+           )"""
+    )
+    protected abstract fun deleteDeadScheduleRuleCancels(now: Instant): Int
 }

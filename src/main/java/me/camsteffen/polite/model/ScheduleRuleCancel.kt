@@ -1,5 +1,6 @@
 package me.camsteffen.polite.model
 
+import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.ForeignKey
 import androidx.room.PrimaryKey
@@ -19,6 +20,7 @@ import org.threeten.bp.Instant
 )
 class ScheduleRuleCancel(
     @PrimaryKey
-    val rule_id: Long,
+    @ColumnInfo(name = "rule_id")
+    val ruleId: Long,
     val end: Instant
 )

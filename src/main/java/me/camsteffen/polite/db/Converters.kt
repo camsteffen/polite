@@ -7,10 +7,10 @@ import org.threeten.bp.LocalTime
 object Converters {
 
     @TypeConverter @JvmStatic
-    fun instantToLong(instant: Instant): Long = instant.toEpochMilli()
+    fun instantToLong(instant: Instant): Long = instant.epochSecond
 
     @TypeConverter @JvmStatic
-    fun longToInstant(long: Long): Instant = Instant.ofEpochMilli(long)
+    fun longToInstant(long: Long): Instant = Instant.ofEpochSecond(long)
 
     @TypeConverter @JvmStatic
     fun localTimeFromInt(minutes: Int): LocalTime = LocalTime.ofSecondOfDay(minutes.toLong())
