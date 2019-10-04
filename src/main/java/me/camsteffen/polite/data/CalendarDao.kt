@@ -9,7 +9,6 @@ import android.provider.CalendarContract
 import android.provider.CalendarContract.Instances
 import androidx.annotation.RequiresPermission
 import androidx.annotation.WorkerThread
-import me.camsteffen.polite.data.Query.calendarEventOf
 import me.camsteffen.polite.model.CalendarEntity
 import org.threeten.bp.Instant
 import java.util.concurrent.TimeUnit
@@ -18,7 +17,8 @@ import javax.inject.Singleton
 
 private val CALENDAR_PROJECTION = arrayOf(
     CalendarContract.Calendars._ID,
-    CalendarContract.Calendars.CALENDAR_DISPLAY_NAME)
+    CalendarContract.Calendars.CALENDAR_DISPLAY_NAME
+)
 
 private const val CALENDAR_ORDER_BY = "${CalendarContract.Calendars.NAME} COLLATE NOCASE ASC"
 
@@ -57,7 +57,7 @@ class CalendarDao
         Query.execute(contentResolver, begin, end).use { cursor ->
             cursor ?: return emptyList()
             return generateSequence { cursor.takeIf(Cursor::moveToNext) }
-                .map(::calendarEventOf)
+                .map(Query::calendarEventOf)
                 .toList()
         }
     }

@@ -2,6 +2,7 @@ package me.camsteffen.polite.rule.master
 
 import android.content.Context
 import android.content.Intent
+import android.net.Uri
 import android.os.Build
 import android.os.Bundle
 import android.os.PowerManager
@@ -74,7 +75,7 @@ class RulesFragment : DaggerFragment() {
     override fun onResume() {
         super.onResume()
         if (checkNotificationPolicyAccess()) {
-
+            checkIgnoreBatteryOptimizations()
         }
     }
 
@@ -94,7 +95,7 @@ class RulesFragment : DaggerFragment() {
                         preferences.enable = false
                     }
                     .setPositiveButton(android.R.string.ok) { _, _ ->
-                        val intent = Intent(android.provider.Settings.ACTION_NOTIFICATION_POLICY_ACCESS_SETTINGS)
+                        val intent = Intent(Settings.ACTION_NOTIFICATION_POLICY_ACCESS_SETTINGS)
                         startActivity(intent)
                     }
                     .create()
@@ -113,7 +114,11 @@ class RulesFragment : DaggerFragment() {
         if (powerManager.isIgnoringBatteryOptimizations(context!!.packageName)) {
             return true
         }
-        startActivity(Intent(Settings.ACTION_REQUEST_IGNORE_BATTERY_OPTIMIZATIONS))
+        val intent = Intent(
+            Settings.ACTION_REQUEST_IGNORE_BATTERY_OPTIMIZATIONS,
+            Uri.parse("package:${context!!.packageName}")
+        )
+        startActivity(intent)
         return false
     }
 
