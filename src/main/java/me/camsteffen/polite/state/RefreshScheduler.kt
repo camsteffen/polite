@@ -26,7 +26,7 @@ class RefreshScheduler
     private val workManager: AppWorkManager
 ) {
     fun cancelAll() {
-        alarmManager.cancel(AppBroadcastReceiver.pendingCancelIntent(context))
+        alarmManager.cancel(AppBroadcastReceiver.pendingRefreshIntent(context))
         setRefreshOnCalendarChange(false)
     }
 
