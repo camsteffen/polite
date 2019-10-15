@@ -23,7 +23,7 @@ data class CalendarRuleEvent(
     override val end: Instant,
     val event: CalendarEvent
 ) : RuleEvent {
-    override val notificationText get() = event.title ?: rule.name
+    override val notificationText = event.title.takeUnless(String?::isNullOrBlank) ?: rule.name
 
     constructor(
         rule: CalendarRule,
