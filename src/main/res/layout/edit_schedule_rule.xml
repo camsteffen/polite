@@ -48,7 +48,7 @@
             android:focusable="true"
             android:onClick="@{_ -> handlers.onClickBeginTime()}"
             app:label="@string/start_time"
-            app:value="@{model.beginDisplay}"/>
+            app:summary="@{model.beginDisplay}"/>
         <View style="@style/Divider" />
         <me.camsteffen.polite.ui.ValueOption
             android:id="@+id/end_time"
@@ -56,7 +56,7 @@
             android:layout_height="wrap_content"
             android:onClick="@{_ -> handlers.onClickEndTime()}"
             app:label="@string/end_time"
-            app:value="@{model.endDisplay}"/>
+            app:summary="@{model.endDisplay}"/>
         <View style="@style/Divider" />
         <LinearLayout
             android:layout_width="match_parent"

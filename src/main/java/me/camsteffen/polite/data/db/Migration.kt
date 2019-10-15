@@ -6,20 +6,22 @@ import androidx.sqlite.db.SupportSQLiteDatabase
 import me.camsteffen.polite.util.SqlStatementReader
 import java.io.BufferedReader
 import java.io.InputStreamReader
+import java.util.regex.Pattern
 
 val MIGRATION_5_6 = EmptyMigration(5, 6)
 
 fun allMigrations(context: Context): Array<Migration> {
-    return arrayOf(
-        AssetMigration(context, 1, 2),
-        AssetMigration(context, 2, 3),
-        AssetMigration(context, 3, 4),
-        AssetMigration(context, 4, 5),
-        MIGRATION_5_6,
-        AssetMigration(context, 6, 7),
-        AssetMigration(context, 7, 8),
-        AssetMigration(context, 8, 9)
-    )
+    val migrations = mutableListOf<Migration>(MIGRATION_5_6)
+    val pattern = Pattern.compile("^migration_(\\d+)_(\\d+).sql$")
+    context.assets.list("migration")?.forEach {
+        val matcher = pattern.matcher(it)
+        if (matcher.find()) {
+            val start = matcher.group(1).toInt()
+            val end = matcher.group(2).toInt()
+            migrations.add(AssetMigration(context, start, end))
+        }
+    }
+    return migrations.toTypedArray()
 }
 
 fun migrationAssetName(startVersion: Int, endVersion: Int): String {

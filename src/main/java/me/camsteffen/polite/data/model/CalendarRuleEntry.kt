@@ -40,7 +40,7 @@ class CalendarRuleEntry(
         id = ruleBase.id,
         name = ruleBase.name,
         enabled = ruleBase.enabled,
-        vibrate = ruleBase.vibrate,
+        audioPolicy = ruleBase.audioPolicy,
         busyOnly = busyOnly,
         inverseMatch = inverseMatch,
         matchBy = matchBy.asCalendarEventMatchBy()!!,

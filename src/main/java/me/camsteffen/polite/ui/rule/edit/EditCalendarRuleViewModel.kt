@@ -4,6 +4,7 @@ import android.app.Application
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Transformations
+import me.camsteffen.polite.data.db.entity.AudioPolicy
 import me.camsteffen.polite.data.model.CalendarEventMatchBy
 import me.camsteffen.polite.data.model.CalendarRule
 import javax.inject.Inject
@@ -43,17 +44,12 @@ class EditCalendarRuleViewModel
         invalidateKeywordsLiveData()
     }
 
-    override fun doCreateRule(
-        id: Long,
-        name: String,
-        enabled: Boolean,
-        vibrate: Boolean
-    ): CalendarRule {
+    override fun doCreateRule(id: Long, name: String, audioPolicy: AudioPolicy): CalendarRule {
         return CalendarRule(
             id = id,
             name = name,
-            enabled = enabled,
-            vibrate = vibrate,
+            enabled = enabled.get(),
+            audioPolicy = audioPolicy,
             busyOnly = busyOnly.value!!,
             matchBy = matchBy.value!!,
             inverseMatch = inverseMatch.value!!,

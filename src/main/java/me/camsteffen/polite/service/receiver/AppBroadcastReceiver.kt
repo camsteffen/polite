@@ -10,6 +10,7 @@ import me.camsteffen.polite.util.finishAsync
 import timber.log.Timber
 import javax.inject.Inject
 
+// TODO move to receiver package
 class AppBroadcastReceiver : DaggerBroadcastReceiver() {
 
     companion object {

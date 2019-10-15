@@ -23,7 +23,7 @@ configurations {
     ktlint
 }
 
-def database_version = 9
+def database_version = 10
 
 android {
     compileSdkVersion 28

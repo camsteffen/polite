@@ -8,6 +8,8 @@ import io.mockk.verifyAll
 import me.camsteffen.polite.data.AppPreferences
 import me.camsteffen.polite.data.db.PoliteStateDao
 import me.camsteffen.polite.data.db.RuleDao
+import me.camsteffen.polite.data.db.entity.AudioPolicy
+import me.camsteffen.polite.data.model.InterruptFilter
 import me.camsteffen.polite.data.model.RuleEvent
 import me.camsteffen.polite.util.AppPermissionChecker
 import me.camsteffen.polite.util.TestObjects
@@ -105,13 +107,13 @@ class PoliteModeManagerTest {
         val currentEvent = TestObjects.calendarRuleEvent(
             begin = now - Duration.ofMinutes(30),
             end = now + Duration.ofMinutes(30),
-            vibrate = false
+            audioPolicy = AudioPolicy(false, false, InterruptFilter.PRIORITY)
         )
         val nextEvent = TestObjects.calendarRuleEvent(
             begin = now,
             // ends before the active event but should not affect refresh time
             end = now + Duration.ofMinutes(20),
-            vibrate = true
+            audioPolicy = AudioPolicy(true, false, InterruptFilter.PRIORITY)
         )
         refreshGiven(
             events = listOf(currentEvent, nextEvent)
@@ -131,12 +133,12 @@ class PoliteModeManagerTest {
         val currentEvent = TestObjects.calendarRuleEvent(
             begin = now - Duration.ofMinutes(30),
             end = now + Duration.ofMinutes(30),
-            vibrate = true
+            audioPolicy = AudioPolicy(true, false, InterruptFilter.PRIORITY)
         )
         val nextEvent = TestObjects.calendarRuleEvent(
             begin = now,
             end = now + Duration.ofMinutes(20),
-            vibrate = false
+            audioPolicy = AudioPolicy(false, false, InterruptFilter.PRIORITY)
         )
         refreshGiven(
             events = listOf(currentEvent, nextEvent)
@@ -171,7 +173,7 @@ class PoliteModeManagerTest {
         val currentEvent = TestObjects.calendarRuleEvent(
             begin = now,
             end = now + Duration.ofMinutes(10),
-            vibrate = true
+            audioPolicy = AudioPolicy(true, false, InterruptFilter.PRIORITY)
         )
         refreshGiven(
             events = listOf(
@@ -180,7 +182,7 @@ class PoliteModeManagerTest {
                     begin = now + Duration.ofMinutes(20),
                     end = now + Duration.ofMinutes(30),
                     // higher precedence should not matter
-                    vibrate = false
+                    audioPolicy = AudioPolicy(false, false, InterruptFilter.PRIORITY)
                 )
             )
         )
@@ -199,7 +201,7 @@ class PoliteModeManagerTest {
         val activeEvent = TestObjects.calendarRuleEvent(
             begin = now - Duration.ofMinutes(10),
             end = now + Duration.ofMinutes(20),
-            vibrate = false
+            audioPolicy = AudioPolicy(false, false, InterruptFilter.PRIORITY)
         )
         refreshGiven(
             events = listOf(
@@ -207,7 +209,7 @@ class PoliteModeManagerTest {
                 TestObjects.calendarRuleEvent(
                     begin = now + Duration.ofMinutes(10),
                     end = now + Duration.ofMinutes(30),
-                    vibrate = false
+                    audioPolicy = AudioPolicy(false, false, InterruptFilter.PRIORITY)
                 )
             )
         )
@@ -226,7 +228,7 @@ class PoliteModeManagerTest {
         val currentEvent = TestObjects.calendarRuleEvent(
             begin = now - Duration.ofMinutes(10),
             end = now + Duration.ofMinutes(20),
-            vibrate = false
+            audioPolicy = AudioPolicy(false, false, InterruptFilter.PRIORITY)
         )
         refreshGiven(
             events = listOf(
@@ -234,7 +236,7 @@ class PoliteModeManagerTest {
                 TestObjects.calendarRuleEvent(
                     begin = now + Duration.ofMinutes(10),
                     end = now + Duration.ofMinutes(30),
-                    vibrate = true
+                    audioPolicy = AudioPolicy(true, false, InterruptFilter.PRIORITY)
                 )
             )
         )

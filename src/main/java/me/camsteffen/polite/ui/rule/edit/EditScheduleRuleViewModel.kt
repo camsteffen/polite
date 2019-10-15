@@ -4,6 +4,7 @@ import android.app.Application
 import androidx.core.os.ConfigurationCompat.getLocales
 import androidx.databinding.ObservableBoolean
 import androidx.databinding.ObservableField
+import me.camsteffen.polite.data.db.entity.AudioPolicy
 import me.camsteffen.polite.data.model.ScheduleRule
 import me.camsteffen.polite.data.model.ScheduleRuleSchedule
 import me.camsteffen.polite.data.model.ScheduleRuleTimes
@@ -48,18 +49,19 @@ class EditScheduleRuleViewModel
         }
     }
 
-    override fun doCreateRule(
-        id: Long,
-        name: String,
-        enabled: Boolean,
-        vibrate: Boolean
-    ): ScheduleRule {
+    override fun doCreateRule(id: Long, name: String, audioPolicy: AudioPolicy): ScheduleRule {
         val days = daysOfWeek.asSequence()
             .filter { it.value.get() }
             .map { it.key }
             .toEnumSet()
         val schedule = ScheduleRuleSchedule(beginTime.get()!!, endTime.get()!!, days)
-        return ScheduleRule(id, name, enabled, vibrate, schedule)
+        return ScheduleRule(
+            id = id,
+            name = name,
+            enabled = enabled.get(),
+            audioPolicy = audioPolicy,
+            schedule = schedule
+        )
     }
 
     private fun localTimeDisplay(localTime: ObservableField<LocalTime>): ObservableField<String> {

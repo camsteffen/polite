@@ -8,6 +8,7 @@ import dagger.Lazy
 import me.camsteffen.polite.service.PoliteModeManager
 import javax.inject.Inject
 
+// TODO create work package
 class AppWorkerFactory
 @Inject constructor(
     private val politeModeManager: Lazy<PoliteModeManager>

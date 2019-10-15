@@ -14,6 +14,8 @@ private object PreferenceKeys {
     const val PREVIOUS_RINGER_MODE = "previous_ringer_mode"
     const val LAUNCH_COUNT = "launch_count"
     const val ASKED_TO_RATE = "asked_to_rate"
+    const val INTERRUPTION_FILTER = "previous_interruption_filter"
+    const val MEDIA_VOLUME = "previous_media_volume"
     const val NOTIFICATION_VOLUME = "notification_volume"
 }
 
@@ -63,6 +65,20 @@ class AppPreferences
     var deactivation: Int
         get() = preferences.getInt(deactivationKey, 0)
         set(value) = editor.putInt(deactivationKey, value).apply()
+
+    var interruptionFilter: Int?
+        get() = preferences.getString(PreferenceKeys.INTERRUPTION_FILTER, null)
+            ?.toIntOrNull()
+        set(value) = editor
+            .putString(PreferenceKeys.INTERRUPTION_FILTER, value?.toString(10))
+            .apply()
+
+    var mediaVolume: Int?
+        get() = preferences.getString(PreferenceKeys.MEDIA_VOLUME, null)
+            ?.toIntOrNull()
+        set(value) = editor
+            .putString(PreferenceKeys.MEDIA_VOLUME, value?.toString(10))
+            .apply()
 
     var notificationVolume: Int?
         get() = preferences.getString(PreferenceKeys.NOTIFICATION_VOLUME, null)?.toIntOrNull()

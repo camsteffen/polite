@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<layout
-    xmlns:android="http://schemas.android.com/apk/res/android">
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
     <data>
         <variable
             name="model"
@@ -30,6 +30,23 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="@string/vibrate"/>
+            <View style="@style/Divider"/>
+            <Switch
+                android:id="@+id/muteMedia"
+                style="@style/Option.Switch"
+                android:checked="@={model.muteMedia}"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/mute_media"/>
+            <View style="@style/Divider"/>
+            <me.camsteffen.polite.ui.DropDownOption
+                android:id="@+id/exceptions"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:label="@string/exceptions"
+                app:menu="@menu/exceptions"
+                app:value="@={model.exceptions}"
+                />
             <View style="@style/Divider"/>
             <FrameLayout
                 android:id="@+id/editRule"

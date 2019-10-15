@@ -20,7 +20,7 @@ class ScheduleRuleEntry(
             id = ruleBase.id,
             name = ruleBase.name,
             enabled = ruleBase.enabled,
-            vibrate = ruleBase.vibrate,
+            audioPolicy = ruleBase.audioPolicy,
             schedule = ScheduleRuleSchedule(beginTime, endTime, days.toDayOfWeekSet())
         )
     }

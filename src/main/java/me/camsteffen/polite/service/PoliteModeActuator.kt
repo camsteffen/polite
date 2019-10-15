@@ -50,9 +50,9 @@ class PoliteModeActuator
     private fun activate(ruleEvent: RuleEvent, saveRingerMode: Boolean) {
         Timber.i("Activating Polite Mode")
         if (saveRingerMode) {
-            ringerModeManager.saveRingerMode()
+            ringerModeManager.save()
         }
-        ringerModeManager.setRingerMode(ruleEvent.vibrate)
+        ringerModeManager.beQuiet(ruleEvent.rule.audioPolicy)
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O || preferences.notifications) {
             notificationManager.notifyPoliteActive(ruleEvent.notificationText, false)
         }
@@ -64,7 +64,7 @@ class PoliteModeActuator
         if (restoreRingerMode) {
             ringerModeManager.restoreRingerMode()
         } else {
-            ringerModeManager.clearSavedRingerMode()
+            ringerModeManager.clear()
         }
         notificationManager.cancelPoliteActive()
         stateDao.setActiveRuleEvent(null)

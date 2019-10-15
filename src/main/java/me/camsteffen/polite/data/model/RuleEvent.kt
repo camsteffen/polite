@@ -10,7 +10,6 @@ interface RuleEvent {
     val end: Instant
     val duration: Duration get() = Duration.between(begin, end)
     val notificationText: String
-    val vibrate get() = rule.vibrate
 }
 
 data class CalendarRuleEvent(

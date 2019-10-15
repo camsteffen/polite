@@ -15,13 +15,11 @@ data class ActiveRuleEvent(
     @ColumnInfo(name = "rule_id")
     val ruleId: Long,
     val begin: Instant,
-    val end: Instant,
-    val vibrate: Boolean
+    val end: Instant
 ) {
     constructor(ruleEvent: RuleEvent) : this(
         ruleId = ruleEvent.rule.id,
         begin = ruleEvent.begin,
-        end = ruleEvent.end,
-        vibrate = ruleEvent.vibrate
+        end = ruleEvent.end
     )
 }

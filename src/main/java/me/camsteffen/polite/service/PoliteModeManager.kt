@@ -87,13 +87,15 @@ class PoliteModeManager
             Timber.d("Rule event: %s", event)
             // if the event is occurring now
             if (event.begin <= now + timingConfig.ruleEventBoundaryTolerance) {
-                if (currentEvent == null || event.vibrate < currentEvent.vibrate) {
+                // TODO
+                if (currentEvent == null || event.rule.audioPolicy.vibrate < currentEvent.rule.audioPolicy.vibrate) {
                     currentEvent = event
                 }
             } else {
-                if (currentEvent == null ||
-                    event.begin >= currentEvent.end ||
-                    event.vibrate <= currentEvent.vibrate
+                if (currentEvent == null
+                    || event.begin >= currentEvent.end
+                    // TODO
+                    || event.rule.audioPolicy.vibrate <= currentEvent.rule.audioPolicy.vibrate
                 ) {
                     nextEvent = event
                 }

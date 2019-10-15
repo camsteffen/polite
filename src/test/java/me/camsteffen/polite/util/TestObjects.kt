@@ -1,5 +1,7 @@
 package me.camsteffen.polite.util
 
+import me.camsteffen.polite.data.db.entity.AudioPolicy
+import me.camsteffen.polite.data.db.entity.defaultAudioPolicy
 import me.camsteffen.polite.data.model.CalendarEvent
 import me.camsteffen.polite.data.model.CalendarEventMatchBy
 import me.camsteffen.polite.data.model.CalendarRule
@@ -33,7 +35,7 @@ object TestObjects {
     }
 
     fun calendarRule(
-        vibrate: Boolean = false,
+        audioPolicy: AudioPolicy = defaultAudioPolicy,
         busyOnly: Boolean = false,
         matchBy: CalendarEventMatchBy = CalendarEventMatchBy.ALL,
         inverseMatch: Boolean = false,
@@ -44,7 +46,7 @@ object TestObjects {
             id = calendarRuleId++,
             name = "",
             enabled = true,
-            vibrate = vibrate,
+            audioPolicy = audioPolicy,
             busyOnly = busyOnly,
             matchBy = matchBy,
             inverseMatch = inverseMatch,
@@ -58,7 +60,7 @@ object TestObjects {
             id = 0,
             name = "",
             enabled = true,
-            vibrate = false,
+            audioPolicy = defaultAudioPolicy,
             schedule = schedule
         )
     }
@@ -66,10 +68,10 @@ object TestObjects {
     fun calendarRuleEvent(
         begin: Instant = Instant.EPOCH,
         end: Instant = Instant.EPOCH,
-        vibrate: Boolean = false
+        audioPolicy: AudioPolicy = defaultAudioPolicy
     ): CalendarRuleEvent {
         return CalendarRuleEvent(
-            calendarRule(vibrate = vibrate),
+            calendarRule(audioPolicy = audioPolicy),
             calendarEvent(begin = begin, end = end))
     }
 }

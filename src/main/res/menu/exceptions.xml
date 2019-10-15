@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/exceptions_priority"
+        android:title="@string/exceptions_priority" />
+    <item
+        android:id="@+id/exceptions_alarms"
+        android:title="@string/alarms" />
+    <item
+        android:id="@+id/exceptions_none"
+        android:title="@string/none" />
+</menu>

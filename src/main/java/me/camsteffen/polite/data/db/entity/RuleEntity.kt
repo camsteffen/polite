@@ -1,5 +1,6 @@
 package me.camsteffen.polite.data.db.entity
 
+import androidx.room.Embedded
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 
@@ -9,5 +10,6 @@ open class RuleEntity(
     val id: Long,
     val name: String,
     val enabled: Boolean,
-    val vibrate: Boolean
+    @Embedded
+    val audioPolicy: AudioPolicy
 )

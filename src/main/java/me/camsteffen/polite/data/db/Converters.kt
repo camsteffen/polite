@@ -1,6 +1,7 @@
 package me.camsteffen.polite.data.db
 
 import androidx.room.TypeConverter
+import me.camsteffen.polite.data.model.InterruptFilter
 import org.threeten.bp.Instant
 import org.threeten.bp.LocalTime
 
@@ -17,4 +18,10 @@ object Converters {
 
     @TypeConverter @JvmStatic
     fun localTimeToInt(localTime: LocalTime): Int = localTime.toSecondOfDay()
+
+    @TypeConverter @JvmStatic
+    fun interruptFilterToInt(interruptFilter: InterruptFilter): Int = interruptFilter.value
+
+    @TypeConverter @JvmStatic
+    fun interruptFilterFromInt(value: Int): InterruptFilter? = InterruptFilter.fromValue(value)
 }

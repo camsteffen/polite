@@ -1,6 +1,7 @@
 package me.camsteffen.polite.data.model
 
 import android.content.Context
+import me.camsteffen.polite.data.db.entity.AudioPolicy
 import me.camsteffen.polite.data.db.entity.CalendarRuleCalendar
 import me.camsteffen.polite.data.db.entity.CalendarRuleEntity
 import me.camsteffen.polite.data.db.entity.CalendarRuleKeyword
@@ -17,18 +18,18 @@ sealed class Rule {
     abstract val id: Long
     abstract val name: String
     abstract val enabled: Boolean
-    abstract val vibrate: Boolean
+    abstract val audioPolicy: AudioPolicy
 
     open fun getCaption(context: Context): String = ""
 
-    fun asRuleEntity() = RuleEntity(id, name, enabled, vibrate)
+    fun asRuleEntity() = RuleEntity(id, name, enabled, audioPolicy)
 }
 
 data class CalendarRule(
     override val id: Long,
     override val name: String,
     override val enabled: Boolean,
-    override val vibrate: Boolean,
+    override val audioPolicy: AudioPolicy,
     val busyOnly: Boolean,
     val matchBy: CalendarEventMatchBy,
     val inverseMatch: Boolean,
@@ -57,7 +58,7 @@ data class ScheduleRule(
     override val id: Long,
     override val name: String,
     override val enabled: Boolean,
-    override val vibrate: Boolean,
+    override val audioPolicy: AudioPolicy,
     val schedule: ScheduleRuleSchedule
 ) : Rule() {
     override fun getCaption(context: Context) = schedule.summary(context)

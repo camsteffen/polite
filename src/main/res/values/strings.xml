@@ -92,4 +92,9 @@
     <string name="vibrate">Vibrate</string>
     <string name="word_already_added">\"%s\" is already added</string>
     <string name="yes">Yes</string>
+    <string name="exceptions">Exceptions</string>
+    <string name="none">None</string>
+    <string name="alarms">Alarms</string>
+    <string name="mute_media">Mute Media Volume</string>
+    <string name="exceptions_priority">Do Not Disturb</string>
 </resources>
