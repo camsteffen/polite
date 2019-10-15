@@ -23,6 +23,7 @@ class SettingsFragment : PreferenceFragmentCompat(), SharedPreferences.OnSharedP
     override fun onCreate(savedInstanceState: Bundle?) {
         AndroidSupportInjection.inject(this)
         super.onCreate(savedInstanceState)
+        retainInstance = true
         setHasOptionsMenu(true)
     }
 
@@ -30,16 +31,24 @@ class SettingsFragment : PreferenceFragmentCompat(), SharedPreferences.OnSharedP
         addPreferencesFromResource(R.xml.preferences)
     }
 
+    override fun onResume() {
+        super.onResume()
+        preferenceManager.sharedPreferences.registerOnSharedPreferenceChangeListener(this)
+    }
+
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
         mainActivity.supportActionBar!!.setTitle(R.string.settings)
-        preferenceManager.sharedPreferences.registerOnSharedPreferenceChangeListener(this)
+    }
+
+    override fun onPause() {
+        super.onPause()
+        preferenceManager.sharedPreferences.unregisterOnSharedPreferenceChangeListener(this)
     }
 
     override fun onStop() {
         super.onStop()
         AsyncTask.execute(politeStateManager::refresh)
-        preferenceManager.sharedPreferences.unregisterOnSharedPreferenceChangeListener(this)
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
@@ -52,6 +61,7 @@ class SettingsFragment : PreferenceFragmentCompat(), SharedPreferences.OnSharedP
 
     override fun onSharedPreferenceChanged(sharedPreferences: SharedPreferences?, key: String?) {
         if(key == getString(R.string.preference_theme)) {
+            // apply the theme change immediately
             mainActivity.recreate()
         }
     }
