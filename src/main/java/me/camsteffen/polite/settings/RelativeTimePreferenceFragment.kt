@@ -1,8 +1,8 @@
 package me.camsteffen.polite.settings
 
-import android.os.Bundle
 import android.view.View
 import android.widget.NumberPicker
+import androidx.core.os.bundleOf
 import androidx.preference.PreferenceDialogFragmentCompat
 import me.camsteffen.polite.R
 
@@ -15,11 +15,9 @@ class RelativeTimePreferenceFragment : PreferenceDialogFragmentCompat() {
         const val TAG = "relative_time"
 
         fun newInstance(key: String): RelativeTimePreferenceFragment {
-            val fragment = RelativeTimePreferenceFragment()
-            val bundle = Bundle()
-            bundle.putString(ARG_KEY, key)
-            fragment.arguments = bundle
-            return fragment
+            return RelativeTimePreferenceFragment().apply {
+                arguments = bundleOf(ARG_KEY to key)
+            }
         }
     }
 

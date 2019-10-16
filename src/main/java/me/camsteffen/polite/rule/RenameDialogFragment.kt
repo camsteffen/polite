@@ -4,6 +4,7 @@ import android.app.Dialog
 import android.os.Bundle
 import android.widget.EditText
 import androidx.appcompat.app.AlertDialog
+import androidx.core.os.bundleOf
 import dagger.android.support.DaggerDialogFragment
 import me.camsteffen.polite.R
 import me.camsteffen.polite.RuleService
@@ -17,12 +18,12 @@ class RenameDialogFragment : DaggerDialogFragment() {
         const val FRAGMENT_TAG = "RenameDialogFragment"
 
         fun newInstance(id: Long, name: String): RenameDialogFragment {
-            val bundle = Bundle()
-            bundle.putLong("id", id)
-            bundle.putString("name", name)
-            val fragment = RenameDialogFragment()
-            fragment.arguments = bundle
-            return fragment
+            return RenameDialogFragment().apply {
+                arguments = bundleOf(
+                    "id" to id,
+                    "name" to name
+                )
+            }
         }
     }
 

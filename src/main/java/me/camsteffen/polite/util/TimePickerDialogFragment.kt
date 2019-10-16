@@ -5,6 +5,7 @@ import android.app.TimePickerDialog
 import android.os.Bundle
 import android.text.format.DateFormat
 import android.widget.TimePicker
+import androidx.core.os.bundleOf
 import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.Fragment
 import org.threeten.bp.LocalTime
@@ -17,13 +18,13 @@ class TimePickerDialogFragment : DialogFragment(), TimePickerDialog.OnTimeSetLis
         private const val KEY_REQUEST_CODE = "request code"
 
         fun newInstance(target: Fragment, requestCode: Int, localTime: LocalTime): TimePickerDialogFragment {
-            val fragment = TimePickerDialogFragment()
-            fragment.setTargetFragment(target, requestCode)
-            val bundle = Bundle()
-            bundle.putInt(KEY_TIME, localTime.toSecondOfDay())
-            bundle.putInt(KEY_REQUEST_CODE, requestCode)
-            fragment.arguments = bundle
-            return fragment
+            return TimePickerDialogFragment().apply {
+                setTargetFragment(target, requestCode)
+                arguments = bundleOf(
+                    KEY_TIME to localTime.toSecondOfDay(),
+                    KEY_REQUEST_CODE to requestCode
+                )
+            }
         }
     }
 
