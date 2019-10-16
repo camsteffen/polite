@@ -1,5 +1,6 @@
 package me.camsteffen.polite.rule.master
 
+import android.annotation.SuppressLint
 import androidx.recyclerview.widget.DiffUtil
 import me.camsteffen.polite.R
 
@@ -26,6 +27,8 @@ sealed class RuleMasterItem {
                 return oldItem.sameItemAs(newItem)
             }
 
+            // equals is not overridden for Heading
+            @SuppressLint("DiffUtilEquals")
             override fun areContentsTheSame(oldItem: RuleMasterItem, newItem: RuleMasterItem): Boolean {
                 return oldItem == newItem
             }
