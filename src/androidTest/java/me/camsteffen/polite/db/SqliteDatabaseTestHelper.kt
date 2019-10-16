@@ -7,12 +7,16 @@ import androidx.sqlite.db.SupportSQLiteDatabase
 import org.threeten.bp.DayOfWeek
 import org.threeten.bp.LocalTime
 
-private val ALL_TABLES = listOf("Rule", "RuleCalendar", "RuleKeyword", "CalendarRule",
+private val ALL_TABLES = listOf(
+    "Rule", "RuleCalendar", "RuleKeyword", "CalendarRule",
     "CalendarRuleCalendar", "CalendarRuleKeyword", "ScheduleRule"
 )
 
 fun insertRuleV1(
-    id: Int, name: String, enable: Boolean, vibrate: Boolean,
+    id: Int,
+    name: String,
+    enable: Boolean,
+    vibrate: Boolean,
     matchAll: Boolean,
     matchTitle: Boolean,
     matchDesc: Boolean,
@@ -53,7 +57,10 @@ fun insertRuleKeyword(ruleId: Long, keyword: String, helper: SQLiteOpenHelper) {
 }
 
 fun insertRuleV2(
-    id: Long, name: String, enable: Boolean, vibrate: Boolean,
+    id: Long,
+    name: String,
+    enable: Boolean,
+    vibrate: Boolean,
     helper: SQLiteOpenHelper
 ) {
     helper.writableDatabase.use { db ->
@@ -67,7 +74,10 @@ fun insertRuleV2(
 }
 
 fun insertRuleV5(
-    id: Long, name: String, enable: Boolean, vibrate: Boolean,
+    id: Long,
+    name: String,
+    enable: Boolean,
+    vibrate: Boolean,
     db: SupportSQLiteDatabase
 ) {
     val values = ContentValues()
@@ -78,7 +88,13 @@ fun insertRuleV5(
     db.insert("rule", SQLiteDatabase.CONFLICT_ABORT, values)
 }
 
-fun insertCalendarRuleV2(id: Long, matchAll: Boolean, matchTitle: Boolean, matchDesc: Boolean, helper: SQLiteOpenHelper) {
+fun insertCalendarRuleV2(
+    id: Long,
+    matchAll: Boolean,
+    matchTitle: Boolean,
+    matchDesc: Boolean,
+    helper: SQLiteOpenHelper
+) {
     helper.writableDatabase.use { db ->
         val values = ContentValues()
         values.put("_id", id)
@@ -163,7 +179,13 @@ fun insertCalendarRuleKeywordV5(ruleId: Long, keyword: String, db: SupportSQLite
     db.insert("CalendarRuleKeyword", SQLiteDatabase.CONFLICT_ABORT, values)
 }
 
-fun insertScheduleRuleV2(id: Long, begin: LocalTime, end: LocalTime, days: Set<DayOfWeek>, helper: SQLiteOpenHelper) {
+fun insertScheduleRuleV2(
+    id: Long,
+    begin: LocalTime,
+    end: LocalTime,
+    days: Set<DayOfWeek>,
+    helper: SQLiteOpenHelper
+) {
     helper.writableDatabase.use { db ->
         val values = ContentValues()
         values.put("_id", id)

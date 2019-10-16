@@ -6,7 +6,8 @@ import android.util.AttributeSet
 import androidx.preference.DialogPreference
 import me.camsteffen.polite.R
 
-class RelativeTimePreference(context: Context, attrs: AttributeSet) : DialogPreference(context, attrs) {
+class RelativeTimePreference(context: Context, attrs: AttributeSet) :
+    DialogPreference(context, attrs) {
 
     private val summaryResId: Int
 

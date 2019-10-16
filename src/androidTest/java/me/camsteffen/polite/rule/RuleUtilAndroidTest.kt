@@ -10,7 +10,8 @@ import java.util.Locale
 
 class RuleUtilAndroidTest {
 
-    private val targetContext: Context get() = InstrumentationRegistry.getInstrumentation().targetContext
+    private val targetContext: Context get() =
+        InstrumentationRegistry.getInstrumentation().targetContext
 
     @Test
     fun scheduleSummary_everyDay() {

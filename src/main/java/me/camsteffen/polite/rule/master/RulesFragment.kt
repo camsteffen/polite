@@ -3,6 +3,7 @@ package me.camsteffen.polite.rule.master
 import android.content.Intent
 import android.os.Build
 import android.os.Bundle
+import android.provider.Settings.ACTION_NOTIFICATION_POLICY_ACCESS_SETTINGS
 import android.view.ContextMenu
 import android.view.LayoutInflater
 import android.view.Menu
@@ -50,7 +51,8 @@ class RulesFragment : DaggerFragment() {
         setHasOptionsMenu(true)
         retainInstance = true
 
-        model = ViewModelProviders.of(activity!!, viewModelProviderFactory)[RuleMasterDetailViewModel::class.java]
+        model = ViewModelProviders
+            .of(activity!!, viewModelProviderFactory)[RuleMasterDetailViewModel::class.java]
         adapter = RuleMasterAdapter(this::onClickRule, this::onRuleCheckedChange)
 
         model.ruleMasterList.observe(this, Observer {
@@ -58,8 +60,13 @@ class RulesFragment : DaggerFragment() {
         })
     }
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        val binding = DataBindingUtil.inflate<RulesFragmentBinding>(inflater, R.layout.rules_fragment, container, false)
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
+        val binding = DataBindingUtil
+            .inflate<RulesFragmentBinding>(inflater, R.layout.rules_fragment, container, false)
         binding.lifecycleOwner = this
         binding.handlers = this
         binding.model = model
@@ -74,25 +81,26 @@ class RulesFragment : DaggerFragment() {
     }
 
     private fun checkNotificationPolicyAccess() {
-        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.N)
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.N) {
             return
+        }
         val notificationManager = mainActivity.notificationManager
         if (notificationManager.isNotificationPolicyAccessGranted) {
             notificationManager.cancelNotificationPolicyAccessRequired()
         } else if (preferences.enable) {
             AlertDialog.Builder(activity!!)
-                    .setTitle(R.string.notification_policy_access_required)
-                    .setMessage(R.string.notification_policy_access_explain)
-                    .setNegativeButton(R.string.disable_polite) { dialog, _ ->
-                        dialog.dismiss()
-                        preferences.enable = false
-                    }
-                    .setPositiveButton(android.R.string.ok) { _, _ ->
-                        val intent = Intent(android.provider.Settings.ACTION_NOTIFICATION_POLICY_ACCESS_SETTINGS)
-                        startActivity(intent)
-                    }
-                    .create()
-                    .show()
+                .setTitle(R.string.notification_policy_access_required)
+                .setMessage(R.string.notification_policy_access_explain)
+                .setNegativeButton(R.string.disable_polite) { dialog, _ ->
+                    dialog.dismiss()
+                    preferences.enable = false
+                }
+                .setPositiveButton(android.R.string.ok) { _, _ ->
+                    val intent = Intent(ACTION_NOTIFICATION_POLICY_ACCESS_SETTINGS)
+                    startActivity(intent)
+                }
+                .create()
+                .show()
         }
     }
 
@@ -121,17 +129,21 @@ class RulesFragment : DaggerFragment() {
         return true
     }
 
-    override fun onCreateContextMenu(menu: ContextMenu, view: View, menuInfo: ContextMenu.ContextMenuInfo?) {
+    override fun onCreateContextMenu(
+        menu: ContextMenu,
+        view: View,
+        menuInfo: ContextMenu.ContextMenuInfo?
+    ) {
         activity!!.menuInflater.inflate(R.menu.rule_context, menu)
     }
 
     override fun onContextItemSelected(item: MenuItem): Boolean {
         val info = item.menuInfo as RuleMasterRecyclerView.RuleContextMenuInfo
         val rule = info.rule
-        when(item.itemId) {
+        when (item.itemId) {
             R.id.rename -> {
                 RenameDialogFragment.newInstance(rule.id, rule.name)
-                        .show(fragmentManager!!, RenameDialogFragment.FRAGMENT_TAG)
+                    .show(fragmentManager!!, RenameDialogFragment.FRAGMENT_TAG)
             }
             R.id.delete -> {
                 ruleService.deleteRuleAsync(rule.id)
@@ -150,17 +162,18 @@ class RulesFragment : DaggerFragment() {
     }
 
     private fun onClickRule(rule: Rule) {
-        if (rule is CalendarRule && !mainActivity.checkCalendarPermission())
+        if (rule is CalendarRule && !mainActivity.checkCalendarPermission()) {
             return
+        }
         model.selectedRule.value = rule
     }
 
     private fun onRuleCheckedChange(rule: Rule, isChecked: Boolean) {
         if (rule.enabled != isChecked) {
-            if (isChecked && rule is CalendarRule)
+            if (isChecked && rule is CalendarRule) {
                 mainActivity.checkCalendarPermission()
+            }
             ruleService.updateRuleEnabledAsync(rule.id, isChecked)
         }
     }
-
 }

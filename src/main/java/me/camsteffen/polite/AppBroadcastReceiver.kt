@@ -48,5 +48,4 @@ class AppBroadcastReceiver : DaggerBroadcastReceiver() {
             ACTION_CANCEL -> finishAsync(stateManager::cancel)
         }
     }
-
 }

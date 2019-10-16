@@ -44,7 +44,8 @@ abstract class EditRuleFragment<RuleType : Rule> : DaggerFragment() {
     override fun onAttach(context: Context) {
         super.onAttach(context)
         mainActivity.registerOnBackPressedListener(this, this::onBackPressed)
-        masterModel = ViewModelProviders.of(activity!!, viewModelProviderFactory)[RuleMasterDetailViewModel::class.java]
+        masterModel = ViewModelProviders
+            .of(activity!!, viewModelProviderFactory)[RuleMasterDetailViewModel::class.java]
         @Suppress("UNCHECKED_CAST")
         rule = masterModel.selectedRule.value!! as RuleType
         newRule = rule.id == Rule.NEW_ID
@@ -59,8 +60,13 @@ abstract class EditRuleFragment<RuleType : Rule> : DaggerFragment() {
         editRuleModel.setRule(rule)
     }
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        val binding = DataBindingUtil.inflate<EditRuleBinding>(layoutInflater, R.layout.edit_rule, container, false)
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
+        val binding = DataBindingUtil
+            .inflate<EditRuleBinding>(layoutInflater, R.layout.edit_rule, container, false)
         binding.lifecycleOwner = this
         scrollView = binding.scrollView
         binding.model = editRuleModel
@@ -76,28 +82,32 @@ abstract class EditRuleFragment<RuleType : Rule> : DaggerFragment() {
 
     abstract fun onCreateEditRuleViewModel(): EditRuleViewModel<RuleType>
 
-    abstract fun onCreateEditRuleView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View
+    abstract fun onCreateEditRuleView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
         inflater.inflate(R.menu.menu_edit_rule, menu)
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        when(item.itemId) {
+        when (item.itemId) {
             android.R.id.home -> validateSaveClose()
             R.id.delete -> {
                 AlertDialog.Builder(activity!!)
-                        .setTitle(R.string.delete_rule_title)
-                        .setMessage(R.string.delete_rule_confirm)
-                        .setPositiveButton(R.string.yes) { _, _ ->
-                            if (!newRule) {
-                                ruleService.deleteRuleAsync(rule.id)
-                            }
-                            masterModel.selectedRule.value = null
+                    .setTitle(R.string.delete_rule_title)
+                    .setMessage(R.string.delete_rule_confirm)
+                    .setPositiveButton(R.string.yes) { _, _ ->
+                        if (!newRule) {
+                            ruleService.deleteRuleAsync(rule.id)
                         }
-                        .setNegativeButton(R.string.no, null)
-                        .create()
-                        .show()
+                        masterModel.selectedRule.value = null
+                    }
+                    .setNegativeButton(R.string.no, null)
+                    .create()
+                    .show()
             }
             R.id.help -> {
                 navController.navigate(R.id.action_global_helpFragment)

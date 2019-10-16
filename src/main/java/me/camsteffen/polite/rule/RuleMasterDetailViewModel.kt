@@ -26,22 +26,21 @@ class RuleMasterDetailViewModel
     private val calendarRules = ruleDao.calendarRulesSortedByNameLive()
     private val scheduleRules = ruleDao.scheduleRulesSortedByNameLive()
 
-    val ruleMasterList: LiveData<List<RuleMasterItem>> = MediatorLiveData<List<RuleMasterItem>>().apply {
+    val ruleMasterList: LiveData<List<RuleMasterItem>> = MediatorLiveData<List<RuleMasterItem>>()
+        .apply {
+            fun update(calendarRules: List<CalendarRule>?, scheduleRules: List<ScheduleRule>?) {
+                calendarRules ?: return
+                scheduleRules ?: return
+                value = RuleMasterList.of(calendarRules, scheduleRules)
+            }
 
-        fun update(calendarRules: List<CalendarRule>?, scheduleRules: List<ScheduleRule>?) {
-            calendarRules ?: return
-            scheduleRules ?: return
-            value = RuleMasterList.of(calendarRules, scheduleRules)
+            addSource(calendarRules) { c -> update(c, scheduleRules.value) }
+            addSource(scheduleRules) { s -> update(calendarRules.value, s) }
+
+            value = emptyList()
         }
-
-        addSource(calendarRules) { c -> update(c, scheduleRules.value) }
-        addSource(scheduleRules) { s -> update(calendarRules.value, s) }
-
-        value = emptyList()
-    }
 
     val enabledCalendarRulesExist: LiveData<Boolean> = ruleDao.getEnabledCalendarRulesExistLive()
 
     val toolbarEditTextVisibility: ObservableInt = ObservableInt(View.GONE)
-
 }

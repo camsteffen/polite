@@ -50,8 +50,8 @@ private val EDIT_RULE_DESTINATIONS: Set<Int> =
     hashSetOf(R.id.editCalendarRuleFragment, R.id.editScheduleRuleFragment)
 
 class MainActivity : AppCompatActivity(), HasAndroidInjector,
-        ActivityCompat.OnRequestPermissionsResultCallback
-{
+    ActivityCompat.OnRequestPermissionsResultCallback {
+
     companion object {
         const val REQUEST_PERMISSION_CALENDAR = 0
         const val REQUEST_PERMISSION_CREATE_CALENDAR_RULE = 1
@@ -84,9 +84,11 @@ class MainActivity : AppCompatActivity(), HasAndroidInjector,
         AndroidInjection.inject(this)
         setThemeFromPreference()
         super.onCreate(savedInstanceState)
-        model = ViewModelProviders.of(this, viewModelProviderFactory)[RuleMasterDetailViewModel::class.java]
+        model = ViewModelProviders
+            .of(this, viewModelProviderFactory)[RuleMasterDetailViewModel::class.java]
         model.selectedRule.value = null
-        val binding = DataBindingUtil.setContentView<ActivityMainBinding>(this, R.layout.activity_main)
+        val binding =
+            DataBindingUtil.setContentView<ActivityMainBinding>(this, R.layout.activity_main)
         binding.lifecycleOwner = this
         binding.model = model
         setSupportActionBar(binding.toolbar)
@@ -98,11 +100,12 @@ class MainActivity : AppCompatActivity(), HasAndroidInjector,
 
         // TODO use AppBarConfiguration, FragmentNavigator, FragmentFactory
         navController.get().addOnDestinationChangedListener(
-            OnDestinationChangedListener(supportActionBar!!, fab, model))
+            OnDestinationChangedListener(supportActionBar!!, fab, model)
+        )
 
         model.selectedRule.observe(this, Observer { rule ->
             if (rule == null) {
-                if(EDIT_RULE_DESTINATIONS.contains(navController.get().currentDestination?.id)) {
+                if (EDIT_RULE_DESTINATIONS.contains(navController.get().currentDestination?.id)) {
                     navController.get().popBackStack()
                 }
             } else {
@@ -144,8 +147,9 @@ class MainActivity : AppCompatActivity(), HasAndroidInjector,
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
-        if (resultCode != Activity.RESULT_OK)
+        if (resultCode != Activity.RESULT_OK) {
             return
+        }
 
         when (requestCode) {
             ACTIVITY_CALENDAR_PERMISSION -> checkCalendarPermission()
@@ -153,13 +157,16 @@ class MainActivity : AppCompatActivity(), HasAndroidInjector,
     }
 
     @TargetApi(Build.VERSION_CODES.M)
-    override fun onRequestPermissionsResult(requestCode: Int,
-                                            permissions: Array<String>, grantResults: IntArray) {
+    override fun onRequestPermissionsResult(
+        requestCode: Int,
+        permissions: Array<String>,
+        grantResults: IntArray
+    ) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults)
 
         val allGranted = grantResults.all { it == PackageManager.PERMISSION_GRANTED }
-        if(allGranted) {
-            when(requestCode) {
+        if (allGranted) {
+            when (requestCode) {
                 REQUEST_PERMISSION_CREATE_CALENDAR_RULE -> {
                     model.selectedRule.value = defaultRules.calendar()
                 }
@@ -172,13 +179,13 @@ class MainActivity : AppCompatActivity(), HasAndroidInjector,
                 REQUEST_PERMISSION_CREATE_CALENDAR_RULE,
                 REQUEST_PERMISSION_CALENDAR -> {
                     val alertBuilder = AlertDialog.Builder(this)
-                            .setTitle(R.string.calendar_permission_required)
-                            .setMessage(R.string.calendar_permission_explain)
-                            .setNegativeButton(android.R.string.no) { dialog, _ ->
-                                dialog.dismiss()
-                                notificationManager.cancelCalendarPermissionRequired()
-                                ruleService.updateCalendarRulesEnabledAsync(false)
-                            }
+                        .setTitle(R.string.calendar_permission_required)
+                        .setMessage(R.string.calendar_permission_explain)
+                        .setNegativeButton(android.R.string.no) { dialog, _ ->
+                            dialog.dismiss()
+                            notificationManager.cancelCalendarPermissionRequired()
+                            ruleService.updateCalendarRulesEnabledAsync(false)
+                        }
 
                     // request calendar permission or open settings directly
                     if (shouldShowRequestPermissionRationale(Manifest.permission.READ_CALENDAR)) {
@@ -218,7 +225,7 @@ class MainActivity : AppCompatActivity(), HasAndroidInjector,
     }
 
     private fun openRule(rule: Rule) {
-        val id = when(rule) {
+        val id = when (rule) {
             is CalendarRule -> R.id.action_rulesFragment_to_editCalendarRuleFragment
             is ScheduleRule -> R.id.action_rulesFragment_to_editScheduleRuleFragment
         }
@@ -237,7 +244,9 @@ class MainActivity : AppCompatActivity(), HasAndroidInjector,
     fun checkCalendarPermission(requestCode: Int = REQUEST_PERMISSION_CALENDAR): Boolean {
         if (Build.VERSION.SDK_INT < Build.VERSION_CODES.M) {
             return true
-        } else if (checkSelfPermission(Manifest.permission.READ_CALENDAR) != PackageManager.PERMISSION_GRANTED) {
+        } else if (checkSelfPermission(Manifest.permission.READ_CALENDAR) !=
+            PackageManager.PERMISSION_GRANTED
+        ) {
             requestPermissions(arrayOf(Manifest.permission.READ_CALENDAR), requestCode)
             return false
         }
@@ -249,17 +258,18 @@ class MainActivity : AppCompatActivity(), HasAndroidInjector,
         val view = layoutInflater.inflate(R.layout.create_rule, null)
 
         val dialog = AlertDialog.Builder(this)
-                .setTitle(R.string.create_a_rule)
-                .setView(view)
-                .create()
+            .setTitle(R.string.create_a_rule)
+            .setView(view)
+            .create()
 
         val calendarRuleView = view.findViewById<View>(R.id.calendar_rule)
         val scheduleRuleView = view.findViewById<View>(R.id.schedule_rule)
 
         calendarRuleView.setOnClickListener {
             dialog.dismiss()
-            if(checkCalendarPermission(REQUEST_PERMISSION_CREATE_CALENDAR_RULE))
+            if (checkCalendarPermission(REQUEST_PERMISSION_CREATE_CALENDAR_RULE)) {
                 model.selectedRule.value = defaultRules.calendar()
+            }
         }
 
         scheduleRuleView.setOnClickListener {
@@ -269,13 +279,12 @@ class MainActivity : AppCompatActivity(), HasAndroidInjector,
 
         dialog.show()
     }
-
 }
 
 private class OnDestinationChangedListener(
-        val actionBar: ActionBar,
-        val fab: FloatingActionButton,
-        val model: RuleMasterDetailViewModel
+    val actionBar: ActionBar,
+    val fab: FloatingActionButton,
+    val model: RuleMasterDetailViewModel
 ) : NavController.OnDestinationChangedListener {
     override fun onDestinationChanged(
         controller: NavController,

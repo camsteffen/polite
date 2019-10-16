@@ -18,12 +18,14 @@ import org.threeten.bp.LocalTime
 import org.threeten.bp.format.TextStyle
 import org.threeten.bp.temporal.WeekFields
 
-class EditScheduleRuleFragment : EditRuleFragment<ScheduleRule>(), TimePickerDialogFragment.OnTimeSetListener {
+class EditScheduleRuleFragment : EditRuleFragment<ScheduleRule>(),
+    TimePickerDialogFragment.OnTimeSetListener {
 
     private lateinit var model: EditScheduleRuleViewModel
 
     override fun onCreateEditRuleViewModel(): EditScheduleRuleViewModel {
-        model = ViewModelProviders.of(activity!!, viewModelProviderFactory)[EditScheduleRuleViewModel::class.java]
+        model = ViewModelProviders
+            .of(activity!!, viewModelProviderFactory)[EditScheduleRuleViewModel::class.java]
         return model
     }
 
@@ -32,7 +34,9 @@ class EditScheduleRuleFragment : EditRuleFragment<ScheduleRule>(), TimePickerDia
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        val binding = DataBindingUtil.inflate<EditScheduleRuleBinding>(layoutInflater, R.layout.edit_schedule_rule, container, false)
+        val binding = DataBindingUtil.inflate<EditScheduleRuleBinding>(
+            layoutInflater, R.layout.edit_schedule_rule, container, false
+        )
         binding.lifecycleOwner = this
         binding.handlers = this
         binding.model = model
@@ -45,7 +49,8 @@ class EditScheduleRuleFragment : EditRuleFragment<ScheduleRule>(), TimePickerDia
         val firstDay = WeekFields.of(locale).firstDayOfWeek
         for (i in 0..6L) {
             val day = firstDay + i
-            val binding = DataBindingUtil.inflate<DayButtonBinding>(layoutInflater, R.layout.day_button, parent, true)
+            val binding = DataBindingUtil
+                .inflate<DayButtonBinding>(layoutInflater, R.layout.day_button, parent, true)
             binding.text = day.getDisplayName(TextStyle.NARROW, locale)
             binding.checked = model.daysOfWeek[day]
             if (i < 6) {
@@ -54,7 +59,8 @@ class EditScheduleRuleFragment : EditRuleFragment<ScheduleRule>(), TimePickerDia
         }
     }
 
-    override fun ruleFromUi(id: Long, name: String, enabled: Boolean, vibrate: Boolean): ScheduleRule {
+    override fun ruleFromUi(id: Long, name: String, enabled: Boolean, vibrate: Boolean):
+        ScheduleRule {
         val days = model.daysOfWeek.asSequence()
             .filter { it.value.get() }
             .map { it.key }
@@ -73,7 +79,7 @@ class EditScheduleRuleFragment : EditRuleFragment<ScheduleRule>(), TimePickerDia
 
     private fun showTimePicker(code: Int, localTime: LocalTime) {
         TimePickerDialogFragment.newInstance(this, code, localTime)
-                .show(fragmentManager!!, TimePickerDialogFragment.FRAGMENT_TAG)
+            .show(fragmentManager!!, TimePickerDialogFragment.FRAGMENT_TAG)
     }
 
     override fun validateSaveClose() {

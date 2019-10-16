@@ -23,8 +23,8 @@ class AppPermissionChecker
     }
 
     fun checkNotificationPolicyAccess(): Boolean {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M
-            && !notificationManager.isNotificationPolicyAccessGranted
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M &&
+            !notificationManager.isNotificationPolicyAccessGranted
         ) {
             notificationManager.notifyNotificationPolicyAccessRequired()
             return false

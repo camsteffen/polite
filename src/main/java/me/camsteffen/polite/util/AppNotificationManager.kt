@@ -31,7 +31,7 @@ class AppNotificationManager
 
     val isNotificationPolicyAccessGranted
         get() = Build.VERSION.SDK_INT < Build.VERSION_CODES.M ||
-                notificationManager.isNotificationPolicyAccessGranted
+            notificationManager.isNotificationPolicyAccessGranted
 
     @RequiresApi(Build.VERSION_CODES.O)
     fun createChannels() {
@@ -91,8 +91,8 @@ class AppNotificationManager
             .setColor(ContextCompat.getColor(context, R.color.primary))
             .setSmallIcon(R.mipmap.notification_icon)
             .setVisibility(NotificationCompat.VISIBILITY_PUBLIC)
-            .setContentTitle(context.resources.getString(R.string.notification_policy_access_required))
-            .setContentText(context.resources.getString(R.string.notification_policy_access_explain))
+            .setContentTitle(context.getString(R.string.notification_policy_access_required))
+            .setContentText(context.getString(R.string.notification_policy_access_explain))
             .setVisibility(NotificationCompat.VISIBILITY_PUBLIC)
             .setContentIntent(
                 PendingIntent.getActivity(

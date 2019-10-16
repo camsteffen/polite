@@ -36,15 +36,17 @@ interface HasScheduleRuleTimes {
             duration = duration.plusDays(1)
         }
         val minutes = duration.toMinutes()
-        return if (minutes < 60)
+        return if (minutes < 60) {
             resources.getString(R.string.duration_format_minutes, minutes)
-        else
+        } else {
             resources.getString(R.string.duration_format, duration.toHours(), minutes % 60)
+        }
     }
 }
 
 class ScheduleRuleTimes(
-    override val beginTime: LocalTime, override val endTime: LocalTime
+    override val beginTime: LocalTime,
+    override val endTime: LocalTime
 ) : HasScheduleRuleTimes
 
 /**

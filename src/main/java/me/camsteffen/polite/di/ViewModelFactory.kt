@@ -8,8 +8,7 @@ import javax.inject.Provider
 class ViewModelFactory
 @Inject constructor(
     private val viewModelsMap: Map<Class<out ViewModel>, @JvmSuppressWildcards Provider<ViewModel>>
-)
-    : ViewModelProvider.Factory {
+) : ViewModelProvider.Factory {
 
     override fun <T : ViewModel> create(modelClass: Class<T>): T {
         val creator = viewModelsMap[modelClass]

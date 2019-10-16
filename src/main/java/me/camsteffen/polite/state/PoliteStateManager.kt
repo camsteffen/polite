@@ -81,9 +81,9 @@ class PoliteStateManager
                     currentEvent = event
                 }
             } else {
-                if (currentEvent == null
-                    || event.begin >= currentEvent.end
-                    || event.vibrate <= currentEvent.vibrate
+                if (currentEvent == null ||
+                    event.begin >= currentEvent.end ||
+                    event.vibrate <= currentEvent.vibrate
                 ) {
                     nextEvent = event
                 }

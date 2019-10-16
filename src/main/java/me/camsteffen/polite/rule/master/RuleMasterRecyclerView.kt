@@ -9,7 +9,8 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import me.camsteffen.polite.model.Rule
 
-class RuleMasterRecyclerView(context: Context, attrs: AttributeSet? = null) : RecyclerView(context, attrs) {
+class RuleMasterRecyclerView(context: Context, attrs: AttributeSet? = null) :
+    RecyclerView(context, attrs) {
 
     init {
         setHasFixedSize(true)
@@ -37,7 +38,7 @@ class RuleMasterRecyclerView(context: Context, attrs: AttributeSet? = null) : Re
 
     class RuleContextMenuInfo(val rule: Rule) : ContextMenu.ContextMenuInfo
 
-    class Divider: RecyclerView.ItemDecoration() {
+    class Divider : RecyclerView.ItemDecoration() {
 
         override fun getItemOffsets(outRect: Rect, view: View, parent: RecyclerView, state: State) {
             outRect.bottom = 1

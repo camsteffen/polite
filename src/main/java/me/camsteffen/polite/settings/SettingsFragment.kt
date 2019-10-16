@@ -13,7 +13,8 @@ import me.camsteffen.polite.R
 import me.camsteffen.polite.state.PoliteStateManager
 import javax.inject.Inject
 
-class SettingsFragment : PreferenceFragmentCompat(), SharedPreferences.OnSharedPreferenceChangeListener {
+class SettingsFragment :
+    PreferenceFragmentCompat(), SharedPreferences.OnSharedPreferenceChangeListener {
 
     @Inject lateinit var politeStateManager: PoliteStateManager
 
@@ -60,7 +61,7 @@ class SettingsFragment : PreferenceFragmentCompat(), SharedPreferences.OnSharedP
     }
 
     override fun onSharedPreferenceChanged(sharedPreferences: SharedPreferences?, key: String?) {
-        if(key == getString(R.string.preference_theme)) {
+        if (key == getString(R.string.preference_theme)) {
             // apply the theme change immediately
             mainActivity.recreate()
         }

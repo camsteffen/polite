@@ -24,5 +24,4 @@ class AppWorkerFactory
             else -> null
         }
     }
-
 }

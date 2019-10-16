@@ -15,17 +15,20 @@ import me.camsteffen.polite.model.Rule
 typealias RuleClickListener = (rule: Rule) -> Unit
 typealias RuleCheckedChangeListener = (rule: Rule, isChecked: Boolean) -> Unit
 
-abstract class RuleMasterViewHolder<E : RuleMasterItem>(itemView: View) : RecyclerView.ViewHolder(itemView) {
+abstract class RuleMasterViewHolder<E : RuleMasterItem>(itemView: View) :
+    RecyclerView.ViewHolder(itemView) {
 
     abstract fun bind(item: E)
 
-    class HeadingViewHolder(itemView: View) : RuleMasterViewHolder<RuleMasterItem.Heading>(itemView) {
+    class HeadingViewHolder(itemView: View) :
+        RuleMasterViewHolder<RuleMasterItem.Heading>(itemView) {
 
         private val textView = this.itemView.findViewById(R.id.text) as TextView
 
         override fun bind(item: RuleMasterItem.Heading) {
             val context = itemView.context
-            val drawable = DrawableCompat.wrap(ContextCompat.getDrawable(context, item.drawableId)!!).mutate()
+            val drawable = DrawableCompat
+                .wrap(ContextCompat.getDrawable(context, item.drawableId)!!).mutate()
             val attribute = TypedValue()
             context.theme.resolveAttribute(android.R.attr.textColorSecondary, attribute, true)
             val tint = ContextCompat.getColor(context, attribute.resourceId)

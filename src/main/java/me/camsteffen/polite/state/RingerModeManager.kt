@@ -24,18 +24,19 @@ class RingerModeManager
     }
 
     fun setRingerMode(vibrate: Boolean) {
-        audioManager.ringerMode = if (vibrate)
+        audioManager.ringerMode = if (vibrate) {
             AudioManager.RINGER_MODE_VIBRATE
-        else
+        } else {
             AudioManager.RINGER_MODE_SILENT
+        }
     }
 
     fun restoreRingerMode() {
         val previousRingerMode = preferences.previousRingerMode
         // change to previous ringer mode only if louder than current mode
-        if (previousRingerMode == AudioManager.RINGER_MODE_NORMAL
-            || previousRingerMode == AudioManager.RINGER_MODE_VIBRATE
-            && audioManager.ringerMode == AudioManager.RINGER_MODE_SILENT
+        if (previousRingerMode == AudioManager.RINGER_MODE_NORMAL ||
+            previousRingerMode == AudioManager.RINGER_MODE_VIBRATE &&
+            audioManager.ringerMode == AudioManager.RINGER_MODE_SILENT
         ) {
             audioManager.ringerMode = previousRingerMode
         }

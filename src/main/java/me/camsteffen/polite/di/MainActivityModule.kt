@@ -18,10 +18,11 @@ abstract class MainActivityModule {
     @Module
     companion object {
 
-        @JvmStatic @Provides
+        @JvmStatic
+        @Provides
         fun provideNavController(mainActivity: MainActivity): NavController {
-            val navHostFragment = mainActivity.supportFragmentManager.findFragmentById(R.id.nav_host_fragment)
-                    as NavHostFragment
+            val navHostFragment = mainActivity.supportFragmentManager
+                .findFragmentById(R.id.nav_host_fragment) as NavHostFragment
             return navHostFragment.navController
         }
     }

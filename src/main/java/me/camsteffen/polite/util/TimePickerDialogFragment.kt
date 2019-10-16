@@ -17,7 +17,8 @@ class TimePickerDialogFragment : DialogFragment(), TimePickerDialog.OnTimeSetLis
         private const val KEY_TIME = "time"
         private const val KEY_REQUEST_CODE = "request code"
 
-        fun newInstance(target: Fragment, requestCode: Int, localTime: LocalTime): TimePickerDialogFragment {
+        fun newInstance(target: Fragment, requestCode: Int, localTime: LocalTime):
+            TimePickerDialogFragment {
             return TimePickerDialogFragment().apply {
                 setTargetFragment(target, requestCode)
                 arguments = bundleOf(
@@ -30,7 +31,9 @@ class TimePickerDialogFragment : DialogFragment(), TimePickerDialog.OnTimeSetLis
 
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
         val time = LocalTime.ofSecondOfDay(arguments!!.getInt(KEY_TIME).toLong())
-        return TimePickerDialog(activity, this, time.hour, time.minute, DateFormat.is24HourFormat(activity))
+        return TimePickerDialog(
+            activity, this, time.hour, time.minute, DateFormat.is24HourFormat(activity)
+        )
     }
 
     override fun onTimeSet(view: TimePicker?, hourOfDay: Int, minute: Int) {

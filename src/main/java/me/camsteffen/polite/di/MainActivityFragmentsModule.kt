@@ -25,5 +25,4 @@ abstract class MainActivityFragmentsModule {
 
     @ContributesAndroidInjector
     abstract fun contributeSettingsFragment(): SettingsFragment
-
 }

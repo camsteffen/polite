@@ -35,13 +35,13 @@ class RenameDialogFragment : DaggerDialogFragment() {
         val editText = view.findViewById(R.id.name) as EditText
         editText.setText(name)
         return AlertDialog.Builder(context!!)
-                .setTitle(R.string.rename_rule)
-                .setView(view)
-                .setNegativeButton(android.R.string.cancel, null)
-                .setPositiveButton(android.R.string.ok) { _, _ ->
-                    val newName = editText.text.toString()
-                    ruleService.updateRuleNameAsync(id, newName)
-                }
-                .create()
+            .setTitle(R.string.rename_rule)
+            .setView(view)
+            .setNegativeButton(android.R.string.cancel, null)
+            .setPositiveButton(android.R.string.ok) { _, _ ->
+                val newName = editText.text.toString()
+                ruleService.updateRuleNameAsync(id, newName)
+            }
+            .create()
     }
 }

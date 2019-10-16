@@ -22,10 +22,14 @@ class RuleMasterAdapter(
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RuleMasterViewHolder<*> {
         val inflater = LayoutInflater.from(parent.context)
         return when (viewType) {
-            ViewTypes.HEADING -> RuleMasterViewHolder.HeadingViewHolder(inflater.inflate(R.layout.subhead_rules, parent, false))
+            ViewTypes.HEADING -> {
+                val view = inflater.inflate(R.layout.subhead_rules, parent, false)
+                RuleMasterViewHolder.HeadingViewHolder(view)
+            }
             ViewTypes.CALENDAR_RULE, ViewTypes.SCHEDULE_RULE -> {
                 val view = inflater.inflate(R.layout.rule_list_item, parent, false)
-                RuleMasterViewHolder.RuleViewHolder(view, ruleClickListener, ruleCheckedChangeListener)
+                RuleMasterViewHolder
+                    .RuleViewHolder(view, ruleClickListener, ruleCheckedChangeListener)
             }
             else -> throw IllegalArgumentException()
         }

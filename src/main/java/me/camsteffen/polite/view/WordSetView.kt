@@ -12,11 +12,11 @@ import androidx.databinding.BindingMethods
 import me.camsteffen.polite.util.KeywordSpan
 
 @BindingMethods(
-        BindingMethod(
-                type = WordSetView::class,
-                attribute = "onClickWord",
-                method = "setOnClickWordListener"
-        )
+    BindingMethod(
+        type = WordSetView::class,
+        attribute = "onClickWord",
+        method = "setOnClickWordListener"
+    )
 )
 class WordSetView(context: Context, attrs: AttributeSet) : AppCompatTextView(context, attrs) {
 

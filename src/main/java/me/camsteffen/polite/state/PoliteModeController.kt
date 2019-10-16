@@ -30,8 +30,8 @@ class PoliteModeController
 
         when {
             currentEvent == null -> {
-                val restoreRingerMode = previousEvent != null
-                        && Instant.now() <= previousEvent.end + timingConfig.maxRingerRestoreDelay
+                val restoreRingerMode = previousEvent != null &&
+                    Instant.now() <= previousEvent.end + timingConfig.maxRingerRestoreDelay
                 deactivate(restoreRingerMode)
             }
             previousEvent == null -> activate(currentEvent, true)

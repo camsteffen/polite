@@ -1,7 +1,6 @@
 package me.camsteffen.polite
 
 import android.content.Intent
-import android.net.Uri
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.Menu
@@ -12,6 +11,7 @@ import android.view.ViewGroup
 import android.webkit.WebResourceRequest
 import android.webkit.WebView
 import android.webkit.WebViewClient
+import androidx.core.net.toUri
 import androidx.core.os.ConfigurationCompat.getLocales
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
@@ -37,7 +37,7 @@ class HelpFragment : Fragment() {
         val webView = WebView(activity!!)
         val language = getLocales(resources.configuration)[0].language
         var path = "help-$language.html"
-        if(!assetExists(path)) {
+        if (!assetExists(path)) {
             path = "help.html"
         }
         val url = "file:///android_asset/$path"
@@ -73,7 +73,7 @@ class HelpFragment : Fragment() {
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        when(item.itemId) {
+        when (item.itemId) {
             android.R.id.home -> findNavController().popBackStack()
             R.id.email -> {
                 val intent = Intent(Intent.ACTION_SEND)
@@ -85,8 +85,8 @@ class HelpFragment : Fragment() {
                 }
             }
             R.id.beta -> {
-                val intent = Intent(Intent.ACTION_VIEW,
-                        Uri.parse(getString(R.string.join_beta_url)))
+                val uri = getString(R.string.join_beta_url).toUri()
+                val intent = Intent(Intent.ACTION_VIEW, uri)
                 startActivity(intent)
             }
             else -> return false
@@ -96,14 +96,17 @@ class HelpFragment : Fragment() {
 
     private val webViewClient = object : WebViewClient() {
 
-        override fun shouldOverrideUrlLoading(view: WebView?, request: WebResourceRequest): Boolean {
+        override fun shouldOverrideUrlLoading(
+            view: WebView?,
+            request: WebResourceRequest
+        ): Boolean {
             @Suppress("DEPRECATION")
             return shouldOverrideUrlLoading(view, request.url.toString())
         }
 
         @Suppress("OverridingDeprecatedMember")
         override fun shouldOverrideUrlLoading(view: WebView?, url: String?): Boolean {
-            if (url =="help://sound_settings") {
+            if (url == "help://sound_settings") {
                 val intent = Intent(android.provider.Settings.ACTION_SOUND_SETTINGS)
                 if (intent.resolveActivity(activity!!.packageManager) != null) {
                     activity!!.startActivity(intent)
@@ -123,5 +126,4 @@ class HelpFragment : Fragment() {
         inputStream.close()
         return true
     }
-
 }

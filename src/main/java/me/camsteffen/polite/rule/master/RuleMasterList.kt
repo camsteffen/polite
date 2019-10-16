@@ -8,7 +8,8 @@ import me.camsteffen.polite.model.ScheduleRule
 class RuleMasterList
 private constructor() {
     companion object {
-        fun of(calendarRules: List<CalendarRule>, scheduleRules: List<ScheduleRule>): List<RuleMasterItem> {
+        fun of(calendarRules: List<CalendarRule>, scheduleRules: List<ScheduleRule>):
+                List<RuleMasterItem> {
             val items = mutableListOf<RuleMasterItem>()
             if (scheduleRules.isNotEmpty()) Section.schedule(scheduleRules).addTo(items)
             if (calendarRules.isNotEmpty()) Section.calendar(calendarRules).addTo(items)

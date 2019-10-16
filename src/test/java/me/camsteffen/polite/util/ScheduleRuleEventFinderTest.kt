@@ -278,13 +278,15 @@ class ScheduleRuleEventFinderTest {
             instant(begin), instant(end)
         ).toList()
 
-        assertThat(ruleEvents).isEqualTo(listOf(
-            ScheduleRuleEvent(
-                rule,
-                instant(LocalDateTime.of(2000, 1, 2, 6, 0)),
-                instant(LocalDateTime.of(2000, 1, 2, 20, 0))
+        assertThat(ruleEvents).isEqualTo(
+            listOf(
+                ScheduleRuleEvent(
+                    rule,
+                    instant(LocalDateTime.of(2000, 1, 2, 6, 0)),
+                    instant(LocalDateTime.of(2000, 1, 2, 20, 0))
+                )
             )
-        ))
+        )
     }
 
     private fun given(
@@ -293,7 +295,7 @@ class ScheduleRuleEventFinderTest {
     ) {
         every { ruleDao.getEnabledScheduleRules() } returns rules
         every { stateDao.getScheduleRuleCancels() } returns
-                cancels.map { ScheduleRuleCancel(it.key, it.value) }
+            cancels.map { ScheduleRuleCancel(it.key, it.value) }
     }
 
     private fun instant(localDateTime: LocalDateTime): Instant {

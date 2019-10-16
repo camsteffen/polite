@@ -28,7 +28,8 @@ class EditCalendarRuleFragment : EditRuleFragment<CalendarRule>() {
     @Inject lateinit var calendarDao: CalendarDao
 
     override fun onCreateEditRuleViewModel(): EditCalendarRuleViewModel {
-        model = ViewModelProviders.of(activity!!, viewModelProviderFactory)[EditCalendarRuleViewModel::class.java]
+        model = ViewModelProviders
+            .of(activity!!, viewModelProviderFactory)[EditCalendarRuleViewModel::class.java]
         model.showKeywords.observe(this, Observer { showKeywords ->
             if (showKeywords!!) {
                 addKeywordEditText.requestFocus()
@@ -42,19 +43,22 @@ class EditCalendarRuleFragment : EditRuleFragment<CalendarRule>() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        val binding = DataBindingUtil.inflate<EditCalendarRuleBinding>(layoutInflater, R.layout.edit_calendar_rule, container, false)
+        val binding = DataBindingUtil.inflate<EditCalendarRuleBinding>(
+            layoutInflater, R.layout.edit_calendar_rule, container, false
+        )
         binding.lifecycleOwner = this
         binding.handlers = this
         binding.model = model
         keywordsSection = binding.keywordsSection
         addKeywordEditText = binding.newKeyword
-        addKeywordEditText.setOnEditorActionListener(TextView.OnEditorActionListener { _, actionId, _ ->
-            when (actionId) {
-                100 -> addKeyword()
-                else -> return@OnEditorActionListener false
-            }
-            true
-        })
+        addKeywordEditText.setOnEditorActionListener(
+            TextView.OnEditorActionListener { _, actionId, _ ->
+                when (actionId) {
+                    100 -> addKeyword()
+                    else -> return@OnEditorActionListener false
+                }
+                true
+            })
         return binding.root
     }
 
@@ -65,7 +69,8 @@ class EditCalendarRuleFragment : EditRuleFragment<CalendarRule>() {
         }
     }
 
-    override fun ruleFromUi(id: Long, name: String, enabled: Boolean, vibrate: Boolean): CalendarRule {
+    override fun ruleFromUi(id: Long, name: String, enabled: Boolean, vibrate: Boolean):
+        CalendarRule {
         return CalendarRule(
             id = id,
             name = name,
@@ -82,25 +87,29 @@ class EditCalendarRuleFragment : EditRuleFragment<CalendarRule>() {
     private fun addKeyword() {
         val addKeywordEditText = addKeywordEditText
         val word = addKeywordEditText.text.toString()
-                .trim()
-                .toLowerCase(Locale.getDefault())
-        if (word.isEmpty())
+            .trim()
+            .toLowerCase(Locale.getDefault())
+        if (word.isEmpty()) {
             return
+        }
         if (model.addKeyword(word)) {
             addKeywordEditText.setText("")
-            view!!.post { // scroll after keywords draw
-                if(keywordsSection.top > scrollView.scrollY) {
+            view!!.post {
+                // scroll after keywords draw
+                if (keywordsSection.top > scrollView.scrollY) {
                     scrollView.smoothScrollTo(0, keywordsSection.top)
                 }
             }
         } else {
-            Toast.makeText(activity, getString(R.string.word_already_added, word), Toast.LENGTH_SHORT).show()
+            val text = getString(R.string.word_already_added, word)
+            Toast.makeText(activity, text, Toast.LENGTH_SHORT).show()
         }
     }
 
     fun onClickCalendars() {
-        if(!mainActivity.checkCalendarPermission())
+        if (!mainActivity.checkCalendarPermission()) {
             return
+        }
 
         val calendars = calendarDao.getCalendars()
         if (calendars == null) {
@@ -116,38 +125,38 @@ class EditCalendarRuleFragment : EditRuleFragment<CalendarRule>() {
         val checked = calendars.map { model.calendarIds.value!!.contains(it.id) }.toBooleanArray()
 
         AlertDialog.Builder(activity!!)
-                .setTitle(R.string.select_calendars)
-                .setMultiChoiceItems(calendarNames, checked) { _, which, isChecked ->
-                    checked[which] = isChecked
-                }
-                .setNeutralButton(R.string.all) { _, _ ->
-                    model.calendarIds.value = emptySet()
-                }
-                .setPositiveButton(android.R.string.ok) { _, _ ->
-                    model.calendarIds.value = checked.indices
-                            .filter { checked[it] }
-                            .map { calendars[it].id }
-                            .toSet()
-                }
-                .setNegativeButton(android.R.string.cancel, null)
-                .create()
-                .show()
+            .setTitle(R.string.select_calendars)
+            .setMultiChoiceItems(calendarNames, checked) { _, which, isChecked ->
+                checked[which] = isChecked
+            }
+            .setNeutralButton(R.string.all) { _, _ ->
+                model.calendarIds.value = emptySet()
+            }
+            .setPositiveButton(android.R.string.ok) { _, _ ->
+                model.calendarIds.value = checked.indices
+                    .filter { checked[it] }
+                    .map { calendars[it].id }
+                    .toSet()
+            }
+            .setNegativeButton(android.R.string.cancel, null)
+            .create()
+            .show()
     }
 
     override fun validateSaveClose() {
         val word = addKeywordEditText.text.trim()
-        if(word.isEmpty()) {
+        if (word.isEmpty()) {
             saveClose()
         } else {
             AlertDialog.Builder(activity!!)
-                    .setTitle(R.string.unsaved_keyword_title)
-                    .setMessage(getString(R.string.unsaved_keyword_message, word))
-                    .setPositiveButton(R.string.continue_) { _, _ ->
-                        saveClose()
-                    }
-                    .setNegativeButton(R.string.go_back, null)
-                    .create()
-                    .show()
+                .setTitle(R.string.unsaved_keyword_title)
+                .setMessage(getString(R.string.unsaved_keyword_message, word))
+                .setPositiveButton(R.string.continue_) { _, _ ->
+                    saveClose()
+                }
+                .setNegativeButton(R.string.go_back, null)
+                .create()
+                .show()
         }
     }
 
@@ -170,16 +179,16 @@ class EditCalendarRuleFragment : EditRuleFragment<CalendarRule>() {
 
     fun onClickInverseMatch() {
         AlertDialog.Builder(activity!!)
-                .setTitle(R.string.inverse_match)
-                .setMessage(R.string.inverse_match_message)
-                .setNegativeButton(R.string.disable) { _, _ ->
-                    model.setInverseMatch(false)
-                }
-                .setPositiveButton(R.string.enable) { _, _ ->
-                    model.setInverseMatch(true)
-                }
-                .create()
-                .show()
+            .setTitle(R.string.inverse_match)
+            .setMessage(R.string.inverse_match_message)
+            .setNegativeButton(R.string.disable) { _, _ ->
+                model.setInverseMatch(false)
+            }
+            .setPositiveButton(R.string.enable) { _, _ ->
+                model.setInverseMatch(true)
+            }
+            .create()
+            .show()
     }
 
     fun onClickAddKeyword() {
@@ -190,5 +199,4 @@ class EditCalendarRuleFragment : EditRuleFragment<CalendarRule>() {
     fun onClickKeyword(word: String) {
         model.removeWord(word)
     }
-
 }

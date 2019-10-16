@@ -49,7 +49,9 @@ abstract class AppModule {
     abstract fun provideContext(app: Application): Context
 
     @ActivityScope
-    @ContributesAndroidInjector(modules = [MainActivityModule::class, MainActivityFragmentsModule::class])
+    @ContributesAndroidInjector(
+        modules = [MainActivityModule::class, MainActivityFragmentsModule::class]
+    )
     abstract fun contributeMainActivity(): MainActivity
 
     @ContributesAndroidInjector
@@ -64,79 +66,112 @@ abstract class AppModule {
     @Binds
     @IntoMap
     @ViewModelKey(RuleMasterDetailViewModel::class)
-    abstract fun bindRuleMasterDetailViewModel(ruleMasterDetailViewModel: RuleMasterDetailViewModel): ViewModel
+    abstract fun bindRuleMasterDetailViewModel(
+        ruleMasterDetailViewModel: RuleMasterDetailViewModel
+    ): ViewModel
 
     @Binds
     @IntoMap
     @ViewModelKey(EditCalendarRuleViewModel::class)
-    abstract fun bindEditCalendarRuleViewModel(editCalendarRuleViewModel: EditCalendarRuleViewModel): ViewModel
+    abstract fun bindEditCalendarRuleViewModel(
+        editCalendarRuleViewModel: EditCalendarRuleViewModel
+    ): ViewModel
 
     @Binds
     @IntoMap
     @ViewModelKey(EditScheduleRuleViewModel::class)
-    abstract fun bindEditScheduleRuleViewModel(editScheduleRuleViewModel: EditScheduleRuleViewModel): ViewModel
+    abstract fun bindEditScheduleRuleViewModel(
+        editScheduleRuleViewModel: EditScheduleRuleViewModel
+    ): ViewModel
 
-    @Binds @IntoSet
-    abstract fun bindCalendarRuleEventFinder(calendarRuleEventFinder: CalendarRuleEventFinder): RuleEventFinder<*>
+    @Binds
+    @IntoSet
+    abstract fun bindCalendarRuleEventFinder(
+        calendarRuleEventFinder: CalendarRuleEventFinder
+    ): RuleEventFinder<*>
 
-    @Binds @IntoSet
-    abstract fun bindScheduleRuleEventFinder(scheduleRuleEventFinder: ScheduleRuleEventFinder): RuleEventFinder<*>
+    @Binds
+    @IntoSet
+    abstract fun bindScheduleRuleEventFinder(
+        scheduleRuleEventFinder: ScheduleRuleEventFinder
+    ): RuleEventFinder<*>
 
     @Module
     companion object {
 
-        @JvmStatic @Provides
+        @JvmStatic
+        @Provides
         fun provideContentResolver(app: Application): ContentResolver = app.contentResolver
 
-        @JvmStatic @Provides
+        @JvmStatic
+        @Provides
         fun provideNotificationManager(app: Application): NotificationManager =
-                app.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
+            app.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
 
-        @JvmStatic @Provides @Singleton
+        @JvmStatic
+        @Provides
+        @Singleton
         fun database(context: Context): AppDatabase {
             return AppDatabase.init(context)
         }
 
-        @JvmStatic @Provides
+        @JvmStatic
+        @Provides
         fun ruleDao(database: AppDatabase) = database.ruleDao
 
-        @JvmStatic @Provides
+        @JvmStatic
+        @Provides
         fun politeStateDao(database: AppDatabase): PoliteStateDao = database.politeStateDao
 
-        @JvmStatic @Provides
+        @JvmStatic
+        @Provides
         fun provideResources(app: Application): Resources = app.resources
 
-        @JvmStatic @Provides
+        @JvmStatic
+        @Provides
         fun provideSharedPreferences(app: Application): SharedPreferences =
-                PreferenceManager.getDefaultSharedPreferences(app)
+            PreferenceManager.getDefaultSharedPreferences(app)
 
-        @JvmStatic @Provides
-        fun provideEnableLiveData(sharedPreferences: SharedPreferences, resources: Resources): LiveData<Boolean> {
+        @JvmStatic
+        @Provides
+        fun provideEnableLiveData(
+            sharedPreferences: SharedPreferences,
+            resources: Resources
+        ): LiveData<Boolean> {
             val key = resources.getString(R.string.preference_enable)
-            return SharedPreferenceBooleanLiveData(sharedPreferences, key, PreferenceDefaults.ENABLE)
+            return SharedPreferenceBooleanLiveData(
+                sharedPreferences,
+                key,
+                PreferenceDefaults.ENABLE
+            )
         }
 
-        @JvmStatic @Provides
+        @JvmStatic
+        @Provides
         fun provideAlarmManager(context: Context): AlarmManager {
             return context.getSystemService(Context.ALARM_SERVICE) as AlarmManager
         }
 
-        @JvmStatic @Provides
+        @JvmStatic
+        @Provides
         fun provideAudioManager(context: Context): AudioManager {
             return context.getSystemService(Context.AUDIO_SERVICE) as AudioManager
         }
 
-        @JvmStatic @Provides
+        @JvmStatic
+        @Provides
         fun provideClock(): Clock {
             return Clock.systemDefaultZone()
         }
 
-        @JvmStatic @Provides
+        @JvmStatic
+        @Provides
         fun provideAppTimingConfig(): AppTimingConfig {
             return defaultAppTimingConfig
         }
 
-        @JvmStatic @Provides
+        @JvmStatic
+        @Provides
         fun provideWorkManager(context: Context): WorkManager {
             return WorkManager.getInstance(context)
         }

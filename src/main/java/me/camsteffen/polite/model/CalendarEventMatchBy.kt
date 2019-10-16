@@ -18,7 +18,8 @@ enum class CalendarEventMatchBy(
 
     companion object {
         fun having(all: Boolean, title: Boolean, description: Boolean): CalendarEventMatchBy? {
-            return values().find { it.all == all && it.title == title && it.description == description }
+            return values()
+                .find { it.all == all && it.title == title && it.description == description }
         }
     }
 }

@@ -3,7 +3,6 @@ package me.camsteffen.polite.model
 import android.content.Context
 import me.camsteffen.polite.rule.ScheduleRuleSchedule
 
-
 sealed class Rule {
 
     companion object {
@@ -66,4 +65,3 @@ data class ScheduleRule(
         daysOfWeek = DaysOfWeekEntity(schedule.daysOfWeek)
     )
 }
-

@@ -23,13 +23,15 @@ sealed class RuleMasterItem {
 
     companion object {
         val DIFF_CALLBACK = object : DiffUtil.ItemCallback<RuleMasterItem>() {
-            override fun areItemsTheSame(oldItem: RuleMasterItem, newItem: RuleMasterItem): Boolean {
+            override fun areItemsTheSame(oldItem: RuleMasterItem, newItem: RuleMasterItem):
+                Boolean {
                 return oldItem.sameItemAs(newItem)
             }
 
             // equals is not overridden for Heading
             @SuppressLint("DiffUtilEquals")
-            override fun areContentsTheSame(oldItem: RuleMasterItem, newItem: RuleMasterItem): Boolean {
+            override fun areContentsTheSame(oldItem: RuleMasterItem, newItem: RuleMasterItem):
+                Boolean {
                 return oldItem == newItem
             }
         }

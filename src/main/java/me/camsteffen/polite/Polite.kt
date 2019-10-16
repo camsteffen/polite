@@ -26,5 +26,4 @@ class Polite : Application(), HasAndroidInjector, Configuration.Provider {
             .setWorkerFactory(workerFactory)
             .build()
     }
-
 }

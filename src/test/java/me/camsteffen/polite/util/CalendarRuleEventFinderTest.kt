@@ -253,6 +253,6 @@ class CalendarRuleEventFinderTest {
         every { politeStateDao.getEventCancels() } returns eventCancels
         every { calendarDao.getEventsInRange(begin, end) } returns calendarEvents
         every { appPreferences.activation } returns activation
-        every { appPreferences.deactivation }  returns deactivation
+        every { appPreferences.deactivation } returns deactivation
     }
 }

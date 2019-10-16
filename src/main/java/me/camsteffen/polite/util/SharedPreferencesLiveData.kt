@@ -9,11 +9,12 @@ abstract class SharedPreferenceLiveData<T>(
     private val defValue: T
 ) : LiveData<T>() {
 
-    private val preferenceChangeListener = SharedPreferences.OnSharedPreferenceChangeListener { _, key ->
-        if (key == this.key) {
-            value = getValueFromPreferences(key, defValue)
+    private val preferenceChangeListener = SharedPreferences
+        .OnSharedPreferenceChangeListener { _, key ->
+            if (key == this.key) {
+                value = getValueFromPreferences(key, defValue)
+            }
         }
-    }
 
     abstract fun getValueFromPreferences(key: String, defValue: T): T
 
@@ -33,7 +34,8 @@ class SharedPreferenceBooleanLiveData(
     sharedPrefs: SharedPreferences,
     key: String,
     defValue: Boolean
-) :
-        SharedPreferenceLiveData<Boolean>(sharedPrefs, key, defValue) {
-    override fun getValueFromPreferences(key: String, defValue: Boolean): Boolean = sharedPrefs.getBoolean(key, defValue)
+) : SharedPreferenceLiveData<Boolean>(sharedPrefs, key, defValue) {
+
+    override fun getValueFromPreferences(key: String, defValue: Boolean): Boolean =
+        sharedPrefs.getBoolean(key, defValue)
 }

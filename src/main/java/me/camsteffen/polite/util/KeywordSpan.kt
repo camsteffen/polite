@@ -15,19 +15,39 @@ class KeywordSpan(context: Context) : ReplacementSpan() {
     private val textColor: Int
 
     init {
-        val values = context.theme.obtainStyledAttributes(R.style.KeywordSpan, R.styleable.KeywordSpan)
+        val values = context.theme
+            .obtainStyledAttributes(R.style.KeywordSpan, R.styleable.KeywordSpan)
         bgColor = values.getColor(R.styleable.KeywordSpan_android_colorBackground, -1)
         textColor = values.getColor(R.styleable.KeywordSpan_android_colorForeground, -1)
         values.recycle()
     }
 
-    override fun getSize(paint: Paint, text: CharSequence, start: Int, end: Int, fm: Paint.FontMetricsInt?): Int {
+    override fun getSize(
+        paint: Paint,
+        text: CharSequence,
+        start: Int,
+        end: Int,
+        fm: Paint.FontMetricsInt?
+    ): Int {
         return (paint.measureText(text.subSequence(start, end).toString()) + 2 * padding).toInt()
     }
 
-    override fun draw(canvas: Canvas, text: CharSequence, start: Int, end: Int, x: Float, top: Int, y: Int, bottom: Int, paint: Paint) {
+    override fun draw(
+        canvas: Canvas,
+        text: CharSequence,
+        start: Int,
+        end: Int,
+        x: Float,
+        top: Int,
+        y: Int,
+        bottom: Int,
+        paint: Paint
+    ) {
         val width = paint.measureText(text.subSequence(start, end).toString())
-        val rect = RectF(x, y + paint.ascent(), x + width + (2 * padding).toFloat(), y + paint.descent())
+        val rect = RectF(
+            x, y + paint.ascent(),
+            x + width + (2 * padding).toFloat(), y + paint.descent()
+        )
         paint.color = bgColor
         canvas.drawRoundRect(rect, padding.toFloat(), padding.toFloat(), paint)
         paint.color = textColor
