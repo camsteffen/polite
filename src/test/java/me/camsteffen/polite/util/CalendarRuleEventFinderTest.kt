@@ -83,14 +83,16 @@ class CalendarRuleEventFinderTest {
 
     @Test
     fun `all events cancelled produces no rule events`() {
+        val rule = TestObjects.calendarRule()
         val calendarEvents = listOf(
             TestObjects.calendarEvent(),
             TestObjects.calendarEvent()
         )
+        val eventCancels = calendarEvents.map { EventCancel(rule.id, it.eventId, Instant.MAX) }
         given(
-            calendarRules = listOf(TestObjects.calendarRule()),
+            calendarRules = listOf(rule),
             calendarEvents = calendarEvents,
-            eventCancels = calendarEvents.associate { it.eventId to Instant.MAX }
+            eventCancels = eventCancels
         )
 
         val events = calendarRuleEventFinder.eventsInRange(begin, end).toList()
@@ -111,7 +113,8 @@ class CalendarRuleEventFinderTest {
         given(
             calendarRules = listOf(calendarRule),
             calendarEvents = calendarEvents,
-            eventCancels = calendarEvents.take(2).associate { it.eventId to Instant.MAX }
+            eventCancels = calendarEvents.take(2)
+                .map { EventCancel(calendarRule.id, it.eventId, Instant.MAX) }
         )
 
         val ruleEvents = calendarRuleEventFinder.eventsInRange(begin, end).toList()
@@ -123,19 +126,20 @@ class CalendarRuleEventFinderTest {
 
     @Test
     fun `some events cancelled some don't match produces no rule events`() {
+        val rule = TestObjects.calendarRule(
+            matchBy = CalendarEventMatchBy.TITLE
+        )
         val calendarEvents = listOf(
             TestObjects.calendarEvent(),
             TestObjects.calendarEvent()
         )
+        val eventCancels = calendarEvents.take(1)
+            .map { EventCancel(rule.id, it.eventId, Instant.MAX) }
 
         given(
-            calendarRules = listOf(
-                TestObjects.calendarRule(
-                    matchBy = CalendarEventMatchBy.TITLE
-                )
-            ),
+            calendarRules = listOf(rule),
             calendarEvents = calendarEvents,
-            eventCancels = calendarEvents.take(1).associate { it.eventId to Instant.MAX }
+            eventCancels = eventCancels
         )
 
         val ruleEvents = calendarRuleEventFinder.eventsInRange(begin, end).toList()
@@ -239,15 +243,14 @@ class CalendarRuleEventFinderTest {
     private fun given(
         calendarRules: List<CalendarRule> = emptyList(),
         calendarEvents: List<CalendarEvent> = emptyList(),
-        eventCancels: Map<Long, Instant> = emptyMap(),
+        eventCancels: List<EventCancel> = emptyList(),
         hasReadCalendarPermission: Boolean = true,
         activation: Int = 0,
         deactivation: Int = 0
     ) {
         every { ruleDao.getEnabledCalendarRules() } returns calendarRules
         every { permissionChecker.checkReadCalendarPermission() } returns hasReadCalendarPermission
-        every { politeStateDao.getEventCancels() } returns
-                eventCancels.map { EventCancel(it.key, it.value) }
+        every { politeStateDao.getEventCancels() } returns eventCancels
         every { calendarDao.getEventsInRange(begin, end) } returns calendarEvents
         every { appPreferences.activation } returns activation
         every { appPreferences.deactivation }  returns deactivation
