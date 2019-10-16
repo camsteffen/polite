@@ -55,11 +55,15 @@ android {
     }
 
     signingConfigs {
-        release {
-            storeFile file(RELEASE_STORE_FILE)
-            storePassword RELEASE_STORE_PASSWORD
-            keyAlias RELEASE_KEY_ALIAS
-            keyPassword RELEASE_KEY_PASSWORD
+        try {
+            release {
+                storeFile file(RELEASE_STORE_FILE)
+                storePassword RELEASE_STORE_PASSWORD
+                keyAlias RELEASE_KEY_ALIAS
+                keyPassword RELEASE_KEY_PASSWORD
+            }
+        } catch (e) {
+            logger.error("Could not add signing config", e)
         }
     }
 
@@ -69,7 +73,9 @@ android {
             shrinkResources true
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'),
                     'proguard-rules.pro'
-            signingConfig signingConfigs.release
+            if (signingConfigs.hasProperty('release')) {
+                signingConfig signingConfigs.release
+            }
         }
 
         debug {
