@@ -128,20 +128,20 @@ dependencies {
         exclude group: 'com.jakewharton.threetenabp', module: 'threetenabp'
     }
 
-    ktlint "com.github.shyiko:ktlint:0.29.0"
+    ktlint "com.pinterest:ktlint:0.35.0"
 }
 
 task ktlint(type: JavaExec, group: 'verification') {
     description = 'Check Kotlin code style.'
-    main = 'com.github.shyiko.ktlint.Main'
     classpath = configurations.ktlint
+    main = 'com.pinterest.ktlint.Main'
     args '--android', 'src/**/*.kt'
 }
 
 task ktlintFormat(type: JavaExec, group: 'formatting') {
     description = 'Fix Kotlin code style deviations.'
-    main = 'com.github.shyiko.ktlint.Main'
     classpath = configurations.ktlint
+    main = 'com.pinterest.ktlint.Main'
     args '--android', '-F', 'src/**/*.kt'
 }
 
