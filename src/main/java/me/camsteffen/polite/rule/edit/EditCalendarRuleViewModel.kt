@@ -40,6 +40,7 @@ class EditCalendarRuleViewModel
 
     override fun setRule(rule: CalendarRule) {
         super.setRule(rule)
+        busyOnly.value = rule.busyOnly
         inverseMatchMutable.value = rule.inverseMatch
         matchBy.value = rule.matchBy
         calendarIds.value = rule.calendarIds
