@@ -9,6 +9,7 @@ import android.content.SharedPreferences
 import android.content.res.Resources
 import android.media.AudioManager
 import android.preference.PreferenceManager
+import androidx.core.content.getSystemService
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
@@ -111,9 +112,7 @@ abstract class AppModule {
         @JvmStatic
         @Provides
         @Singleton
-        fun database(context: Context): AppDatabase {
-            return AppDatabase.init(context)
-        }
+        fun database(context: Context): AppDatabase = AppDatabase.init(context)
 
         @JvmStatic
         @Provides
@@ -148,32 +147,22 @@ abstract class AppModule {
 
         @JvmStatic
         @Provides
-        fun provideAlarmManager(context: Context): AlarmManager {
-            return context.getSystemService(Context.ALARM_SERVICE) as AlarmManager
-        }
+        fun provideAlarmManager(context: Context): AlarmManager = context.getSystemService()!!
 
         @JvmStatic
         @Provides
-        fun provideAudioManager(context: Context): AudioManager {
-            return context.getSystemService(Context.AUDIO_SERVICE) as AudioManager
-        }
+        fun provideAudioManager(context: Context): AudioManager = context.getSystemService()!!
 
         @JvmStatic
         @Provides
-        fun provideClock(): Clock {
-            return Clock.systemDefaultZone()
-        }
+        fun provideClock(): Clock = Clock.systemDefaultZone()
 
         @JvmStatic
         @Provides
-        fun provideAppTimingConfig(): AppTimingConfig {
-            return defaultAppTimingConfig
-        }
+        fun provideAppTimingConfig(): AppTimingConfig = defaultAppTimingConfig
 
         @JvmStatic
         @Provides
-        fun provideWorkManager(context: Context): WorkManager {
-            return WorkManager.getInstance(context)
-        }
+        fun provideWorkManager(context: Context): WorkManager = WorkManager.getInstance(context)
     }
 }
