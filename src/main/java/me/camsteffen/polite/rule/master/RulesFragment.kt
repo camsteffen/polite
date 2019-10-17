@@ -16,8 +16,7 @@ import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.ViewModelProviders
-import androidx.navigation.NavController
-import dagger.Lazy
+import androidx.navigation.fragment.findNavController
 import dagger.android.support.DaggerFragment
 import me.camsteffen.polite.MainActivity
 import me.camsteffen.polite.Polite
@@ -33,7 +32,6 @@ import javax.inject.Inject
 
 class RulesFragment : DaggerFragment() {
 
-    @Inject lateinit var navController: Lazy<NavController>
     @Inject lateinit var preferences: AppPreferences
     @Inject lateinit var ruleService: RuleService
     @Inject lateinit var viewModelProviderFactory: ViewModelProvider.Factory
@@ -123,7 +121,7 @@ class RulesFragment : DaggerFragment() {
                 startActivity(Intent.createChooser(intent, getString(R.string.share_polite)))
             }
             R.id.settings -> openSettings()
-            R.id.help -> navController.get().navigate(R.id.action_global_helpFragment)
+            R.id.help -> findNavController().navigate(R.id.action_global_helpFragment)
             else -> return false
         }
         return true
@@ -158,7 +156,7 @@ class RulesFragment : DaggerFragment() {
     }
 
     private fun openSettings() {
-        navController.get().navigate(R.id.action_rulesFragment_to_settingsFragment)
+        findNavController().navigate(R.id.action_rulesFragment_to_settingsFragment)
     }
 
     private fun onClickRule(rule: Rule) {

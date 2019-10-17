@@ -27,8 +27,8 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.NavController
 import androidx.navigation.NavDestination
+import androidx.navigation.findNavController
 import com.google.android.material.floatingactionbutton.FloatingActionButton
-import dagger.Lazy
 import dagger.android.AndroidInjection
 import dagger.android.DispatchingAndroidInjector
 import dagger.android.HasAndroidInjector
@@ -63,7 +63,7 @@ class MainActivity : AppCompatActivity(), HasAndroidInjector,
 
     @Inject lateinit var defaultRules: DefaultRules
     @Inject lateinit var dispatchingAndroidInjector: DispatchingAndroidInjector<Any>
-    @Inject lateinit var navController: Lazy<NavController>
+    private lateinit var navController: NavController
     @Inject lateinit var notificationManager: AppNotificationManager
     @Inject lateinit var politeStateManager: PoliteStateManager
     @Inject lateinit var preferences: AppPreferences
@@ -91,6 +91,7 @@ class MainActivity : AppCompatActivity(), HasAndroidInjector,
             DataBindingUtil.setContentView<ActivityMainBinding>(this, R.layout.activity_main)
         binding.lifecycleOwner = this
         binding.model = model
+        navController = findNavController(R.id.nav_host_fragment)
         setSupportActionBar(binding.toolbar)
         val fab = binding.fab
 
@@ -99,14 +100,14 @@ class MainActivity : AppCompatActivity(), HasAndroidInjector,
         }
 
         // TODO use AppBarConfiguration, FragmentNavigator, FragmentFactory
-        navController.get().addOnDestinationChangedListener(
+        navController.addOnDestinationChangedListener(
             OnDestinationChangedListener(supportActionBar!!, fab, model)
         )
 
         model.selectedRule.observe(this, Observer { rule ->
             if (rule == null) {
-                if (EDIT_RULE_DESTINATIONS.contains(navController.get().currentDestination?.id)) {
-                    navController.get().popBackStack()
+                if (EDIT_RULE_DESTINATIONS.contains(navController.currentDestination?.id)) {
+                    navController.popBackStack()
                 }
             } else {
                 openRule(rule)
@@ -136,7 +137,7 @@ class MainActivity : AppCompatActivity(), HasAndroidInjector,
         }
     }
 
-    override fun onSupportNavigateUp() = navController.get().navigateUp()
+    override fun onSupportNavigateUp() = navController.navigateUp()
 
     override fun onBackPressed() {
         when {
@@ -229,7 +230,7 @@ class MainActivity : AppCompatActivity(), HasAndroidInjector,
             is CalendarRule -> R.id.action_rulesFragment_to_editCalendarRuleFragment
             is ScheduleRule -> R.id.action_rulesFragment_to_editScheduleRuleFragment
         }
-        navController.get().navigate(id)
+        navController.navigate(id)
     }
 
     fun setThemeFromPreference() {

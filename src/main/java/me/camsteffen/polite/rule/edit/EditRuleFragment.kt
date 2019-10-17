@@ -13,7 +13,7 @@ import androidx.appcompat.app.AlertDialog
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.ViewModelProviders
-import androidx.navigation.NavController
+import androidx.navigation.fragment.findNavController
 import dagger.android.support.DaggerFragment
 import me.camsteffen.polite.MainActivity
 import me.camsteffen.polite.R
@@ -27,7 +27,6 @@ import javax.inject.Inject
 
 abstract class EditRuleFragment<RuleType : Rule> : DaggerFragment() {
 
-    @Inject lateinit var navController: NavController
     @Inject lateinit var rateAppPrompt: RateAppPromptFacade
     @Inject lateinit var ruleService: RuleService
     @Inject lateinit var viewModelProviderFactory: ViewModelProvider.Factory
@@ -110,7 +109,7 @@ abstract class EditRuleFragment<RuleType : Rule> : DaggerFragment() {
                     .show()
             }
             R.id.help -> {
-                navController.navigate(R.id.action_global_helpFragment)
+                findNavController().navigate(R.id.action_global_helpFragment)
             }
             else -> return false
         }
