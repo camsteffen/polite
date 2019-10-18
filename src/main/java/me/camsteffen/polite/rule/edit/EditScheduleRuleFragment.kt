@@ -12,7 +12,6 @@ import me.camsteffen.polite.R
 import me.camsteffen.polite.databinding.DayButtonBinding
 import me.camsteffen.polite.databinding.EditScheduleRuleBinding
 import me.camsteffen.polite.model.ScheduleRule
-import me.camsteffen.polite.rule.ScheduleRuleSchedule
 import me.camsteffen.polite.util.TimePickerDialogFragment
 import org.threeten.bp.LocalTime
 import org.threeten.bp.format.TextStyle
@@ -57,16 +56,6 @@ class EditScheduleRuleFragment : EditRuleFragment<ScheduleRule>(),
                 layoutInflater.inflate(R.layout.day_button_space, parent, true)
             }
         }
-    }
-
-    override fun ruleFromUi(id: Long, name: String, enabled: Boolean, vibrate: Boolean):
-        ScheduleRule {
-        val days = model.daysOfWeek.asSequence()
-            .filter { it.value.get() }
-            .map { it.key }
-            .toSet()
-        val schedule = ScheduleRuleSchedule(model.beginTime.get()!!, model.endTime.get()!!, days)
-        return ScheduleRule(id, name, enabled, vibrate, schedule)
     }
 
     fun onClickBeginTime() {

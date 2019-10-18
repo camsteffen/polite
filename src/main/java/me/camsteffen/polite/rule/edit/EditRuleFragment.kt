@@ -38,7 +38,7 @@ abstract class EditRuleFragment<RuleType : Rule> : DaggerFragment() {
         get() = activity as MainActivity
     protected lateinit var scrollView: ScrollView
     lateinit var rule: RuleType
-    var newRule: Boolean = false
+    var isNewRule: Boolean = false
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
@@ -47,7 +47,7 @@ abstract class EditRuleFragment<RuleType : Rule> : DaggerFragment() {
             .of(activity!!, viewModelProviderFactory)[RuleMasterDetailViewModel::class.java]
         @Suppress("UNCHECKED_CAST")
         rule = masterModel.selectedRule.value!! as RuleType
-        newRule = rule.id == Rule.NEW_ID
+        isNewRule = rule.id == Rule.NEW_ID
         masterModel.toolbarEditText.value = rule.name
     }
 
@@ -99,7 +99,7 @@ abstract class EditRuleFragment<RuleType : Rule> : DaggerFragment() {
                     .setTitle(R.string.delete_rule_title)
                     .setMessage(R.string.delete_rule_confirm)
                     .setPositiveButton(R.string.yes) { _, _ ->
-                        if (!newRule) {
+                        if (!isNewRule) {
                             ruleService.deleteRuleAsync(rule.id)
                         }
                         masterModel.selectedRule.value = null
@@ -126,21 +126,13 @@ abstract class EditRuleFragment<RuleType : Rule> : DaggerFragment() {
     }
 
     fun saveClose() {
-        val rule = ruleFromUi()
-        if (newRule || rule != masterModel.selectedRule.value) {
-            ruleService.saveRuleAsync(rule)
+        val name = masterModel.toolbarEditText.value!!
+        val newRule = editRuleModel.createRule(rule.id, name)
+        if (isNewRule || newRule != masterModel.selectedRule.value) {
+            ruleService.saveRuleAsync(newRule)
             rateAppPrompt.conditionalPrompt()
         }
         hideKeyboard(activity!!)
         masterModel.selectedRule.value = null
-    }
-
-    abstract fun ruleFromUi(id: Long, name: String, enabled: Boolean, vibrate: Boolean): RuleType
-
-    private fun ruleFromUi(): RuleType {
-        val name = masterModel.toolbarEditText.value!!
-        val enabled = editRuleModel.enabled.get()
-        val vibrate = editRuleModel.vibrate.get()
-        return ruleFromUi(rule.id, name, enabled, vibrate)
     }
 }

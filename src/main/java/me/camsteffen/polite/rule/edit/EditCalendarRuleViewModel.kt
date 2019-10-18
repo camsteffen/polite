@@ -11,9 +11,9 @@ import javax.inject.Inject
 class EditCalendarRuleViewModel
 @Inject constructor(application: Application) : EditRuleViewModel<CalendarRule>(application) {
 
-    val busyOnly = MutableLiveData<Boolean>()
+    val busyOnly = MutableLiveData<Boolean>(false)
 
-    val calendarIds = MutableLiveData<Set<Long>>()
+    val calendarIds = MutableLiveData<Set<Long>>(emptySet())
 
     val inverseMatch: LiveData<Boolean>
         get() = inverseMatchMutable
@@ -23,19 +23,13 @@ class EditCalendarRuleViewModel
     val keywords: LiveData<Set<String>>
         get() = keywordsLiveData
 
-    private val keywordsLiveData = MutableLiveData<Set<String>>()
-
     private val keywordSet: MutableSet<String> = hashSetOf()
+    private val keywordsLiveData = MutableLiveData<Set<String>>(keywordSet)
+
     private val inverseMatchMutable = MutableLiveData<Boolean>()
 
     val showKeywords: LiveData<Boolean> = Transformations.map(matchBy) { matchBy ->
         matchBy != CalendarEventMatchBy.ALL
-    }
-
-    init {
-        busyOnly.value = false
-        calendarIds.value = emptySet()
-        keywordsLiveData.value = keywordSet
     }
 
     override fun setRule(rule: CalendarRule) {
@@ -47,6 +41,25 @@ class EditCalendarRuleViewModel
         keywordSet.clear()
         keywordSet.addAll(rule.keywords)
         invalidateKeywordsLiveData()
+    }
+
+    override fun doCreateRule(
+        id: Long,
+        name: String,
+        enabled: Boolean,
+        vibrate: Boolean
+    ): CalendarRule {
+        return CalendarRule(
+            id = id,
+            name = name,
+            enabled = enabled,
+            vibrate = vibrate,
+            busyOnly = busyOnly.value!!,
+            matchBy = matchBy.value!!,
+            inverseMatch = inverseMatch.value!!,
+            calendarIds = calendarIds.value!!,
+            keywords = keywords.value!!
+        )
     }
 
     fun addKeyword(keyword: String): Boolean {

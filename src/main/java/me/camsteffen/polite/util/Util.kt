@@ -1,5 +1,6 @@
 package me.camsteffen.polite.util
 
+import java.util.EnumSet
 import java.util.PriorityQueue
 
 fun <T : Comparable<T>> Collection<Sequence<T>>.mergeSorted(): Sequence<T> {
@@ -38,3 +39,7 @@ fun <T : Any> Collection<Sequence<T>>.mergeSortedWith(comparator: Comparator<in 
 }
 
 private data class IterItemPair<T>(val iterator: Iterator<T>, var item: T)
+
+inline fun <reified T : Enum<T>> Sequence<T>.toEnumSet(): EnumSet<T> {
+    return toCollection(EnumSet.noneOf(T::class.java))
+}

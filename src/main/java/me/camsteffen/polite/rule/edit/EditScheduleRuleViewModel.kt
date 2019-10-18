@@ -5,7 +5,9 @@ import androidx.core.os.ConfigurationCompat.getLocales
 import androidx.databinding.ObservableBoolean
 import androidx.databinding.ObservableField
 import me.camsteffen.polite.model.ScheduleRule
+import me.camsteffen.polite.rule.ScheduleRuleSchedule
 import me.camsteffen.polite.rule.ScheduleRuleTimes
+import me.camsteffen.polite.util.toEnumSet
 import org.threeten.bp.DayOfWeek
 import org.threeten.bp.LocalTime
 import org.threeten.bp.format.DateTimeFormatter
@@ -44,6 +46,20 @@ class EditScheduleRuleViewModel
         for ((dayOfWeek, value) in daysOfWeek) {
             value.set(rule.schedule.daysOfWeek.contains(dayOfWeek))
         }
+    }
+
+    override fun doCreateRule(
+        id: Long,
+        name: String,
+        enabled: Boolean,
+        vibrate: Boolean
+    ): ScheduleRule {
+        val days = daysOfWeek.asSequence()
+            .filter { it.value.get() }
+            .map { it.key }
+            .toEnumSet()
+        val schedule = ScheduleRuleSchedule(beginTime.get()!!, endTime.get()!!, days)
+        return ScheduleRule(id, name, enabled, vibrate, schedule)
     }
 
     private fun localTimeDisplay(localTime: ObservableField<LocalTime>): ObservableField<String> {

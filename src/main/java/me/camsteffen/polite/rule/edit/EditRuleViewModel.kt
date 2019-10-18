@@ -6,7 +6,8 @@ import androidx.databinding.ObservableBoolean
 import androidx.lifecycle.AndroidViewModel
 import me.camsteffen.polite.model.Rule
 
-open class EditRuleViewModel<R : Rule>(application: Application) : AndroidViewModel(application) {
+abstract class EditRuleViewModel<R : Rule>(application: Application) :
+    AndroidViewModel(application) {
 
     val enabled = ObservableBoolean()
     val vibrate = ObservableBoolean()
@@ -16,4 +17,10 @@ open class EditRuleViewModel<R : Rule>(application: Application) : AndroidViewMo
         enabled.set(rule.enabled)
         vibrate.set(rule.vibrate)
     }
+
+    fun createRule(id: Long, name: String): R {
+        return doCreateRule(id, name, enabled.get(), vibrate.get())
+    }
+
+    abstract fun doCreateRule(id: Long, name: String, enabled: Boolean, vibrate: Boolean): R
 }

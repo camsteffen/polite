@@ -64,24 +64,9 @@ class EditCalendarRuleFragment : EditRuleFragment<CalendarRule>() {
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
-        if (!newRule) {
+        if (!isNewRule) {
             addKeywordEditText.requestFocus()
         }
-    }
-
-    override fun ruleFromUi(id: Long, name: String, enabled: Boolean, vibrate: Boolean):
-        CalendarRule {
-        return CalendarRule(
-            id = id,
-            name = name,
-            enabled = enabled,
-            vibrate = vibrate,
-            busyOnly = model.busyOnly.value!!,
-            matchBy = model.matchBy.value!!,
-            inverseMatch = model.inverseMatch.value!!,
-            calendarIds = model.calendarIds.value!!,
-            keywords = model.keywords.value!!
-        )
     }
 
     private fun addKeyword() {
