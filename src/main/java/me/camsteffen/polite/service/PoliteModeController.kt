@@ -1,4 +1,4 @@
-package me.camsteffen.polite.state
+package me.camsteffen.polite.service
 
 import android.os.Build
 import me.camsteffen.polite.AppTimingConfig

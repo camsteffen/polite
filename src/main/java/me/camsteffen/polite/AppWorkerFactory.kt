@@ -5,7 +5,7 @@ import androidx.work.ListenableWorker
 import androidx.work.WorkerFactory
 import androidx.work.WorkerParameters
 import dagger.Lazy
-import me.camsteffen.polite.state.PoliteStateManager
+import me.camsteffen.polite.service.PoliteStateManager
 import javax.inject.Inject
 
 class AppWorkerFactory

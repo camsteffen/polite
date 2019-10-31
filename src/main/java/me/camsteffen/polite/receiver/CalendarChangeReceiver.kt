@@ -3,7 +3,7 @@ package me.camsteffen.polite.receiver
 import android.content.Context
 import android.content.Intent
 import dagger.android.DaggerBroadcastReceiver
-import me.camsteffen.polite.state.PoliteStateManager
+import me.camsteffen.polite.service.PoliteStateManager
 import me.camsteffen.polite.util.finishAsync
 import javax.inject.Inject
 

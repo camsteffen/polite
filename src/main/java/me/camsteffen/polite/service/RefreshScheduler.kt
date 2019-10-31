@@ -1,4 +1,4 @@
-package me.camsteffen.polite.state
+package me.camsteffen.polite.service
 
 import android.app.AlarmManager
 import android.content.Context

@@ -3,7 +3,7 @@ package me.camsteffen.polite
 import android.content.Context
 import androidx.work.Worker
 import androidx.work.WorkerParameters
-import me.camsteffen.polite.state.PoliteStateManager
+import me.camsteffen.polite.service.PoliteStateManager
 
 class RefreshWorker(
     context: Context,

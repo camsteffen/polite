@@ -1,4 +1,4 @@
-package me.camsteffen.polite.state
+package me.camsteffen.polite.service
 
 import android.media.AudioManager
 import me.camsteffen.polite.data.AppPreferences

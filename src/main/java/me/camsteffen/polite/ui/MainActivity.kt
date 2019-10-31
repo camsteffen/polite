@@ -40,7 +40,7 @@ import me.camsteffen.polite.data.model.DefaultRules
 import me.camsteffen.polite.data.model.Rule
 import me.camsteffen.polite.data.model.ScheduleRule
 import me.camsteffen.polite.databinding.ActivityMainBinding
-import me.camsteffen.polite.state.PoliteStateManager
+import me.camsteffen.polite.service.PoliteStateManager
 import me.camsteffen.polite.ui.rule.RuleMasterDetailViewModel
 import me.camsteffen.polite.util.AppNotificationManager
 import me.camsteffen.polite.util.hideKeyboard

@@ -9,7 +9,7 @@ import androidx.preference.Preference
 import androidx.preference.PreferenceFragmentCompat
 import dagger.android.support.AndroidSupportInjection
 import me.camsteffen.polite.R
-import me.camsteffen.polite.state.PoliteStateManager
+import me.camsteffen.polite.service.PoliteStateManager
 import me.camsteffen.polite.ui.MainActivity
 import javax.inject.Inject
 

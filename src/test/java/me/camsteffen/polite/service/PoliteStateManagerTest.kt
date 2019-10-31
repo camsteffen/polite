@@ -1,4 +1,4 @@
-package me.camsteffen.polite.state
+package me.camsteffen.polite.service
 
 import io.mockk.Called
 import io.mockk.every

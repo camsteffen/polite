@@ -1,4 +1,4 @@
-package me.camsteffen.polite.state
+package me.camsteffen.polite.service
 
 import androidx.annotation.WorkerThread
 import me.camsteffen.polite.AppTimingConfig
