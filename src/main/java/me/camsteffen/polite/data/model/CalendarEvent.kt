@@ -1,4 +1,4 @@
-package me.camsteffen.polite.data
+package me.camsteffen.polite.data.model
 
 import org.threeten.bp.Instant
 

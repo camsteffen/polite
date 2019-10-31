@@ -11,6 +11,7 @@ import androidx.annotation.RequiresPermission
 import androidx.annotation.WorkerThread
 import me.camsteffen.polite.data.Query.calendarEventOf
 import me.camsteffen.polite.data.model.CalendarEntity
+import me.camsteffen.polite.data.model.CalendarEvent
 import org.threeten.bp.Instant
 import java.util.concurrent.TimeUnit
 import javax.inject.Inject

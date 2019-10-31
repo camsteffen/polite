@@ -1,6 +1,6 @@
 package me.camsteffen.polite.util
 
-import me.camsteffen.polite.data.CalendarEvent
+import me.camsteffen.polite.data.model.CalendarEvent
 import me.camsteffen.polite.data.model.CalendarRule
 import me.camsteffen.polite.data.model.Rule
 import me.camsteffen.polite.data.model.ScheduleRule
