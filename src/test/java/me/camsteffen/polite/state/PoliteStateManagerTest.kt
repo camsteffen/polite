@@ -6,8 +6,8 @@ import io.mockk.mockk
 import io.mockk.verify
 import io.mockk.verifyAll
 import me.camsteffen.polite.data.AppPreferences
-import me.camsteffen.polite.db.PoliteStateDao
-import me.camsteffen.polite.db.RuleDao
+import me.camsteffen.polite.data.db.PoliteStateDao
+import me.camsteffen.polite.data.db.RuleDao
 import me.camsteffen.polite.defaultAppTimingConfig
 import me.camsteffen.polite.util.AppPermissionChecker
 import me.camsteffen.polite.util.RuleEvent

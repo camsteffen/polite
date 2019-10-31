@@ -4,8 +4,8 @@ import androidx.annotation.WorkerThread
 import me.camsteffen.polite.data.AppPreferences
 import me.camsteffen.polite.data.CalendarDao
 import me.camsteffen.polite.data.CalendarEvent
-import me.camsteffen.polite.db.PoliteStateDao
-import me.camsteffen.polite.db.RuleDao
+import me.camsteffen.polite.data.db.PoliteStateDao
+import me.camsteffen.polite.data.db.RuleDao
 import me.camsteffen.polite.model.CalendarRule
 import me.camsteffen.polite.model.EventCancel
 import org.threeten.bp.Clock

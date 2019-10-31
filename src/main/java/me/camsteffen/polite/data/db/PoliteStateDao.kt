@@ -1,4 +1,4 @@
-package me.camsteffen.polite.db
+package me.camsteffen.polite.data.db
 
 import androidx.room.Dao
 import androidx.room.Insert

@@ -26,8 +26,8 @@ import me.camsteffen.polite.MainActivity
 import me.camsteffen.polite.Polite
 import me.camsteffen.polite.R
 import me.camsteffen.polite.data.PreferenceDefaults
-import me.camsteffen.polite.db.AppDatabase
-import me.camsteffen.polite.db.PoliteStateDao
+import me.camsteffen.polite.data.db.AppDatabase
+import me.camsteffen.polite.data.db.PoliteStateDao
 import me.camsteffen.polite.defaultAppTimingConfig
 import me.camsteffen.polite.receiver.CalendarChangeReceiver
 import me.camsteffen.polite.ui.rule.RuleMasterDetailViewModel

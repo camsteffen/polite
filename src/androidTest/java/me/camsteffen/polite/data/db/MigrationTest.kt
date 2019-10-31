@@ -1,4 +1,4 @@
-package me.camsteffen.polite.db
+package me.camsteffen.polite.data.db
 
 import androidx.room.Room
 import androidx.room.testing.MigrationTestHelper

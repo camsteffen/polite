@@ -1,4 +1,4 @@
-package me.camsteffen.polite.db
+package me.camsteffen.polite.data.db
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.Transformations

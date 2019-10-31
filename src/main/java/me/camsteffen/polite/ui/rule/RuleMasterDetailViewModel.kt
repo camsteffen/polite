@@ -6,7 +6,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MediatorLiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import me.camsteffen.polite.db.RuleDao
+import me.camsteffen.polite.data.db.RuleDao
 import me.camsteffen.polite.model.CalendarRule
 import me.camsteffen.polite.model.Rule
 import me.camsteffen.polite.model.ScheduleRule

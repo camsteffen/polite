@@ -3,8 +3,8 @@ package me.camsteffen.polite.util
 import com.google.common.truth.Truth.assertThat
 import io.mockk.every
 import io.mockk.mockk
-import me.camsteffen.polite.db.PoliteStateDao
-import me.camsteffen.polite.db.RuleDao
+import me.camsteffen.polite.data.db.PoliteStateDao
+import me.camsteffen.polite.data.db.RuleDao
 import me.camsteffen.polite.model.ScheduleRule
 import me.camsteffen.polite.model.ScheduleRuleCancel
 import org.junit.Before

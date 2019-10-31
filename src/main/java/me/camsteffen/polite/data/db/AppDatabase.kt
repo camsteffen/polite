@@ -1,4 +1,4 @@
-package me.camsteffen.polite.db
+package me.camsteffen.polite.data.db
 
 import android.content.Context
 import androidx.room.Database
