@@ -106,6 +106,7 @@ dependencies {
     implementation "androidx.preference:preference-ktx:1.1.0"
     implementation "com.google.android.material:material:1.0.0"
     implementation 'com.jakewharton.threetenabp:threetenabp:1.2.1'
+    implementation 'com.jakewharton.timber:timber:4.7.1'
 
     implementation "com.google.dagger:dagger:$dagger_version"
     implementation "com.google.dagger:dagger-android:$dagger_version"
