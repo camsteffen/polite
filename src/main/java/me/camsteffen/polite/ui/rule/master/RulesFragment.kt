@@ -20,8 +20,8 @@ import androidx.navigation.fragment.findNavController
 import dagger.android.support.DaggerFragment
 import me.camsteffen.polite.Polite
 import me.camsteffen.polite.R
-import me.camsteffen.polite.RuleService
 import me.camsteffen.polite.data.AppPreferences
+import me.camsteffen.polite.data.RuleService
 import me.camsteffen.polite.data.model.CalendarRule
 import me.camsteffen.polite.data.model.Rule
 import me.camsteffen.polite.databinding.RulesFragmentBinding

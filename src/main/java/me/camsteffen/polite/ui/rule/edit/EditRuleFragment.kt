@@ -16,7 +16,7 @@ import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.fragment.findNavController
 import dagger.android.support.DaggerFragment
 import me.camsteffen.polite.R
-import me.camsteffen.polite.RuleService
+import me.camsteffen.polite.data.RuleService
 import me.camsteffen.polite.data.model.Rule
 import me.camsteffen.polite.databinding.EditRuleBinding
 import me.camsteffen.polite.ui.MainActivity

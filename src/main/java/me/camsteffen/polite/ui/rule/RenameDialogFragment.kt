@@ -7,7 +7,7 @@ import androidx.appcompat.app.AlertDialog
 import androidx.core.os.bundleOf
 import dagger.android.support.DaggerDialogFragment
 import me.camsteffen.polite.R
-import me.camsteffen.polite.RuleService
+import me.camsteffen.polite.data.RuleService
 import javax.inject.Inject
 
 class RenameDialogFragment : DaggerDialogFragment() {

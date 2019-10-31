@@ -1,4 +1,4 @@
-package me.camsteffen.polite
+package me.camsteffen.polite.data
 
 import android.os.AsyncTask
 import me.camsteffen.polite.data.db.RuleDao
