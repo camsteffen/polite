@@ -13,6 +13,7 @@ import me.camsteffen.polite.data.db.entity.EventCancel
 import me.camsteffen.polite.data.model.CalendarEvent
 import me.camsteffen.polite.data.model.CalendarEventMatchBy
 import me.camsteffen.polite.data.model.CalendarRule
+import me.camsteffen.polite.service.CalendarRuleEventFinder
 import org.junit.Before
 import org.junit.Test
 import org.threeten.bp.Instant

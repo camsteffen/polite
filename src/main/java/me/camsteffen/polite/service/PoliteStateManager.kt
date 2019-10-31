@@ -9,7 +9,6 @@ import me.camsteffen.polite.data.db.entity.ScheduleRuleCancel
 import me.camsteffen.polite.util.AppPermissionChecker
 import me.camsteffen.polite.util.AppTimingConfig
 import me.camsteffen.polite.util.RuleEvent
-import me.camsteffen.polite.util.RuleEventFinders
 import org.threeten.bp.Clock
 import org.threeten.bp.Instant
 import javax.inject.Inject

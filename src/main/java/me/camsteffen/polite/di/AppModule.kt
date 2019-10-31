@@ -25,6 +25,9 @@ import me.camsteffen.polite.R
 import me.camsteffen.polite.data.PreferenceDefaults
 import me.camsteffen.polite.data.db.AppDatabase
 import me.camsteffen.polite.data.db.PoliteStateDao
+import me.camsteffen.polite.service.CalendarRuleEventFinder
+import me.camsteffen.polite.service.RuleEventFinder
+import me.camsteffen.polite.service.ScheduleRuleEventFinder
 import me.camsteffen.polite.service.receiver.AppBroadcastReceiver
 import me.camsteffen.polite.service.receiver.CalendarChangeReceiver
 import me.camsteffen.polite.ui.MainActivity
@@ -32,9 +35,6 @@ import me.camsteffen.polite.ui.rule.RuleMasterDetailViewModel
 import me.camsteffen.polite.ui.rule.edit.EditCalendarRuleViewModel
 import me.camsteffen.polite.ui.rule.edit.EditScheduleRuleViewModel
 import me.camsteffen.polite.util.AppTimingConfig
-import me.camsteffen.polite.util.CalendarRuleEventFinder
-import me.camsteffen.polite.util.RuleEventFinder
-import me.camsteffen.polite.util.ScheduleRuleEventFinder
 import me.camsteffen.polite.util.SharedPreferenceBooleanLiveData
 import me.camsteffen.polite.util.defaultAppTimingConfig
 import org.threeten.bp.Clock
