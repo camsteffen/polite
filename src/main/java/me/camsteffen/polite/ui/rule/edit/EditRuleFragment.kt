@@ -18,8 +18,8 @@ import dagger.android.support.DaggerFragment
 import me.camsteffen.polite.MainActivity
 import me.camsteffen.polite.R
 import me.camsteffen.polite.RuleService
+import me.camsteffen.polite.data.model.Rule
 import me.camsteffen.polite.databinding.EditRuleBinding
-import me.camsteffen.polite.model.Rule
 import me.camsteffen.polite.ui.rule.RuleMasterDetailViewModel
 import me.camsteffen.polite.util.RateAppPromptFacade
 import me.camsteffen.polite.util.hideKeyboard

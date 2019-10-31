@@ -1,8 +1,11 @@
-package me.camsteffen.polite.model
+package me.camsteffen.polite.data.model
 
 import androidx.room.ColumnInfo
 import androidx.room.Embedded
 import androidx.room.Relation
+import me.camsteffen.polite.data.db.entity.CalendarRuleCalendar
+import me.camsteffen.polite.data.db.entity.CalendarRuleKeyword
+import me.camsteffen.polite.data.db.entity.RuleEntity
 
 class CalendarRuleEntry(
     @Embedded

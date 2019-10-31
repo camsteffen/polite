@@ -4,7 +4,7 @@ import android.app.Application
 import androidx.annotation.CallSuper
 import androidx.databinding.ObservableBoolean
 import androidx.lifecycle.AndroidViewModel
-import me.camsteffen.polite.model.Rule
+import me.camsteffen.polite.data.model.Rule
 
 abstract class EditRuleViewModel<R : Rule>(application: Application) :
     AndroidViewModel(application) {

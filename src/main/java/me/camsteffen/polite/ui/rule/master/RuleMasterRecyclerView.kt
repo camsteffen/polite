@@ -7,7 +7,7 @@ import android.view.ContextMenu
 import android.view.View
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import me.camsteffen.polite.model.Rule
+import me.camsteffen.polite.data.model.Rule
 
 class RuleMasterRecyclerView(context: Context, attrs: AttributeSet? = null) :
     RecyclerView(context, attrs) {

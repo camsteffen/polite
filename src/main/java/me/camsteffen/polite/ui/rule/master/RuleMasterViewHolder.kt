@@ -10,7 +10,7 @@ import androidx.core.content.ContextCompat
 import androidx.core.graphics.drawable.DrawableCompat
 import androidx.recyclerview.widget.RecyclerView
 import me.camsteffen.polite.R
-import me.camsteffen.polite.model.Rule
+import me.camsteffen.polite.data.model.Rule
 
 typealias RuleClickListener = (rule: Rule) -> Unit
 typealias RuleCheckedChangeListener = (rule: Rule, isChecked: Boolean) -> Unit

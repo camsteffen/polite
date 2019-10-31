@@ -5,9 +5,9 @@ import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
 import androidx.room.Transaction
-import me.camsteffen.polite.model.ActiveRuleEvent
-import me.camsteffen.polite.model.EventCancel
-import me.camsteffen.polite.model.ScheduleRuleCancel
+import me.camsteffen.polite.data.db.entity.ActiveRuleEvent
+import me.camsteffen.polite.data.db.entity.EventCancel
+import me.camsteffen.polite.data.db.entity.ScheduleRuleCancel
 import org.threeten.bp.Instant
 
 @Dao

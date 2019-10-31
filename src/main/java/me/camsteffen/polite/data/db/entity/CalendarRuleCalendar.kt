@@ -1,4 +1,4 @@
-package me.camsteffen.polite.model
+package me.camsteffen.polite.data.db.entity
 
 import androidx.room.ColumnInfo
 import androidx.room.Entity

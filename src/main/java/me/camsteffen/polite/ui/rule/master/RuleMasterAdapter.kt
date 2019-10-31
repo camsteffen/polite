@@ -4,9 +4,9 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.ListAdapter
 import me.camsteffen.polite.R
-import me.camsteffen.polite.model.CalendarRule
-import me.camsteffen.polite.model.Rule
-import me.camsteffen.polite.model.ScheduleRule
+import me.camsteffen.polite.data.model.CalendarRule
+import me.camsteffen.polite.data.model.Rule
+import me.camsteffen.polite.data.model.ScheduleRule
 
 private object ViewTypes {
     const val HEADING: Int = 0

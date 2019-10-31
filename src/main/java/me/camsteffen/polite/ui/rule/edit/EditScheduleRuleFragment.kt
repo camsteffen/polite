@@ -9,9 +9,9 @@ import androidx.core.os.ConfigurationCompat.getLocales
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.ViewModelProviders
 import me.camsteffen.polite.R
+import me.camsteffen.polite.data.model.ScheduleRule
 import me.camsteffen.polite.databinding.DayButtonBinding
 import me.camsteffen.polite.databinding.EditScheduleRuleBinding
-import me.camsteffen.polite.model.ScheduleRule
 import me.camsteffen.polite.ui.TimePickerDialogFragment
 import org.threeten.bp.LocalTime
 import org.threeten.bp.format.TextStyle

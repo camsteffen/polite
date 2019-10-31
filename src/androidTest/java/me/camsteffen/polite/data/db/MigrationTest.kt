@@ -6,9 +6,9 @@ import androidx.sqlite.db.framework.FrameworkSQLiteOpenHelperFactory
 import androidx.test.platform.app.InstrumentationRegistry.getInstrumentation
 import com.google.common.truth.Truth.assertThat
 import me.camsteffen.polite.BuildConfig.DATABASE_VERSION
-import me.camsteffen.polite.model.CalendarEventMatchBy
-import me.camsteffen.polite.model.CalendarRule
-import me.camsteffen.polite.model.ScheduleRule
+import me.camsteffen.polite.data.model.CalendarEventMatchBy
+import me.camsteffen.polite.data.model.CalendarRule
+import me.camsteffen.polite.data.model.ScheduleRule
 import me.camsteffen.polite.util.ScheduleRuleSchedule
 import org.junit.After
 import org.junit.Assert.assertEquals

@@ -7,16 +7,16 @@ import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
 import androidx.room.Transaction
-import me.camsteffen.polite.model.CalendarRule
-import me.camsteffen.polite.model.CalendarRuleCalendar
-import me.camsteffen.polite.model.CalendarRuleEntity
-import me.camsteffen.polite.model.CalendarRuleEntry
-import me.camsteffen.polite.model.CalendarRuleKeyword
-import me.camsteffen.polite.model.Rule
-import me.camsteffen.polite.model.RuleEntity
-import me.camsteffen.polite.model.ScheduleRule
-import me.camsteffen.polite.model.ScheduleRuleEntity
-import me.camsteffen.polite.model.ScheduleRuleEntry
+import me.camsteffen.polite.data.db.entity.CalendarRuleCalendar
+import me.camsteffen.polite.data.db.entity.CalendarRuleEntity
+import me.camsteffen.polite.data.db.entity.CalendarRuleKeyword
+import me.camsteffen.polite.data.db.entity.RuleEntity
+import me.camsteffen.polite.data.db.entity.ScheduleRuleEntity
+import me.camsteffen.polite.data.model.CalendarRule
+import me.camsteffen.polite.data.model.CalendarRuleEntry
+import me.camsteffen.polite.data.model.Rule
+import me.camsteffen.polite.data.model.ScheduleRule
+import me.camsteffen.polite.data.model.ScheduleRuleEntry
 
 @Dao
 abstract class RuleDao {

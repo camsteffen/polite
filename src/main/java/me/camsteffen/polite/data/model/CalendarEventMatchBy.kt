@@ -1,4 +1,4 @@
-package me.camsteffen.polite.model
+package me.camsteffen.polite.data.model
 
 import me.camsteffen.polite.R
 

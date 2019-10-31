@@ -3,7 +3,7 @@ package me.camsteffen.polite.rule.edit
 import android.app.Application
 import androidx.test.platform.app.InstrumentationRegistry
 import com.google.common.truth.Truth
-import me.camsteffen.polite.model.ScheduleRule
+import me.camsteffen.polite.data.model.ScheduleRule
 import me.camsteffen.polite.ui.rule.edit.EditScheduleRuleViewModel
 import me.camsteffen.polite.util.ScheduleRuleSchedule
 import org.junit.Test

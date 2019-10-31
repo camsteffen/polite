@@ -4,7 +4,7 @@ import android.os.Build
 import me.camsteffen.polite.AppTimingConfig
 import me.camsteffen.polite.data.AppPreferences
 import me.camsteffen.polite.data.db.PoliteStateDao
-import me.camsteffen.polite.model.ActiveRuleEvent
+import me.camsteffen.polite.data.db.entity.ActiveRuleEvent
 import me.camsteffen.polite.util.AppNotificationManager
 import me.camsteffen.polite.util.RuleEvent
 import org.threeten.bp.Instant

@@ -23,9 +23,9 @@ import me.camsteffen.polite.Polite
 import me.camsteffen.polite.R
 import me.camsteffen.polite.RuleService
 import me.camsteffen.polite.data.AppPreferences
+import me.camsteffen.polite.data.model.CalendarRule
+import me.camsteffen.polite.data.model.Rule
 import me.camsteffen.polite.databinding.RulesFragmentBinding
-import me.camsteffen.polite.model.CalendarRule
-import me.camsteffen.polite.model.Rule
 import me.camsteffen.polite.ui.rule.RenameDialogFragment
 import me.camsteffen.polite.ui.rule.RuleMasterDetailViewModel
 import javax.inject.Inject

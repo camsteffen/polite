@@ -1,14 +1,14 @@
-package me.camsteffen.polite.model
+package me.camsteffen.polite.data.db.entity
 
 import androidx.room.ColumnInfo
 import androidx.room.Embedded
 import androidx.room.Entity
 import androidx.room.ForeignKey
 import androidx.room.PrimaryKey
-import org.threeten.bp.LocalTime
+import me.camsteffen.polite.data.model.CalendarEventMatchByEntity
 
 @Entity(
-    tableName = "schedule_rule",
+    tableName = "calendar_rule",
     foreignKeys = [
         ForeignKey(
             entity = RuleEntity::class,
@@ -19,13 +19,16 @@ import org.threeten.bp.LocalTime
         )
     ]
 )
-data class ScheduleRuleEntity(
+data class CalendarRuleEntity(
     @PrimaryKey
     val id: Long,
-    @ColumnInfo(name = "begin_time")
-    val beginTime: LocalTime,
-    @ColumnInfo(name = "end_time")
-    val endTime: LocalTime,
-    @Embedded
-    val daysOfWeek: DaysOfWeekEntity
+
+    @ColumnInfo(name = "busy_only")
+    val busyOnly: Boolean,
+
+    @Embedded(prefix = "match_")
+    val matchBy: CalendarEventMatchByEntity,
+
+    @ColumnInfo(name = "inverse_match")
+    val inverseMatch: Boolean
 )

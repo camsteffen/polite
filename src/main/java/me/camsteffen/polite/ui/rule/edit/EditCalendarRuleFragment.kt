@@ -14,9 +14,9 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import me.camsteffen.polite.R
 import me.camsteffen.polite.data.CalendarDao
+import me.camsteffen.polite.data.model.CalendarEventMatchBy
+import me.camsteffen.polite.data.model.CalendarRule
 import me.camsteffen.polite.databinding.EditCalendarRuleBinding
-import me.camsteffen.polite.model.CalendarEventMatchBy
-import me.camsteffen.polite.model.CalendarRule
 import java.util.Locale
 import javax.inject.Inject
 

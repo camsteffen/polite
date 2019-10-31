@@ -4,7 +4,7 @@ import android.app.Application
 import androidx.core.os.ConfigurationCompat.getLocales
 import androidx.databinding.ObservableBoolean
 import androidx.databinding.ObservableField
-import me.camsteffen.polite.model.ScheduleRule
+import me.camsteffen.polite.data.model.ScheduleRule
 import me.camsteffen.polite.util.ScheduleRuleSchedule
 import me.camsteffen.polite.util.ScheduleRuleTimes
 import me.camsteffen.polite.util.toEnumSet

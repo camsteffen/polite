@@ -4,8 +4,8 @@ import android.app.Application
 import androidx.test.annotation.UiThreadTest
 import androidx.test.platform.app.InstrumentationRegistry
 import com.google.common.truth.Truth
-import me.camsteffen.polite.model.CalendarEventMatchBy
-import me.camsteffen.polite.model.CalendarRule
+import me.camsteffen.polite.data.model.CalendarEventMatchBy
+import me.camsteffen.polite.data.model.CalendarRule
 import me.camsteffen.polite.ui.rule.edit.EditCalendarRuleViewModel
 import org.junit.Test
 

@@ -5,8 +5,8 @@ import io.mockk.every
 import io.mockk.mockk
 import me.camsteffen.polite.data.db.PoliteStateDao
 import me.camsteffen.polite.data.db.RuleDao
-import me.camsteffen.polite.model.ScheduleRule
-import me.camsteffen.polite.model.ScheduleRuleCancel
+import me.camsteffen.polite.data.db.entity.ScheduleRuleCancel
+import me.camsteffen.polite.data.model.ScheduleRule
 import org.junit.Before
 import org.junit.Test
 import org.threeten.bp.Clock

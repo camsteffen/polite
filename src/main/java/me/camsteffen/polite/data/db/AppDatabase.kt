@@ -6,14 +6,14 @@ import androidx.room.Room
 import androidx.room.RoomDatabase
 import androidx.room.TypeConverters
 import me.camsteffen.polite.BuildConfig.DATABASE_VERSION
-import me.camsteffen.polite.model.ActiveRuleEvent
-import me.camsteffen.polite.model.CalendarRuleCalendar
-import me.camsteffen.polite.model.CalendarRuleEntity
-import me.camsteffen.polite.model.CalendarRuleKeyword
-import me.camsteffen.polite.model.EventCancel
-import me.camsteffen.polite.model.RuleEntity
-import me.camsteffen.polite.model.ScheduleRuleCancel
-import me.camsteffen.polite.model.ScheduleRuleEntity
+import me.camsteffen.polite.data.db.entity.ActiveRuleEvent
+import me.camsteffen.polite.data.db.entity.CalendarRuleCalendar
+import me.camsteffen.polite.data.db.entity.CalendarRuleEntity
+import me.camsteffen.polite.data.db.entity.CalendarRuleKeyword
+import me.camsteffen.polite.data.db.entity.EventCancel
+import me.camsteffen.polite.data.db.entity.RuleEntity
+import me.camsteffen.polite.data.db.entity.ScheduleRuleCancel
+import me.camsteffen.polite.data.db.entity.ScheduleRuleEntity
 
 @Database(
     version = DATABASE_VERSION,

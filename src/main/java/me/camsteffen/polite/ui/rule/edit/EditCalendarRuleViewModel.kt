@@ -4,8 +4,8 @@ import android.app.Application
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Transformations
-import me.camsteffen.polite.model.CalendarEventMatchBy
-import me.camsteffen.polite.model.CalendarRule
+import me.camsteffen.polite.data.model.CalendarEventMatchBy
+import me.camsteffen.polite.data.model.CalendarRule
 import javax.inject.Inject
 
 class EditCalendarRuleViewModel

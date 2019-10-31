@@ -2,7 +2,7 @@ package me.camsteffen.polite
 
 import android.os.AsyncTask
 import me.camsteffen.polite.data.db.RuleDao
-import me.camsteffen.polite.model.Rule
+import me.camsteffen.polite.data.model.Rule
 import me.camsteffen.polite.state.PoliteStateManager
 import javax.inject.Inject
 import javax.inject.Singleton

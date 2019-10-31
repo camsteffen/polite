@@ -14,7 +14,7 @@ sealed class RuleMasterItem {
         }
     }
 
-    data class Rule<R : me.camsteffen.polite.model.Rule>(val rule: R) : RuleMasterItem() {
+    data class Rule<R : me.camsteffen.polite.data.model.Rule>(val rule: R) : RuleMasterItem() {
 
         override fun sameItemAs(other: RuleMasterItem): Boolean {
             return other is Rule<*> && other.rule.id == rule.id

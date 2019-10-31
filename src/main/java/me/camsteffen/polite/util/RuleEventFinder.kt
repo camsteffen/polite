@@ -6,8 +6,8 @@ import me.camsteffen.polite.data.CalendarDao
 import me.camsteffen.polite.data.CalendarEvent
 import me.camsteffen.polite.data.db.PoliteStateDao
 import me.camsteffen.polite.data.db.RuleDao
-import me.camsteffen.polite.model.CalendarRule
-import me.camsteffen.polite.model.EventCancel
+import me.camsteffen.polite.data.db.entity.EventCancel
+import me.camsteffen.polite.data.model.CalendarRule
 import org.threeten.bp.Clock
 import org.threeten.bp.Duration
 import org.threeten.bp.Instant
