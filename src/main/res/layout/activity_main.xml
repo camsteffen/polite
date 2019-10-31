@@ -10,7 +10,7 @@
             type="me.camsteffen.polite.ui.rule.RuleMasterDetailViewModel" />
         <variable
             name="handlers"
-            type="me.camsteffen.polite.MainActivity" />
+            type="me.camsteffen.polite.ui.MainActivity" />
     </data>
     <LinearLayout
         android:orientation="vertical"

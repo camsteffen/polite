@@ -8,9 +8,9 @@ import androidx.navigation.fragment.findNavController
 import androidx.preference.Preference
 import androidx.preference.PreferenceFragmentCompat
 import dagger.android.support.AndroidSupportInjection
-import me.camsteffen.polite.MainActivity
 import me.camsteffen.polite.R
 import me.camsteffen.polite.state.PoliteStateManager
+import me.camsteffen.polite.ui.MainActivity
 import javax.inject.Inject
 
 class SettingsFragment :

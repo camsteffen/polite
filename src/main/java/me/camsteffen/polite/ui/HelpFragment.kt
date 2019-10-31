@@ -1,4 +1,4 @@
-package me.camsteffen.polite
+package me.camsteffen.polite.ui
 
 import android.content.Intent
 import android.os.Bundle
@@ -15,6 +15,7 @@ import androidx.core.net.toUri
 import androidx.core.os.ConfigurationCompat.getLocales
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
+import me.camsteffen.polite.R
 import java.io.IOException
 
 class HelpFragment : Fragment() {

@@ -1,4 +1,4 @@
-package me.camsteffen.polite
+package me.camsteffen.polite.ui
 
 import android.Manifest
 import android.annotation.TargetApi
@@ -32,6 +32,8 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton
 import dagger.android.AndroidInjection
 import dagger.android.DispatchingAndroidInjector
 import dagger.android.HasAndroidInjector
+import me.camsteffen.polite.R
+import me.camsteffen.polite.RuleService
 import me.camsteffen.polite.data.AppPreferences
 import me.camsteffen.polite.data.model.CalendarRule
 import me.camsteffen.polite.data.model.DefaultRules

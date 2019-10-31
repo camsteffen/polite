@@ -11,8 +11,8 @@ import androidx.annotation.RequiresApi
 import androidx.core.app.NotificationCompat
 import androidx.core.content.ContextCompat
 import me.camsteffen.polite.AppBroadcastReceiver
-import me.camsteffen.polite.MainActivity
 import me.camsteffen.polite.R
+import me.camsteffen.polite.ui.MainActivity
 import javax.inject.Inject
 import javax.inject.Singleton
 

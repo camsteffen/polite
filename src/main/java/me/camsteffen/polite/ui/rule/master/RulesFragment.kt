@@ -18,7 +18,6 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.fragment.findNavController
 import dagger.android.support.DaggerFragment
-import me.camsteffen.polite.MainActivity
 import me.camsteffen.polite.Polite
 import me.camsteffen.polite.R
 import me.camsteffen.polite.RuleService
@@ -26,6 +25,7 @@ import me.camsteffen.polite.data.AppPreferences
 import me.camsteffen.polite.data.model.CalendarRule
 import me.camsteffen.polite.data.model.Rule
 import me.camsteffen.polite.databinding.RulesFragmentBinding
+import me.camsteffen.polite.ui.MainActivity
 import me.camsteffen.polite.ui.rule.RenameDialogFragment
 import me.camsteffen.polite.ui.rule.RuleMasterDetailViewModel
 import javax.inject.Inject

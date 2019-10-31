@@ -41,7 +41,7 @@
     </fragment>
     <fragment
         android:id="@+id/helpFragment"
-        android:name="me.camsteffen.polite.HelpFragment"
+        android:name="me.camsteffen.polite.ui.HelpFragment"
         android:label="HelpFragment"/>
     <fragment
         android:id="@+id/settingsFragment"
