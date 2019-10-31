@@ -1,13 +1,13 @@
 package me.camsteffen.polite.service
 
 import androidx.annotation.WorkerThread
-import me.camsteffen.polite.AppTimingConfig
 import me.camsteffen.polite.data.AppPreferences
 import me.camsteffen.polite.data.db.PoliteStateDao
 import me.camsteffen.polite.data.db.RuleDao
 import me.camsteffen.polite.data.db.entity.EventCancel
 import me.camsteffen.polite.data.db.entity.ScheduleRuleCancel
 import me.camsteffen.polite.util.AppPermissionChecker
+import me.camsteffen.polite.util.AppTimingConfig
 import me.camsteffen.polite.util.RuleEvent
 import me.camsteffen.polite.util.RuleEventFinders
 import org.threeten.bp.Clock
