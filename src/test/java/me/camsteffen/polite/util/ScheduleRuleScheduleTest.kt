@@ -1,5 +1,6 @@
 package me.camsteffen.polite.util
 
+import me.camsteffen.polite.data.model.ScheduleRuleSchedule
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertNull
 import org.junit.Test

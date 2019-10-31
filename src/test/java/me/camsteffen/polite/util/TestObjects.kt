@@ -3,7 +3,9 @@ package me.camsteffen.polite.util
 import me.camsteffen.polite.data.model.CalendarEvent
 import me.camsteffen.polite.data.model.CalendarEventMatchBy
 import me.camsteffen.polite.data.model.CalendarRule
+import me.camsteffen.polite.data.model.CalendarRuleEvent
 import me.camsteffen.polite.data.model.ScheduleRule
+import me.camsteffen.polite.data.model.ScheduleRuleSchedule
 import org.threeten.bp.Instant
 
 object TestObjects {

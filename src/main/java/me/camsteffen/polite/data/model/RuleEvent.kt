@@ -1,9 +1,5 @@
-package me.camsteffen.polite.util
+package me.camsteffen.polite.data.model
 
-import me.camsteffen.polite.data.model.CalendarEvent
-import me.camsteffen.polite.data.model.CalendarRule
-import me.camsteffen.polite.data.model.Rule
-import me.camsteffen.polite.data.model.ScheduleRule
 import org.threeten.bp.Duration
 import org.threeten.bp.Instant
 

@@ -3,7 +3,7 @@ package me.camsteffen.polite.data.db.entity
 import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
-import me.camsteffen.polite.util.RuleEvent
+import me.camsteffen.polite.data.model.RuleEvent
 import org.threeten.bp.Instant
 
 /**

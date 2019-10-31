@@ -1,9 +1,10 @@
-package me.camsteffen.polite.util
+package me.camsteffen.polite.data.model
 
 import android.content.Context
 import android.content.res.Resources
 import androidx.core.os.ConfigurationCompat.getLocales
 import me.camsteffen.polite.R
+import me.camsteffen.polite.util.daysAfter
 import org.threeten.bp.DayOfWeek
 import org.threeten.bp.Duration
 import org.threeten.bp.Instant

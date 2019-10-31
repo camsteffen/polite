@@ -8,10 +8,10 @@ import me.camsteffen.polite.data.db.RuleDao
 import me.camsteffen.polite.data.db.entity.EventCancel
 import me.camsteffen.polite.data.model.CalendarEvent
 import me.camsteffen.polite.data.model.CalendarRule
+import me.camsteffen.polite.data.model.CalendarRuleEvent
+import me.camsteffen.polite.data.model.RuleEvent
+import me.camsteffen.polite.data.model.ScheduleRuleEvent
 import me.camsteffen.polite.util.AppPermissionChecker
-import me.camsteffen.polite.util.CalendarRuleEvent
-import me.camsteffen.polite.util.RuleEvent
-import me.camsteffen.polite.util.ScheduleRuleEvent
 import me.camsteffen.polite.util.mergeSortedBy
 import org.threeten.bp.Clock
 import org.threeten.bp.Duration

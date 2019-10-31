@@ -3,7 +3,6 @@ package me.camsteffen.polite.data.model
 import androidx.room.ColumnInfo
 import androidx.room.Embedded
 import me.camsteffen.polite.data.db.entity.RuleEntity
-import me.camsteffen.polite.util.ScheduleRuleSchedule
 import org.threeten.bp.LocalTime
 
 class ScheduleRuleEntry(

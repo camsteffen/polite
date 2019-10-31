@@ -8,8 +8,8 @@ import io.mockk.verifyAll
 import me.camsteffen.polite.data.AppPreferences
 import me.camsteffen.polite.data.db.PoliteStateDao
 import me.camsteffen.polite.data.db.RuleDao
+import me.camsteffen.polite.data.model.RuleEvent
 import me.camsteffen.polite.util.AppPermissionChecker
-import me.camsteffen.polite.util.RuleEvent
 import me.camsteffen.polite.util.TestObjects
 import me.camsteffen.polite.util.defaultAppTimingConfig
 import org.junit.Before

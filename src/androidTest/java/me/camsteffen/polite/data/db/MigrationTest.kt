@@ -9,7 +9,7 @@ import me.camsteffen.polite.BuildConfig.DATABASE_VERSION
 import me.camsteffen.polite.data.model.CalendarEventMatchBy
 import me.camsteffen.polite.data.model.CalendarRule
 import me.camsteffen.polite.data.model.ScheduleRule
-import me.camsteffen.polite.util.ScheduleRuleSchedule
+import me.camsteffen.polite.data.model.ScheduleRuleSchedule
 import org.junit.After
 import org.junit.Assert.assertEquals
 import org.junit.Rule

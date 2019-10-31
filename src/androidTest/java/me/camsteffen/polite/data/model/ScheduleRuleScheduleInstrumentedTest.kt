@@ -1,4 +1,4 @@
-package me.camsteffen.polite.util
+package me.camsteffen.polite.data.model
 
 import android.content.Context
 import android.os.LocaleList

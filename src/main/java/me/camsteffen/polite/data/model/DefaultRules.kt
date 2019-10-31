@@ -2,7 +2,6 @@ package me.camsteffen.polite.data.model
 
 import android.content.Context
 import me.camsteffen.polite.R
-import me.camsteffen.polite.util.ScheduleRuleSchedule
 import org.threeten.bp.DayOfWeek
 import javax.inject.Inject
 import javax.inject.Singleton

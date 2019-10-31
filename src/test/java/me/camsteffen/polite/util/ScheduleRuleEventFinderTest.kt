@@ -7,6 +7,8 @@ import me.camsteffen.polite.data.db.PoliteStateDao
 import me.camsteffen.polite.data.db.RuleDao
 import me.camsteffen.polite.data.db.entity.ScheduleRuleCancel
 import me.camsteffen.polite.data.model.ScheduleRule
+import me.camsteffen.polite.data.model.ScheduleRuleEvent
+import me.camsteffen.polite.data.model.ScheduleRuleSchedule
 import me.camsteffen.polite.service.ScheduleRuleEventFinder
 import org.junit.Before
 import org.junit.Test

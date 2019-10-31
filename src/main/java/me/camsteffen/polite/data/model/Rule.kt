@@ -6,7 +6,6 @@ import me.camsteffen.polite.data.db.entity.CalendarRuleEntity
 import me.camsteffen.polite.data.db.entity.CalendarRuleKeyword
 import me.camsteffen.polite.data.db.entity.RuleEntity
 import me.camsteffen.polite.data.db.entity.ScheduleRuleEntity
-import me.camsteffen.polite.util.ScheduleRuleSchedule
 
 sealed class Rule {
 

@@ -6,9 +6,9 @@ import me.camsteffen.polite.data.db.PoliteStateDao
 import me.camsteffen.polite.data.db.RuleDao
 import me.camsteffen.polite.data.db.entity.EventCancel
 import me.camsteffen.polite.data.db.entity.ScheduleRuleCancel
+import me.camsteffen.polite.data.model.RuleEvent
 import me.camsteffen.polite.util.AppPermissionChecker
 import me.camsteffen.polite.util.AppTimingConfig
-import me.camsteffen.polite.util.RuleEvent
 import org.threeten.bp.Clock
 import org.threeten.bp.Instant
 import javax.inject.Inject
