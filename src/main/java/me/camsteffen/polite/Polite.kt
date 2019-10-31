@@ -6,6 +6,7 @@ import com.jakewharton.threetenabp.AndroidThreeTen
 import dagger.android.DispatchingAndroidInjector
 import dagger.android.HasAndroidInjector
 import me.camsteffen.polite.di.DaggerAppComponent
+import me.camsteffen.polite.service.work.AppWorkerFactory
 import javax.inject.Inject
 
 class Polite : Application(), HasAndroidInjector, Configuration.Provider {

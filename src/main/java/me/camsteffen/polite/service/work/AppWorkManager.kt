@@ -1,4 +1,4 @@
-package me.camsteffen.polite
+package me.camsteffen.polite.service.work
 
 import android.os.Build
 import android.provider.CalendarContract

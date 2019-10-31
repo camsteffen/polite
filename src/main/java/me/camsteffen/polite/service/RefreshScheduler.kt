@@ -8,8 +8,8 @@ import android.content.pm.PackageManager.COMPONENT_ENABLED_STATE_ENABLED
 import android.os.Build
 import me.camsteffen.polite.AppBroadcastReceiver
 import me.camsteffen.polite.AppTimingConfig
-import me.camsteffen.polite.AppWorkManager
 import me.camsteffen.polite.receiver.CalendarChangeReceiver
+import me.camsteffen.polite.service.work.AppWorkManager
 import me.camsteffen.polite.util.componentName
 import org.threeten.bp.Clock
 import org.threeten.bp.Instant
