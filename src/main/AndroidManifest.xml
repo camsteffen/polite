@@ -21,7 +21,7 @@
             android:authorities="${applicationId}.workmanager-init"
             tools:node="remove" />
 
-        <receiver android:name=".AppBroadcastReceiver">
+        <receiver android:name=".service.receiver.AppBroadcastReceiver">
             <intent-filter>
                 <action android:name="android.intent.action.BOOT_COMPLETED" />
             </intent-filter>
@@ -33,7 +33,7 @@
             </intent-filter>
         </receiver>
 
-        <receiver android:name=".receiver.CalendarChangeReceiver" android:enabled="false">
+        <receiver android:name="me.camsteffen.polite.service.receiver.CalendarChangeReceiver" android:enabled="false">
             <intent-filter>
                 <action android:name="android.intent.action.PROVIDER_CHANGED" />
                 <data android:scheme="content" />

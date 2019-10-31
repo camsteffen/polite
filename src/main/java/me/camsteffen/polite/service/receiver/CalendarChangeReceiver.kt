@@ -1,4 +1,4 @@
-package me.camsteffen.polite.receiver
+package me.camsteffen.polite.service.receiver
 
 import android.content.Context
 import android.content.Intent

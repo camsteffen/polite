@@ -1,4 +1,4 @@
-package me.camsteffen.polite
+package me.camsteffen.polite.service.receiver
 
 import android.app.NotificationManager
 import android.app.PendingIntent
