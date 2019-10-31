@@ -1,4 +1,4 @@
-package me.camsteffen.polite.settings
+package me.camsteffen.polite.ui.settings
 
 import android.content.SharedPreferences
 import android.os.AsyncTask

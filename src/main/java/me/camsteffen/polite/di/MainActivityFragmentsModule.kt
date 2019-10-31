@@ -2,11 +2,11 @@ package me.camsteffen.polite.di
 
 import dagger.Module
 import dagger.android.ContributesAndroidInjector
-import me.camsteffen.polite.rule.RenameDialogFragment
-import me.camsteffen.polite.rule.edit.EditCalendarRuleFragment
-import me.camsteffen.polite.rule.edit.EditScheduleRuleFragment
-import me.camsteffen.polite.rule.master.RulesFragment
-import me.camsteffen.polite.settings.SettingsFragment
+import me.camsteffen.polite.ui.rule.RenameDialogFragment
+import me.camsteffen.polite.ui.rule.edit.EditCalendarRuleFragment
+import me.camsteffen.polite.ui.rule.edit.EditScheduleRuleFragment
+import me.camsteffen.polite.ui.rule.master.RulesFragment
+import me.camsteffen.polite.ui.settings.SettingsFragment
 
 @Module
 abstract class MainActivityFragmentsModule {

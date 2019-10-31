@@ -9,11 +9,11 @@
 
         <variable
             name="model"
-            type="me.camsteffen.polite.rule.edit.EditCalendarRuleViewModel" />
+            type="me.camsteffen.polite.ui.rule.edit.EditCalendarRuleViewModel" />
 
         <variable
             name="handlers"
-            type="me.camsteffen.polite.rule.edit.EditCalendarRuleFragment" />
+            type="me.camsteffen.polite.ui.rule.edit.EditCalendarRuleFragment" />
     </data>
 
     <LinearLayout
@@ -31,7 +31,7 @@
 
         <View style="@style/Divider" />
 
-        <me.camsteffen.polite.view.CaptionOption
+        <me.camsteffen.polite.ui.CaptionOption
             android:id="@+id/calendars"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -41,7 +41,7 @@
 
         <View style="@style/Divider" />
 
-        <me.camsteffen.polite.view.CaptionOption
+        <me.camsteffen.polite.ui.CaptionOption
             android:id="@+id/events"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -57,7 +57,7 @@
             android:orientation="vertical"
             android:visibility="@{model.showKeywords ? View.VISIBLE : View.GONE}">
 
-            <me.camsteffen.polite.view.CaptionOption
+            <me.camsteffen.polite.ui.CaptionOption
                 android:id="@+id/inverse"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -104,7 +104,7 @@
 
             </LinearLayout>
 
-            <me.camsteffen.polite.view.WordSetView
+            <me.camsteffen.polite.ui.WordSetView
                 android:id="@+id/words"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"

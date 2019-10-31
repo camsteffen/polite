@@ -1,4 +1,4 @@
-package me.camsteffen.polite.rule
+package me.camsteffen.polite.ui.rule
 
 import android.view.View
 import androidx.databinding.ObservableInt
@@ -10,8 +10,8 @@ import me.camsteffen.polite.db.RuleDao
 import me.camsteffen.polite.model.CalendarRule
 import me.camsteffen.polite.model.Rule
 import me.camsteffen.polite.model.ScheduleRule
-import me.camsteffen.polite.rule.master.RuleMasterItem
-import me.camsteffen.polite.rule.master.RuleMasterList
+import me.camsteffen.polite.ui.rule.master.RuleMasterItem
+import me.camsteffen.polite.ui.rule.master.RuleMasterList
 import javax.inject.Inject
 
 class RuleMasterDetailViewModel

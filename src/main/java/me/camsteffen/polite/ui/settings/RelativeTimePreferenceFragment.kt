@@ -1,4 +1,4 @@
-package me.camsteffen.polite.settings
+package me.camsteffen.polite.ui.settings
 
 import android.view.View
 import android.widget.NumberPicker

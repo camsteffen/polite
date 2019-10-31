@@ -1,4 +1,4 @@
-package me.camsteffen.polite.rule
+package me.camsteffen.polite.util
 
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertNull

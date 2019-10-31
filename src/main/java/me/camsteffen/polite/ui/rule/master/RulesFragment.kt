@@ -1,4 +1,4 @@
-package me.camsteffen.polite.rule.master
+package me.camsteffen.polite.ui.rule.master
 
 import android.content.Intent
 import android.os.Build
@@ -26,8 +26,8 @@ import me.camsteffen.polite.data.AppPreferences
 import me.camsteffen.polite.databinding.RulesFragmentBinding
 import me.camsteffen.polite.model.CalendarRule
 import me.camsteffen.polite.model.Rule
-import me.camsteffen.polite.rule.RenameDialogFragment
-import me.camsteffen.polite.rule.RuleMasterDetailViewModel
+import me.camsteffen.polite.ui.rule.RenameDialogFragment
+import me.camsteffen.polite.ui.rule.RuleMasterDetailViewModel
 import javax.inject.Inject
 
 class RulesFragment : DaggerFragment() {

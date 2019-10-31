@@ -7,7 +7,6 @@ import me.camsteffen.polite.db.PoliteStateDao
 import me.camsteffen.polite.db.RuleDao
 import me.camsteffen.polite.model.ScheduleRule
 import me.camsteffen.polite.model.ScheduleRuleCancel
-import me.camsteffen.polite.rule.ScheduleRuleSchedule
 import org.junit.Before
 import org.junit.Test
 import org.threeten.bp.Clock

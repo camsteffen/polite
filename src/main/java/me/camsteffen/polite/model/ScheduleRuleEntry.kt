@@ -2,7 +2,7 @@ package me.camsteffen.polite.model
 
 import androidx.room.ColumnInfo
 import androidx.room.Embedded
-import me.camsteffen.polite.rule.ScheduleRuleSchedule
+import me.camsteffen.polite.util.ScheduleRuleSchedule
 import org.threeten.bp.LocalTime
 
 class ScheduleRuleEntry(

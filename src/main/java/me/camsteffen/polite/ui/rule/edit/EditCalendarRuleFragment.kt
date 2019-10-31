@@ -1,4 +1,4 @@
-package me.camsteffen.polite.rule.edit
+package me.camsteffen.polite.ui.rule.edit
 
 import android.os.Bundle
 import android.view.LayoutInflater

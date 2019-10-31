@@ -7,16 +7,16 @@
         android:title="@string/enable_polite"
         android:defaultValue="true" />
 
-    <me.camsteffen.polite.settings.NotificationsPreference>
-    </me.camsteffen.polite.settings.NotificationsPreference>
+    <me.camsteffen.polite.ui.settings.NotificationsPreference>
+    </me.camsteffen.polite.ui.settings.NotificationsPreference>
 
-    <me.camsteffen.polite.settings.RelativeTimePreference
+    <me.camsteffen.polite.ui.settings.RelativeTimePreference
         android:key="@string/preference_activation"
         android:title="@string/activation"
         android:defaultValue="0"
         app:summary="@plurals/minutes_before_event" />
 
-    <me.camsteffen.polite.settings.RelativeTimePreference
+    <me.camsteffen.polite.ui.settings.RelativeTimePreference
         android:key="@string/preference_deactivation"
         android:title="@string/deactivation"
         android:defaultValue="0"

@@ -1,4 +1,4 @@
-package me.camsteffen.polite.rule.edit
+package me.camsteffen.polite.ui.rule.edit
 
 import android.content.Context
 import android.os.Bundle
@@ -20,7 +20,7 @@ import me.camsteffen.polite.R
 import me.camsteffen.polite.RuleService
 import me.camsteffen.polite.databinding.EditRuleBinding
 import me.camsteffen.polite.model.Rule
-import me.camsteffen.polite.rule.RuleMasterDetailViewModel
+import me.camsteffen.polite.ui.rule.RuleMasterDetailViewModel
 import me.camsteffen.polite.util.RateAppPromptFacade
 import me.camsteffen.polite.util.hideKeyboard
 import javax.inject.Inject

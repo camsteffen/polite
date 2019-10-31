@@ -1,4 +1,4 @@
-package me.camsteffen.polite.rule.master
+package me.camsteffen.polite.ui.rule.master
 
 import android.annotation.SuppressLint
 import androidx.recyclerview.widget.DiffUtil

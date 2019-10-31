@@ -38,8 +38,8 @@ import me.camsteffen.polite.model.CalendarRule
 import me.camsteffen.polite.model.DefaultRules
 import me.camsteffen.polite.model.Rule
 import me.camsteffen.polite.model.ScheduleRule
-import me.camsteffen.polite.rule.RuleMasterDetailViewModel
 import me.camsteffen.polite.state.PoliteStateManager
+import me.camsteffen.polite.ui.rule.RuleMasterDetailViewModel
 import me.camsteffen.polite.util.AppNotificationManager
 import me.camsteffen.polite.util.hideKeyboard
 import javax.inject.Inject

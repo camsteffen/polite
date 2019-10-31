@@ -1,4 +1,4 @@
-package me.camsteffen.polite.util
+package me.camsteffen.polite.ui
 
 import android.app.Dialog
 import android.app.TimePickerDialog

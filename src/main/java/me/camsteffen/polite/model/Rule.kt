@@ -1,7 +1,7 @@
 package me.camsteffen.polite.model
 
 import android.content.Context
-import me.camsteffen.polite.rule.ScheduleRuleSchedule
+import me.camsteffen.polite.util.ScheduleRuleSchedule
 
 sealed class Rule {
 

@@ -1,4 +1,4 @@
-package me.camsteffen.polite.view
+package me.camsteffen.polite.ui
 
 import android.content.Context
 import android.text.SpannableStringBuilder
@@ -9,7 +9,6 @@ import android.view.View
 import androidx.appcompat.widget.AppCompatTextView
 import androidx.databinding.BindingMethod
 import androidx.databinding.BindingMethods
-import me.camsteffen.polite.util.KeywordSpan
 
 @BindingMethods(
     BindingMethod(

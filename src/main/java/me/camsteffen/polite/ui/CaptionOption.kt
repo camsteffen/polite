@@ -1,4 +1,4 @@
-package me.camsteffen.polite.view
+package me.camsteffen.polite.ui
 
 import android.content.Context
 import android.util.AttributeSet

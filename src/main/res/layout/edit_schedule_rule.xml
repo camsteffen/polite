@@ -7,10 +7,10 @@
     <data>
         <variable
             name="handlers"
-            type="me.camsteffen.polite.rule.edit.EditScheduleRuleFragment" />
+            type="me.camsteffen.polite.ui.rule.edit.EditScheduleRuleFragment" />
         <variable
             name="model"
-            type="me.camsteffen.polite.rule.edit.EditScheduleRuleViewModel" />
+            type="me.camsteffen.polite.ui.rule.edit.EditScheduleRuleViewModel" />
     </data>
     <LinearLayout
         android:layout_width="match_parent"
@@ -40,7 +40,7 @@
             android:gravity="center_horizontal">
         </LinearLayout>
         <View style="@style/Divider" />
-        <me.camsteffen.polite.view.ValueOption
+        <me.camsteffen.polite.ui.ValueOption
             android:id="@+id/start_time"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -50,7 +50,7 @@
             app:label="@string/start_time"
             app:value="@{model.beginDisplay}"/>
         <View style="@style/Divider" />
-        <me.camsteffen.polite.view.ValueOption
+        <me.camsteffen.polite.ui.ValueOption
             android:id="@+id/end_time"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"

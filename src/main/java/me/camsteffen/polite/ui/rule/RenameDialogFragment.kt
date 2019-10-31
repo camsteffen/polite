@@ -1,4 +1,4 @@
-package me.camsteffen.polite.rule
+package me.camsteffen.polite.ui.rule
 
 import android.app.Dialog
 import android.os.Bundle

@@ -14,7 +14,7 @@
         app:popExitAnim="@anim/slide_out_right"/>
     <fragment
         android:id="@+id/rulesFragment"
-        android:name="me.camsteffen.polite.rule.master.RulesFragment"
+        android:name="me.camsteffen.polite.ui.rule.master.RulesFragment"
         android:label="RulesFragment"
         app:defaultNavHost="true">
         <action
@@ -45,17 +45,17 @@
         android:label="HelpFragment"/>
     <fragment
         android:id="@+id/settingsFragment"
-        android:name="me.camsteffen.polite.settings.SettingsFragment"
+        android:name="me.camsteffen.polite.ui.settings.SettingsFragment"
         android:label="SettingsFragment"
         app:defaultNavHost="true"/>
     <fragment
         android:id="@+id/editCalendarRuleFragment"
-        android:name="me.camsteffen.polite.rule.edit.EditCalendarRuleFragment"
+        android:name="me.camsteffen.polite.ui.rule.edit.EditCalendarRuleFragment"
         android:label="EditCalendarRuleFragment">
     </fragment>
     <fragment
         android:id="@+id/editScheduleRuleFragment"
-        android:name="me.camsteffen.polite.rule.edit.EditScheduleRuleFragment"
+        android:name="me.camsteffen.polite.ui.rule.edit.EditScheduleRuleFragment"
         android:label="EditScheduleRuleFragment">
     </fragment>
 </navigation>

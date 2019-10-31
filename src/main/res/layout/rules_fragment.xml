@@ -4,10 +4,10 @@
         <import type="android.view.View" />
         <variable
             name="model"
-            type="me.camsteffen.polite.rule.RuleMasterDetailViewModel" />
+            type="me.camsteffen.polite.ui.rule.RuleMasterDetailViewModel" />
         <variable
             name="handlers"
-            type="me.camsteffen.polite.rule.master.RulesFragment" />
+            type="me.camsteffen.polite.ui.rule.master.RulesFragment" />
     </data>
 
     <RelativeLayout
@@ -41,7 +41,7 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent" />
 
-        <me.camsteffen.polite.rule.master.RuleMasterRecyclerView
+        <me.camsteffen.polite.ui.rule.master.RuleMasterRecyclerView
             android:id="@+id/rules_view"
             tools:listitem="@layout/rule_list_item"
             android:layout_below="@id/disabled_notice"

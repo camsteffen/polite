@@ -1,4 +1,4 @@
-package me.camsteffen.polite.rule
+package me.camsteffen.polite.util
 
 import android.content.Context
 import android.os.LocaleList
@@ -8,7 +8,7 @@ import org.junit.Test
 import org.threeten.bp.DayOfWeek
 import java.util.Locale
 
-class RuleUtilAndroidTest {
+class ScheduleRuleScheduleInstrumentedTest {
 
     private val targetContext: Context get() =
         InstrumentationRegistry.getInstrumentation().targetContext
