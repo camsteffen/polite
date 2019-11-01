@@ -2,7 +2,7 @@ package me.camsteffen.polite.data.model
 
 import org.threeten.bp.Instant
 
-class CalendarEvent(
+data class CalendarEvent(
     val eventId: Long,
     val calendarId: Long,
     val title: String?,
