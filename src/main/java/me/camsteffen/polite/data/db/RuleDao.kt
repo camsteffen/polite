@@ -17,6 +17,7 @@ import me.camsteffen.polite.data.model.CalendarRuleEntry
 import me.camsteffen.polite.data.model.Rule
 import me.camsteffen.polite.data.model.ScheduleRule
 import me.camsteffen.polite.data.model.ScheduleRuleEntry
+import timber.log.Timber
 
 @Dao
 abstract class RuleDao {
@@ -61,26 +62,44 @@ abstract class RuleDao {
         }
     }
 
-    @Query("delete from rule where id = :id")
-    abstract fun deleteRule(id: Long): Int
+    fun deleteRule(id: Long): Int {
+        val count = doDeleteRule(id)
+        if (count > 0) {
+            Timber.i("Deleted Rule[id=%d]", id)
+        }
+        return count
+    }
 
-    @Query(
-        """update rule set enabled = :enabled
-           where id in (select id from calendar_rule) and enabled != :enabled"""
-    )
-    abstract fun updateCalendarRulesEnabled(enabled: Boolean): Int
+    fun updateCalendarRulesEnabled(enabled: Boolean): Int {
+        val count = doUpdateCalendarRulesEnabled(enabled)
+        if (count > 0) {
+            Timber.i("Updated %d calendar rules with enabled=%b", count, enabled)
+        }
+        return count
+    }
 
-    @Query("update rule set name = :name where id = :id")
-    abstract fun updateRuleName(id: Long, name: String): Int
+    fun updateRuleName(id: Long, name: String): Int {
+        val count = doUpdateRuleName(id, name)
+        if (count > 0) {
+            Timber.d("Updated Rule[id=%d] with name=%s", id, name)
+        }
+        return count
+    }
 
-    @Query("update rule set enabled = :enabled where id = :id")
-    abstract fun updateRuleEnabled(id: Long, enabled: Boolean): Int
+    fun updateRuleEnabled(id: Long, enabled: Boolean): Int {
+        val count = doUpdateRuleEnabled(id, enabled)
+        if (count > 0) {
+            Timber.i("Updated Rule[id=%d] with enabled=%b", id, enabled)
+        }
+        return count
+    }
 
     @Transaction
     open fun saveRule(rule: Rule) {
         if (rule.id != 0L) {
             deleteRule(rule.id)
         }
+        Timber.i("Saving rule: %s", rule)
         val id = insertRuleEntity(rule.asRuleEntity())
         when (rule) {
             is CalendarRule -> {
@@ -94,6 +113,21 @@ abstract class RuleDao {
             }
         }
     }
+
+    @Query("delete from rule where id = :id")
+    protected abstract fun doDeleteRule(id: Long): Int
+
+    @Query("update rule set name = :name where id = :id")
+    protected abstract fun doUpdateRuleName(id: Long, name: String): Int
+
+    @Query("update rule set enabled = :enabled where id = :id")
+    protected abstract fun doUpdateRuleEnabled(id: Long, enabled: Boolean): Int
+
+    @Query(
+        """update rule set enabled = :enabled
+           where id in (select id from calendar_rule) and enabled != :enabled"""
+    )
+    protected abstract fun doUpdateCalendarRulesEnabled(enabled: Boolean): Int
 
     @Insert
     protected abstract fun insertRuleEntity(ruleEntity: RuleEntity): Long

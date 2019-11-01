@@ -7,6 +7,7 @@ import dagger.android.DispatchingAndroidInjector
 import dagger.android.HasAndroidInjector
 import me.camsteffen.polite.di.DaggerAppComponent
 import me.camsteffen.polite.service.work.AppWorkerFactory
+import timber.log.Timber
 import javax.inject.Inject
 
 class Polite : Application(), HasAndroidInjector, Configuration.Provider {
@@ -18,6 +19,9 @@ class Polite : Application(), HasAndroidInjector, Configuration.Provider {
 
     override fun onCreate() {
         super.onCreate()
+        if (BuildConfig.DEBUG) {
+            Timber.plant(Timber.DebugTree())
+        }
         AndroidThreeTen.init(this)
         DaggerAppComponent.factory().create(this).inject(this)
     }

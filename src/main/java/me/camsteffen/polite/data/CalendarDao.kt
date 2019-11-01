@@ -13,6 +13,7 @@ import me.camsteffen.polite.data.Query.calendarEventOf
 import me.camsteffen.polite.data.model.CalendarEntity
 import me.camsteffen.polite.data.model.CalendarEvent
 import org.threeten.bp.Instant
+import timber.log.Timber
 import java.util.concurrent.TimeUnit
 import javax.inject.Inject
 import javax.inject.Singleton
@@ -51,7 +52,9 @@ class CalendarDao
 
     @RequiresPermission(READ_CALENDAR)
     fun getEventsInRange(begin: Instant, end: Instant): List<CalendarEvent> {
-        return getEventsInRange(begin.toEpochMilli(), end.toEpochMilli())
+        val events = getEventsInRange(begin.toEpochMilli(), end.toEpochMilli())
+        Timber.d("Retrieved calendar events: %s", events)
+        return events
     }
 
     private fun getEventsInRange(begin: Long, end: Long): List<CalendarEvent> {

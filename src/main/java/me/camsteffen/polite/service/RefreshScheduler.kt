@@ -12,7 +12,9 @@ import me.camsteffen.polite.service.work.AppWorkManager
 import me.camsteffen.polite.util.AppTimingConfig
 import me.camsteffen.polite.util.componentName
 import org.threeten.bp.Clock
+import org.threeten.bp.Duration
 import org.threeten.bp.Instant
+import timber.log.Timber
 import javax.inject.Inject
 import javax.inject.Singleton
 
@@ -26,22 +28,15 @@ class RefreshScheduler
     private val workManager: AppWorkManager
 ) {
     fun cancelAll() {
+        Timber.i("Cancelling all scheduled refreshes")
         alarmManager.cancel(AppBroadcastReceiver.pendingRefreshIntent(context))
         setRefreshOnCalendarChange(false)
     }
 
-    fun scheduleRefresh(refreshTime: Instant? = null) {
+    fun scheduleRefresh(refreshTime: Instant) {
+        Timber.i("Scheduling refresh at %s", refreshTime)
         val pendingIntent = AppBroadcastReceiver.pendingRefreshIntent(context)
         when {
-            refreshTime == null -> {
-                val windowStart = (clock.instant() + timingConfig.refreshWindowDelay).toEpochMilli()
-                val windowEnd = timingConfig.refreshWindowLength.toMillis()
-                alarmManager.setWindow(
-                    AlarmManager.RTC_WAKEUP,
-                    windowStart, windowEnd,
-                    pendingIntent
-                )
-            }
             Build.VERSION.SDK_INT >= Build.VERSION_CODES.M -> {
                 alarmManager.setExactAndAllowWhileIdle(
                     AlarmManager.RTC_WAKEUP,
@@ -59,19 +54,35 @@ class RefreshScheduler
         }
     }
 
+    fun scheduleRefreshInWindow() {
+        val pendingIntent = AppBroadcastReceiver.pendingRefreshIntent(context)
+        val windowStart = (clock.instant() + timingConfig.refreshWindowDelay).toEpochMilli()
+        val windowLength = timingConfig.refreshWindowLength.toMillis()
+        Timber.i("Scheduling refresh window, start=%s, length=%s",
+            Instant.ofEpochMilli(windowStart), Duration.ofMillis(windowLength))
+        alarmManager.setWindow(
+            AlarmManager.RTC_WAKEUP,
+            windowStart, windowLength,
+            pendingIntent
+        )
+    }
+
     fun setRefreshOnCalendarChange(refreshOnCalendarChange: Boolean) {
+        Timber.d("Setting refresh on calendar change to %b", refreshOnCalendarChange)
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
             if (refreshOnCalendarChange) {
                 workManager.refreshOnCalendarChange()
             } else {
                 workManager.cancelRefreshOnCalendarChange()
             }
+            setReceiverEnabled<CalendarChangeReceiver>(false)
         } else {
             setReceiverEnabled<CalendarChangeReceiver>(refreshOnCalendarChange)
         }
     }
 
     private inline fun <reified T> setReceiverEnabled(enabled: Boolean) {
+        Timber.i("Setting component[%s] enabled=%b", T::class.java.simpleName, enabled)
         val state = if (enabled) {
             COMPONENT_ENABLED_STATE_ENABLED
         } else {

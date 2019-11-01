@@ -5,6 +5,7 @@ import android.content.Context
 import android.content.pm.PackageManager.PERMISSION_GRANTED
 import android.os.Build
 import androidx.core.content.ContextCompat.checkSelfPermission
+import timber.log.Timber
 import javax.inject.Inject
 import javax.inject.Singleton
 
@@ -16,9 +17,11 @@ class AppPermissionChecker
 ) {
     fun checkReadCalendarPermission(): Boolean {
         if (checkSelfPermission(context, READ_CALENDAR) != PERMISSION_GRANTED) {
+            Timber.i("Read calendar permission is not granted")
             notificationManager.notifyCalendarPermissionRequired()
             return false
         }
+        Timber.d("Read calendar permission is granted")
         return true
     }
 

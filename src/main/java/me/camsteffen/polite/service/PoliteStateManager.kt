@@ -11,6 +11,7 @@ import me.camsteffen.polite.util.AppPermissionChecker
 import me.camsteffen.polite.util.AppTimingConfig
 import org.threeten.bp.Clock
 import org.threeten.bp.Instant
+import timber.log.Timber
 import javax.inject.Inject
 import javax.inject.Singleton
 
@@ -30,10 +31,12 @@ class PoliteStateManager
 ) {
 
     fun cancel() {
+        Timber.i("Cancelling Polite Mode")
         doRefresh(true)
     }
 
     fun refresh() {
+        Timber.i("Refreshing Polite Mode")
         doRefresh(false)
     }
 
@@ -53,18 +56,25 @@ class PoliteStateManager
         }
 
         val (currentEvent, nextEvent) = findCurrentAndNextEvents(now)
+        Timber.d("Current rule event: %s", currentEvent)
+        Timber.d("Next rule event: %s", nextEvent)
 
         politeModeController.setCurrentEvent(currentEvent)
 
-        refreshScheduler.run {
-            scheduleRefresh(sequenceOf(currentEvent?.end, nextEvent?.begin).filterNotNull().min())
-            setRefreshOnCalendarChange(ruleDao.getEnabledCalendarRulesExist())
+        val refreshTime = sequenceOf(currentEvent?.end, nextEvent?.begin).filterNotNull().min()
+        if (refreshTime == null) {
+            refreshScheduler.scheduleRefreshInWindow()
+        } else {
+            refreshScheduler.scheduleRefresh(refreshTime)
         }
+        refreshScheduler.setRefreshOnCalendarChange(ruleDao.getEnabledCalendarRulesExist())
 
         stateDao.deleteDeadCancels(now)
+        Timber.i("Refresh completed")
     }
 
     private fun findCurrentAndNextEvents(now: Instant): CurrentAndNextEvents {
+        Timber.d("Finding current and next rule events")
         val events = ruleEventFinders.all.eventsInRange(
             now + timingConfig.ruleEventBoundaryTolerance,
             now + timingConfig.lookahead
@@ -74,6 +84,7 @@ class PoliteStateManager
         var nextEvent: RuleEvent? = null
 
         for (event in events) {
+            Timber.d("Rule event: %s", event)
             // if the event is occurring now
             if (event.begin <= now + timingConfig.ruleEventBoundaryTolerance) {
                 if (currentEvent == null || event.vibrate < currentEvent.vibrate) {

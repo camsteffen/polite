@@ -7,6 +7,7 @@ import androidx.work.Constraints
 import androidx.work.ExistingWorkPolicy
 import androidx.work.OneTimeWorkRequestBuilder
 import androidx.work.WorkManager
+import timber.log.Timber
 import java.util.concurrent.TimeUnit
 import javax.inject.Inject
 
@@ -16,11 +17,13 @@ class AppWorkManager
 ) {
     @RequiresApi(Build.VERSION_CODES.N)
     fun cancelRefreshOnCalendarChange() {
+        Timber.i("Cancelling refresh on WorkManager")
         workManager.cancelUniqueWork(CALENDAR_CHANGE_WORK_NAME)
     }
 
     @RequiresApi(Build.VERSION_CODES.N)
     fun refreshOnCalendarChange() {
+        Timber.i("Enqueuing refresh on calendar change on WorkManager")
         workManager.enqueueUniqueWork(
             CALENDAR_CHANGE_WORK_NAME,
             ExistingWorkPolicy.REPLACE,

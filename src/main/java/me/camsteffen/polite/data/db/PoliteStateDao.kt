@@ -9,6 +9,7 @@ import me.camsteffen.polite.data.db.entity.ActiveRuleEvent
 import me.camsteffen.polite.data.db.entity.EventCancel
 import me.camsteffen.polite.data.db.entity.ScheduleRuleCancel
 import org.threeten.bp.Instant
+import timber.log.Timber
 
 @Dao
 abstract class PoliteStateDao {
@@ -18,8 +19,11 @@ abstract class PoliteStateDao {
 
     @Transaction
     open fun setActiveRuleEvent(activeRuleEvent: ActiveRuleEvent?) {
-        deleteActiveRuleEvent()
+        if (deleteActiveRuleEvent() > 0) {
+            Timber.i("Deleted active rule event")
+        }
         if (activeRuleEvent != null) {
+            Timber.i("Saving active rule event: %s", activeRuleEvent)
             insertActiveRuleEvent(activeRuleEvent)
         }
     }
@@ -28,17 +32,29 @@ abstract class PoliteStateDao {
     abstract fun getEventCancels(): List<EventCancel>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    abstract fun insertEventCancels(vararg eventCancels: EventCancel)
+    fun insertEventCancels(vararg eventCancels: EventCancel) {
+        Timber.i("Saving event cancels: %s", eventCancels)
+        doInsertEventCancels(*eventCancels)
+    }
 
     @Query("select * from schedule_rule_cancel")
     abstract fun getScheduleRuleCancels(): List<ScheduleRuleCancel>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    abstract fun insertScheduleRuleCancels(vararg scheduleRuleCancels: ScheduleRuleCancel)
+    fun insertScheduleRuleCancels(vararg scheduleRuleCancels: ScheduleRuleCancel) {
+        Timber.i("Saving schedule rule cancels: %s", scheduleRuleCancels)
+        doInsertScheduleRuleCancels(*scheduleRuleCancels)
+    }
 
     fun deleteDeadCancels(now: Instant) {
-        deleteDeadEventCancels(now)
-        deleteDeadScheduleRuleCancels(now)
+        var eventCancels = deleteDeadEventCancels(now)
+        if (eventCancels > 0) {
+            Timber.i("Deleted %d event cancels", eventCancels)
+        }
+        val scheduleRuleCancels = deleteDeadScheduleRuleCancels(now)
+        if (scheduleRuleCancels > 0) {
+            Timber.i("Deleted %d schedule rule cancels", scheduleRuleCancels)
+        }
     }
 
     @Insert
@@ -46,6 +62,14 @@ abstract class PoliteStateDao {
 
     @Query("delete from active_rule_event")
     protected abstract fun deleteActiveRuleEvent(): Int
+
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    protected abstract fun doInsertEventCancels(vararg eventCancels: EventCancel)
+
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    protected abstract fun doInsertScheduleRuleCancels(
+        vararg scheduleRuleCancels: ScheduleRuleCancel
+    )
 
     @Query(
         """delete from event_cancel where `end` <= :now

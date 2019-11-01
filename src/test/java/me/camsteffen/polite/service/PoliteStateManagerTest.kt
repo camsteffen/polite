@@ -76,7 +76,7 @@ class PoliteStateManagerTest {
         verify {
             eventsInRange()
             politeModeController.setCurrentEvent(null)
-            refreshScheduler.scheduleRefresh()
+            refreshScheduler.scheduleRefreshInWindow()
         }
     }
 

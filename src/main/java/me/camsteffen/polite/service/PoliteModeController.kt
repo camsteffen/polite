@@ -8,6 +8,7 @@ import me.camsteffen.polite.data.model.RuleEvent
 import me.camsteffen.polite.util.AppNotificationManager
 import me.camsteffen.polite.util.AppTimingConfig
 import org.threeten.bp.Instant
+import timber.log.Timber
 import javax.inject.Inject
 
 /**
@@ -26,7 +27,9 @@ class PoliteModeController
      * Sets the currently active rule event and updates Polite Mode.
      */
     fun setCurrentEvent(currentEvent: RuleEvent?) {
+        Timber.i("Setting current rule event: %s", currentEvent)
         val previousEvent = stateDao.getActiveRuleEvent()
+        Timber.d("Previous rule event: %s", previousEvent)
 
         when {
             currentEvent == null -> {
@@ -42,6 +45,7 @@ class PoliteModeController
     }
 
     private fun activate(ruleEvent: RuleEvent, saveRingerMode: Boolean) {
+        Timber.i("Activating Polite Mode")
         if (saveRingerMode) {
             ringerModeManager.saveRingerMode()
         }
@@ -53,6 +57,7 @@ class PoliteModeController
     }
 
     private fun deactivate(restoreRingerMode: Boolean) {
+        Timber.i("Deactivating Polite Mode")
         if (restoreRingerMode) {
             ringerModeManager.restoreRingerMode()
         } else {
