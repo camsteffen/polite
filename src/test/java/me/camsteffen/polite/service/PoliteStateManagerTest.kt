@@ -263,6 +263,7 @@ class PoliteStateManagerTest {
         every { preferences.enable } returns politeEnabled
         every { permissionChecker.checkNotificationPolicyAccess() } returns
             hasNotificationPolicyAccess
+        every { ruleDao.getEnabledRulesExist() } returns true
         every {
             ruleEventFinders.all.eventsInRange(
                 now + timingConfig.ruleEventBoundaryTolerance,

@@ -28,6 +28,9 @@ abstract class RuleDao {
     fun getEnabledScheduleRules(): List<ScheduleRule> =
         getEnabledScheduleRuleEntries().map(ScheduleRuleEntry::asScheduleRule)
 
+    @Query("select exists(select 1 from rule where enabled = 1)")
+    abstract fun getEnabledRulesExist(): Boolean
+
     @Query(
         """select exists(
              select 1 from rule join calendar_rule on rule.id = calendar_rule.id where enabled = 1

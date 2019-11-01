@@ -47,10 +47,13 @@ class PoliteStateManager
             cancelCurrentEvents(now)
         }
 
-        if (!preferences.enable || !permissionChecker.checkNotificationPolicyAccess()) {
+        if (!preferences.enable ||
+            !ruleDao.getEnabledRulesExist() ||
+            !permissionChecker.checkNotificationPolicyAccess()
+        ) {
             politeModeController.setCurrentEvent(null)
-            // No need to schedule a refresh since a refresh will occur when the user enables
-            // polite mode and/or gives needed permissions
+            // No need to schedule a refresh since a refresh will be triggered when the user enables
+            // Polite, creates a Rule, or gives needed permissions
             refreshScheduler.cancelAll()
             return
         }
