@@ -5,7 +5,7 @@ import android.app.PendingIntent
 import android.content.Context
 import android.content.Intent
 import dagger.android.DaggerBroadcastReceiver
-import me.camsteffen.polite.service.PoliteStateManager
+import me.camsteffen.polite.service.PoliteModeManager
 import me.camsteffen.polite.util.finishAsync
 import timber.log.Timber
 import javax.inject.Inject
@@ -36,7 +36,7 @@ class AppBroadcastReceiver : DaggerBroadcastReceiver() {
         }
     }
 
-    @Inject lateinit var stateManager: PoliteStateManager
+    @Inject lateinit var politeModeManager: PoliteModeManager
 
     override fun onReceive(context: Context, intent: Intent) {
         super.onReceive(context, intent)
@@ -46,8 +46,8 @@ class AppBroadcastReceiver : DaggerBroadcastReceiver() {
             Intent.ACTION_BOOT_COMPLETED,
             Intent.ACTION_MY_PACKAGE_REPLACED,
             NotificationManager.ACTION_NOTIFICATION_POLICY_ACCESS_GRANTED_CHANGED,
-            ACTION_REFRESH -> finishAsync(stateManager::refresh)
-            ACTION_CANCEL -> finishAsync(stateManager::cancel)
+            ACTION_REFRESH -> finishAsync(politeModeManager::refresh)
+            ACTION_CANCEL -> finishAsync(politeModeManager::cancel)
         }
     }
 }

@@ -3,7 +3,7 @@ package me.camsteffen.polite.data
 import android.os.AsyncTask
 import me.camsteffen.polite.data.db.RuleDao
 import me.camsteffen.polite.data.model.Rule
-import me.camsteffen.polite.service.PoliteStateManager
+import me.camsteffen.polite.service.PoliteModeManager
 import javax.inject.Inject
 import javax.inject.Singleton
 
@@ -13,13 +13,13 @@ import javax.inject.Singleton
 @Singleton
 class RuleService
 @Inject constructor(
-    private val politeStateManager: PoliteStateManager,
+    private val politeModeManager: PoliteModeManager,
     private val ruleDao: RuleDao
 ) {
     fun deleteRuleAsync(id: Long) {
         AsyncTask.execute {
             if (ruleDao.deleteRule(id) != 0) {
-                politeStateManager.refresh()
+                politeModeManager.refresh()
             }
         }
     }
@@ -27,14 +27,14 @@ class RuleService
     fun saveRuleAsync(rule: Rule) {
         AsyncTask.execute {
             ruleDao.saveRule(rule)
-            politeStateManager.refresh()
+            politeModeManager.refresh()
         }
     }
 
     fun updateCalendarRulesEnabledAsync(enabled: Boolean) {
         AsyncTask.execute {
             if (ruleDao.updateCalendarRulesEnabled(enabled) != 0) {
-                politeStateManager.refresh()
+                politeModeManager.refresh()
             }
         }
     }
@@ -42,7 +42,7 @@ class RuleService
     fun updateRuleEnabledAsync(id: Long, enabled: Boolean) {
         AsyncTask.execute {
             if (ruleDao.updateRuleEnabled(id, enabled) != 0) {
-                politeStateManager.refresh()
+                politeModeManager.refresh()
             }
         }
     }
@@ -50,7 +50,7 @@ class RuleService
     fun updateRuleNameAsync(id: Long, name: String) {
         AsyncTask.execute {
             if (ruleDao.updateRuleName(id, name) != 0) {
-                politeStateManager.refresh()
+                politeModeManager.refresh()
             }
         }
     }

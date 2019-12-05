@@ -15,9 +15,13 @@ import timber.log.Timber
 import javax.inject.Inject
 import javax.inject.Singleton
 
+/**
+ * The [PoliteModeManager] observes all relevant data to determine and update the state of Polite
+ * Mode.
+ */
 @Singleton
 @WorkerThread
-class PoliteStateManager
+class PoliteModeManager
 @Inject constructor(
     private val clock: Clock,
     private val permissionChecker: AppPermissionChecker,

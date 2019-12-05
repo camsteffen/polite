@@ -40,7 +40,7 @@ import me.camsteffen.polite.data.model.DefaultRules
 import me.camsteffen.polite.data.model.Rule
 import me.camsteffen.polite.data.model.ScheduleRule
 import me.camsteffen.polite.databinding.ActivityMainBinding
-import me.camsteffen.polite.service.PoliteStateManager
+import me.camsteffen.polite.service.PoliteModeManager
 import me.camsteffen.polite.ui.rule.RuleMasterDetailViewModel
 import me.camsteffen.polite.util.AppNotificationManager
 import me.camsteffen.polite.util.hideKeyboard
@@ -67,7 +67,7 @@ class MainActivity : AppCompatActivity(), HasAndroidInjector,
     @Inject lateinit var dispatchingAndroidInjector: DispatchingAndroidInjector<Any>
     private lateinit var navController: NavController
     @Inject lateinit var notificationManager: AppNotificationManager
-    @Inject lateinit var politeStateManager: PoliteStateManager
+    @Inject lateinit var politeModeManager: PoliteModeManager
     @Inject lateinit var preferences: AppPreferences
     @Inject lateinit var ruleService: RuleService
     @Inject lateinit var viewModelProviderFactory: ViewModelProvider.Factory
@@ -125,7 +125,7 @@ class MainActivity : AppCompatActivity(), HasAndroidInjector,
         if (savedInstanceState == null) {
             fab.show()
             fab.bringToFront()
-            AsyncTask.execute(politeStateManager::refresh)
+            AsyncTask.execute(politeModeManager::refresh)
         }
 
         preferences.launchCount++
@@ -174,7 +174,7 @@ class MainActivity : AppCompatActivity(), HasAndroidInjector,
                     model.selectedRule.value = defaultRules.calendar()
                 }
                 REQUEST_PERMISSION_CALENDAR -> {
-                    AsyncTask.execute(politeStateManager::refresh)
+                    AsyncTask.execute(politeModeManager::refresh)
                 }
             }
         } else {

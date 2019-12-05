@@ -5,12 +5,12 @@ import androidx.work.ListenableWorker
 import androidx.work.WorkerFactory
 import androidx.work.WorkerParameters
 import dagger.Lazy
-import me.camsteffen.polite.service.PoliteStateManager
+import me.camsteffen.polite.service.PoliteModeManager
 import javax.inject.Inject
 
 class AppWorkerFactory
 @Inject constructor(
-    private val politeStateManager: Lazy<PoliteStateManager>
+    private val politeModeManager: Lazy<PoliteModeManager>
 ) : WorkerFactory() {
     override fun createWorker(
         appContext: Context,
@@ -19,7 +19,7 @@ class AppWorkerFactory
     ): ListenableWorker? {
         return when (workerClassName) {
             RefreshWorker::class.java.name -> {
-                RefreshWorker(appContext, workerParameters, politeStateManager.get())
+                RefreshWorker(appContext, workerParameters, politeModeManager.get())
             }
             else -> null
         }

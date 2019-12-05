@@ -9,14 +9,14 @@ import androidx.preference.Preference
 import androidx.preference.PreferenceFragmentCompat
 import dagger.android.support.AndroidSupportInjection
 import me.camsteffen.polite.R
-import me.camsteffen.polite.service.PoliteStateManager
+import me.camsteffen.polite.service.PoliteModeManager
 import me.camsteffen.polite.ui.MainActivity
 import javax.inject.Inject
 
 class SettingsFragment :
     PreferenceFragmentCompat(), SharedPreferences.OnSharedPreferenceChangeListener {
 
-    @Inject lateinit var politeStateManager: PoliteStateManager
+    @Inject lateinit var politeModeManager: PoliteModeManager
 
     private val mainActivity: MainActivity
         get() = activity as MainActivity
@@ -49,7 +49,7 @@ class SettingsFragment :
 
     override fun onStop() {
         super.onStop()
-        AsyncTask.execute(politeStateManager::refresh)
+        AsyncTask.execute(politeModeManager::refresh)
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {

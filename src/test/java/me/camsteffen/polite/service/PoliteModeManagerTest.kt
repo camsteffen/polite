@@ -19,9 +19,9 @@ import org.threeten.bp.Duration
 import org.threeten.bp.Instant
 import org.threeten.bp.ZoneId
 
-class PoliteStateManagerTest {
+class PoliteModeManagerTest {
 
-    private lateinit var politeStateManager: PoliteStateManager
+    private lateinit var politeModeManager: PoliteModeManager
 
     private val permissionChecker: AppPermissionChecker = mockk()
     private val politeModeActuator: PoliteModeActuator = mockk(relaxUnitFun = true)
@@ -36,7 +36,7 @@ class PoliteStateManagerTest {
 
     @Before
     fun setUp() {
-        politeStateManager = PoliteStateManager(
+        politeModeManager = PoliteModeManager(
             clock = Clock.fixed(now, ZoneId.systemDefault()),
             permissionChecker = permissionChecker,
             politeModeActuator = politeModeActuator,
@@ -58,7 +58,7 @@ class PoliteStateManagerTest {
             hasNotificationPolicyAccess = true
         )
 
-        politeStateManager.refresh()
+        politeModeManager.refresh()
 
         verifyAll {
             ruleEventFinders wasNot Called
@@ -71,7 +71,7 @@ class PoliteStateManagerTest {
     fun `no rule events`() {
         refreshGiven()
 
-        politeStateManager.refresh()
+        politeModeManager.refresh()
 
         verify {
             eventsInRange()
@@ -91,7 +91,7 @@ class PoliteStateManagerTest {
             events = listOf(ruleEvent)
         )
 
-        politeStateManager.refresh()
+        politeModeManager.refresh()
 
         verify {
             eventsInRange()
@@ -117,7 +117,7 @@ class PoliteStateManagerTest {
             events = listOf(currentEvent, nextEvent)
         )
 
-        politeStateManager.refresh()
+        politeModeManager.refresh()
 
         verify {
             eventsInRange()
@@ -142,7 +142,7 @@ class PoliteStateManagerTest {
             events = listOf(currentEvent, nextEvent)
         )
 
-        politeStateManager.refresh()
+        politeModeManager.refresh()
 
         verify {
             eventsInRange()
@@ -157,7 +157,7 @@ class PoliteStateManagerTest {
             events = listOf(TestObjects.calendarRuleEvent(begin = now + Duration.ofHours(1)))
         )
 
-        politeStateManager.refresh()
+        politeModeManager.refresh()
 
         verify {
             eventsInRange()
@@ -185,7 +185,7 @@ class PoliteStateManagerTest {
             )
         )
 
-        politeStateManager.refresh()
+        politeModeManager.refresh()
 
         verify {
             eventsInRange()
@@ -212,7 +212,7 @@ class PoliteStateManagerTest {
             )
         )
 
-        politeStateManager.refresh()
+        politeModeManager.refresh()
 
         verify {
             eventsInRange()
@@ -239,7 +239,7 @@ class PoliteStateManagerTest {
             )
         )
 
-        politeStateManager.refresh()
+        politeModeManager.refresh()
 
         verify {
             eventsInRange()
