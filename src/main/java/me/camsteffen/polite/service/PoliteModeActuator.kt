@@ -10,11 +10,13 @@ import me.camsteffen.polite.util.AppTimingConfig
 import org.threeten.bp.Instant
 import timber.log.Timber
 import javax.inject.Inject
+import javax.inject.Singleton
 
 /**
- * Activates an deactivates Polite mode according to the current [ActiveRuleEvent]
+ * The [PoliteModeActuator] produces the effects of activating a deactivating Polite Mode.
+ * More specifically, it changes the ringer mode and shows a notification.
  */
-class PoliteModeController
+class PoliteModeActuator
 @Inject constructor(
     private val notificationManager: AppNotificationManager,
     private val preferences: AppPreferences,

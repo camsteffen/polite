@@ -24,7 +24,7 @@ class PoliteStateManagerTest {
     private lateinit var politeStateManager: PoliteStateManager
 
     private val permissionChecker: AppPermissionChecker = mockk()
-    private val politeModeController: PoliteModeController = mockk(relaxUnitFun = true)
+    private val politeModeActuator: PoliteModeActuator = mockk(relaxUnitFun = true)
     private val preferences: AppPreferences = mockk()
     private val refreshScheduler: RefreshScheduler = mockk(relaxUnitFun = true)
     private val ruleDao: RuleDao = mockk()
@@ -39,7 +39,7 @@ class PoliteStateManagerTest {
         politeStateManager = PoliteStateManager(
             clock = Clock.fixed(now, ZoneId.systemDefault()),
             permissionChecker = permissionChecker,
-            politeModeController = politeModeController,
+            politeModeActuator = politeModeActuator,
             preferences = preferences,
             refreshScheduler = refreshScheduler,
             ruleDao = ruleDao,
@@ -62,7 +62,7 @@ class PoliteStateManagerTest {
 
         verifyAll {
             ruleEventFinders wasNot Called
-            politeModeController.setCurrentEvent(null)
+            politeModeActuator.setCurrentEvent(null)
             refreshScheduler.cancelAll()
         }
     }
@@ -75,7 +75,7 @@ class PoliteStateManagerTest {
 
         verify {
             eventsInRange()
-            politeModeController.setCurrentEvent(null)
+            politeModeActuator.setCurrentEvent(null)
             refreshScheduler.scheduleRefreshInWindow()
         }
     }
@@ -95,7 +95,7 @@ class PoliteStateManagerTest {
 
         verify {
             eventsInRange()
-            politeModeController.setCurrentEvent(ruleEvent)
+            politeModeActuator.setCurrentEvent(ruleEvent)
             refreshScheduler.scheduleRefresh(eventEnd)
         }
     }
@@ -121,7 +121,7 @@ class PoliteStateManagerTest {
 
         verify {
             eventsInRange()
-            politeModeController.setCurrentEvent(currentEvent)
+            politeModeActuator.setCurrentEvent(currentEvent)
             refreshScheduler.scheduleRefresh(now + Duration.ofMinutes(30))
         }
     }
@@ -146,7 +146,7 @@ class PoliteStateManagerTest {
 
         verify {
             eventsInRange()
-            politeModeController.setCurrentEvent(nextEvent)
+            politeModeActuator.setCurrentEvent(nextEvent)
             refreshScheduler.scheduleRefresh(now + Duration.ofMinutes(20))
         }
     }
@@ -161,7 +161,7 @@ class PoliteStateManagerTest {
 
         verify {
             eventsInRange()
-            politeModeController.setCurrentEvent(null)
+            politeModeActuator.setCurrentEvent(null)
             refreshScheduler.scheduleRefresh(now + Duration.ofHours(1))
         }
     }
@@ -189,7 +189,7 @@ class PoliteStateManagerTest {
 
         verify {
             eventsInRange()
-            politeModeController.setCurrentEvent(currentEvent)
+            politeModeActuator.setCurrentEvent(currentEvent)
             refreshScheduler.scheduleRefresh(now + Duration.ofMinutes(10))
         }
     }
@@ -216,7 +216,7 @@ class PoliteStateManagerTest {
 
         verify {
             eventsInRange()
-            politeModeController.setCurrentEvent(activeEvent)
+            politeModeActuator.setCurrentEvent(activeEvent)
             refreshScheduler.scheduleRefresh(now + Duration.ofMinutes(10))
         }
     }
@@ -243,7 +243,7 @@ class PoliteStateManagerTest {
 
         verify {
             eventsInRange()
-            politeModeController.setCurrentEvent(currentEvent)
+            politeModeActuator.setCurrentEvent(currentEvent)
             refreshScheduler.scheduleRefresh(now + Duration.ofMinutes(20))
         }
     }

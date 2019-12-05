@@ -21,7 +21,7 @@ class PoliteStateManager
 @Inject constructor(
     private val clock: Clock,
     private val permissionChecker: AppPermissionChecker,
-    private val politeModeController: PoliteModeController,
+    private val politeModeActuator: PoliteModeActuator,
     private val preferences: AppPreferences,
     private val refreshScheduler: RefreshScheduler,
     private val ruleDao: RuleDao,
@@ -51,7 +51,7 @@ class PoliteStateManager
             !ruleDao.getEnabledRulesExist() ||
             !permissionChecker.checkNotificationPolicyAccess()
         ) {
-            politeModeController.setCurrentEvent(null)
+            politeModeActuator.setCurrentEvent(null)
             // No need to schedule a refresh since a refresh will be triggered when the user enables
             // Polite, creates a Rule, or gives needed permissions
             refreshScheduler.cancelAll()
@@ -62,7 +62,7 @@ class PoliteStateManager
         Timber.d("Current rule event: %s", currentEvent)
         Timber.d("Next rule event: %s", nextEvent)
 
-        politeModeController.setCurrentEvent(currentEvent)
+        politeModeActuator.setCurrentEvent(currentEvent)
 
         val refreshTime = sequenceOf(currentEvent?.end, nextEvent?.begin).filterNotNull().min()
         if (refreshTime == null) {
