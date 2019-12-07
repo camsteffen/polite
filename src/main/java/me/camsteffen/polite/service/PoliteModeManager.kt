@@ -36,20 +36,13 @@ class PoliteModeManager
 
     fun cancel() {
         Timber.i("Cancelling Polite Mode")
-        doRefresh(true)
+        cancelCurrentEvents(clock.instant())
+        refresh()
     }
 
     fun refresh() {
         Timber.i("Refreshing Polite Mode")
-        doRefresh(false)
-    }
-
-    private fun doRefresh(cancel: Boolean) {
         val now = clock.instant()
-
-        if (cancel) {
-            cancelCurrentEvents(now)
-        }
 
         if (!preferences.enable ||
             !ruleDao.getEnabledRulesExist() ||
