@@ -16,6 +16,7 @@ import javax.inject.Singleton
  * The [PoliteModeActuator] produces the effects of activating a deactivating Polite Mode.
  * More specifically, it changes the ringer mode and shows a notification.
  */
+@Singleton
 class PoliteModeActuator
 @Inject constructor(
     private val notificationManager: AppNotificationManager,
