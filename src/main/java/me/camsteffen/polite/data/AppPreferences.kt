@@ -1,4 +1,4 @@
-package me.camsteffen.polite.settings
+package me.camsteffen.polite.data
 
 import android.content.SharedPreferences
 import android.content.res.Resources

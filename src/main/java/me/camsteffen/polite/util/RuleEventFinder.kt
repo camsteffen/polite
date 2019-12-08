@@ -1,13 +1,13 @@
 package me.camsteffen.polite.util
 
 import androidx.annotation.WorkerThread
+import me.camsteffen.polite.data.AppPreferences
 import me.camsteffen.polite.data.CalendarDao
 import me.camsteffen.polite.data.CalendarEvent
 import me.camsteffen.polite.db.PoliteStateDao
 import me.camsteffen.polite.db.RuleDao
 import me.camsteffen.polite.model.CalendarRule
 import me.camsteffen.polite.model.EventCancel
-import me.camsteffen.polite.settings.AppPreferences
 import org.threeten.bp.Clock
 import org.threeten.bp.Duration
 import org.threeten.bp.Instant

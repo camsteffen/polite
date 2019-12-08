@@ -5,6 +5,7 @@ import io.mockk.Called
 import io.mockk.every
 import io.mockk.mockk
 import io.mockk.verify
+import me.camsteffen.polite.data.AppPreferences
 import me.camsteffen.polite.data.CalendarDao
 import me.camsteffen.polite.data.CalendarEvent
 import me.camsteffen.polite.db.PoliteStateDao
@@ -12,7 +13,6 @@ import me.camsteffen.polite.db.RuleDao
 import me.camsteffen.polite.model.CalendarEventMatchBy
 import me.camsteffen.polite.model.CalendarRule
 import me.camsteffen.polite.model.EventCancel
-import me.camsteffen.polite.settings.AppPreferences
 import org.junit.Before
 import org.junit.Test
 import org.threeten.bp.Instant

@@ -22,12 +22,12 @@ import me.camsteffen.polite.MainActivity
 import me.camsteffen.polite.Polite
 import me.camsteffen.polite.R
 import me.camsteffen.polite.RuleService
+import me.camsteffen.polite.data.AppPreferences
 import me.camsteffen.polite.databinding.RulesFragmentBinding
 import me.camsteffen.polite.model.CalendarRule
 import me.camsteffen.polite.model.Rule
 import me.camsteffen.polite.rule.RenameDialogFragment
 import me.camsteffen.polite.rule.RuleMasterDetailViewModel
-import me.camsteffen.polite.settings.AppPreferences
 import javax.inject.Inject
 
 class RulesFragment : DaggerFragment() {

@@ -32,7 +32,7 @@ import me.camsteffen.polite.receiver.CalendarChangeReceiver
 import me.camsteffen.polite.rule.RuleMasterDetailViewModel
 import me.camsteffen.polite.rule.edit.EditCalendarRuleViewModel
 import me.camsteffen.polite.rule.edit.EditScheduleRuleViewModel
-import me.camsteffen.polite.settings.PreferenceDefaults
+import me.camsteffen.polite.data.PreferenceDefaults
 import me.camsteffen.polite.util.CalendarRuleEventFinder
 import me.camsteffen.polite.util.RuleEventFinder
 import me.camsteffen.polite.util.ScheduleRuleEventFinder

@@ -32,13 +32,13 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton
 import dagger.android.AndroidInjection
 import dagger.android.DispatchingAndroidInjector
 import dagger.android.HasAndroidInjector
+import me.camsteffen.polite.data.AppPreferences
 import me.camsteffen.polite.databinding.ActivityMainBinding
 import me.camsteffen.polite.model.CalendarRule
 import me.camsteffen.polite.model.DefaultRules
 import me.camsteffen.polite.model.Rule
 import me.camsteffen.polite.model.ScheduleRule
 import me.camsteffen.polite.rule.RuleMasterDetailViewModel
-import me.camsteffen.polite.settings.AppPreferences
 import me.camsteffen.polite.state.PoliteStateManager
 import me.camsteffen.polite.util.AppNotificationManager
 import me.camsteffen.polite.util.hideKeyboard

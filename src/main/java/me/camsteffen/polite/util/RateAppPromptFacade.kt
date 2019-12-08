@@ -6,8 +6,8 @@ import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.core.net.toUri
 import me.camsteffen.polite.R
+import me.camsteffen.polite.data.AppPreferences
 import me.camsteffen.polite.di.ActivityScope
-import me.camsteffen.polite.settings.AppPreferences
 import org.threeten.bp.Duration
 import org.threeten.bp.Instant
 import javax.inject.Inject

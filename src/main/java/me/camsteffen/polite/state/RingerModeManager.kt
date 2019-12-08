@@ -1,7 +1,7 @@
 package me.camsteffen.polite.state
 
 import android.media.AudioManager
-import me.camsteffen.polite.settings.AppPreferences
+import me.camsteffen.polite.data.AppPreferences
 import javax.inject.Inject
 import javax.inject.Singleton
 
