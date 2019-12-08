@@ -1,0 +1,3 @@
+[*.{kt,kts}]
+# workaround for https://github.com/pinterest/ktlint/issues/527
+disabled_rules=import-ordering
