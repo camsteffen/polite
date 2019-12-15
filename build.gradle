@@ -95,7 +95,7 @@ android {
 
 dependencies {
     def androidx_test_version = '1.2.0'
-    def dagger_version = '2.24'
+    def dagger_version = '2.25.3'
     def lifecycle_version = '2.1.0'
     def nav_version = '2.1.0'
     def room_version = '2.2.2'
