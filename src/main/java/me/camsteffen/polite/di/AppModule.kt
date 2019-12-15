@@ -96,73 +96,59 @@ abstract class AppModule {
     abstract fun bindScheduleRuleEventFinder(
         scheduleRuleEventFinder: ScheduleRuleEventFinder
     ): RuleEventFinder<*>
+}
 
-    @Module
-    companion object {
+@Module
+object AppModuleProviders {
+    @Provides
+    fun provideContentResolver(app: Application): ContentResolver = app.contentResolver
 
-        @JvmStatic
-        @Provides
-        fun provideContentResolver(app: Application): ContentResolver = app.contentResolver
+    @Provides
+    fun provideNotificationManager(app: Application): NotificationManager =
+        app.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
 
-        @JvmStatic
-        @Provides
-        fun provideNotificationManager(app: Application): NotificationManager =
-            app.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
+    @Provides
+    @Singleton
+    fun database(context: Context): AppDatabase = AppDatabase.init(context)
 
-        @JvmStatic
-        @Provides
-        @Singleton
-        fun database(context: Context): AppDatabase = AppDatabase.init(context)
+    @Provides
+    fun ruleDao(database: AppDatabase) = database.ruleDao
 
-        @JvmStatic
-        @Provides
-        fun ruleDao(database: AppDatabase) = database.ruleDao
+    @Provides
+    fun politeStateDao(database: AppDatabase): PoliteStateDao = database.politeStateDao
 
-        @JvmStatic
-        @Provides
-        fun politeStateDao(database: AppDatabase): PoliteStateDao = database.politeStateDao
+    @Provides
+    fun provideResources(app: Application): Resources = app.resources
 
-        @JvmStatic
-        @Provides
-        fun provideResources(app: Application): Resources = app.resources
+    @Provides
+    fun provideSharedPreferences(app: Application): SharedPreferences =
+        PreferenceManager.getDefaultSharedPreferences(app)
 
-        @JvmStatic
-        @Provides
-        fun provideSharedPreferences(app: Application): SharedPreferences =
-            PreferenceManager.getDefaultSharedPreferences(app)
-
-        @JvmStatic
-        @Provides
-        fun provideEnableLiveData(
-            sharedPreferences: SharedPreferences,
-            resources: Resources
-        ): LiveData<Boolean> {
-            val key = resources.getString(R.string.preference_enable)
-            return SharedPreferenceBooleanLiveData(
-                sharedPreferences,
-                key,
-                PreferenceDefaults.ENABLE
-            )
-        }
-
-        @JvmStatic
-        @Provides
-        fun provideAlarmManager(context: Context): AlarmManager = context.getSystemService()!!
-
-        @JvmStatic
-        @Provides
-        fun provideAudioManager(context: Context): AudioManager = context.getSystemService()!!
-
-        @JvmStatic
-        @Provides
-        fun provideClock(): Clock = Clock.systemDefaultZone()
-
-        @JvmStatic
-        @Provides
-        fun provideAppTimingConfig(): AppTimingConfig = defaultAppTimingConfig
-
-        @JvmStatic
-        @Provides
-        fun provideWorkManager(context: Context): WorkManager = WorkManager.getInstance(context)
+    @Provides
+    fun provideEnableLiveData(
+        sharedPreferences: SharedPreferences,
+        resources: Resources
+    ): LiveData<Boolean> {
+        val key = resources.getString(R.string.preference_enable)
+        return SharedPreferenceBooleanLiveData(
+            sharedPreferences,
+            key,
+            PreferenceDefaults.ENABLE
+        )
     }
+
+    @Provides
+    fun provideAlarmManager(context: Context): AlarmManager = context.getSystemService()!!
+
+    @Provides
+    fun provideAudioManager(context: Context): AudioManager = context.getSystemService()!!
+
+    @Provides
+    fun provideClock(): Clock = Clock.systemDefaultZone()
+
+    @Provides
+    fun provideAppTimingConfig(): AppTimingConfig = defaultAppTimingConfig
+
+    @Provides
+    fun provideWorkManager(context: Context): WorkManager = WorkManager.getInstance(context)
 }
