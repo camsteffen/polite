@@ -140,7 +140,7 @@ dependencies {
         exclude group: 'com.jakewharton.threetenabp', module: 'threetenabp'
     }
 
-    ktlint "com.pinterest:ktlint:0.35.0"
+    ktlint "com.pinterest:ktlint:0.39.0"
 }
 
 task ktlint(type: JavaExec, group: 'verification') {
