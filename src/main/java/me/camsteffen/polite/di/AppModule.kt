@@ -51,7 +51,11 @@ abstract class AppModule {
 
     @ActivityScope
     @ContributesAndroidInjector(
-        modules = [MainActivityModule::class, MainActivityFragmentsModule::class]
+        modules = [
+            MainActivityModule::class,
+            MainActivityFragmentsModule::class,
+            FragmentBindingModule::class
+        ]
     )
     abstract fun contributeMainActivity(): MainActivity
 

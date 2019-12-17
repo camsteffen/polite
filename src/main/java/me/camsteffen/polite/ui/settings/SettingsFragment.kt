@@ -7,22 +7,20 @@ import android.view.MenuItem
 import androidx.navigation.fragment.findNavController
 import androidx.preference.Preference
 import androidx.preference.PreferenceFragmentCompat
-import dagger.android.support.AndroidSupportInjection
 import me.camsteffen.polite.R
 import me.camsteffen.polite.service.PoliteModeManager
 import me.camsteffen.polite.ui.MainActivity
 import javax.inject.Inject
 
-class SettingsFragment :
-    PreferenceFragmentCompat(), SharedPreferences.OnSharedPreferenceChangeListener {
-
-    @Inject lateinit var politeModeManager: PoliteModeManager
+class SettingsFragment
+@Inject constructor(
+    private val politeModeManager: PoliteModeManager
+) : PreferenceFragmentCompat(), SharedPreferences.OnSharedPreferenceChangeListener {
 
     private val mainActivity: MainActivity
         get() = activity as MainActivity
 
     override fun onCreate(savedInstanceState: Bundle?) {
-        AndroidSupportInjection.inject(this)
         super.onCreate(savedInstanceState)
         retainInstance = true
         setHasOptionsMenu(true)

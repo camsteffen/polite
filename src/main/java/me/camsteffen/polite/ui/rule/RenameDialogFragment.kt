@@ -5,26 +5,21 @@ import android.os.Bundle
 import android.widget.EditText
 import androidx.appcompat.app.AlertDialog
 import androidx.core.os.bundleOf
-import dagger.android.support.DaggerDialogFragment
+import androidx.fragment.app.DialogFragment
 import me.camsteffen.polite.R
 import me.camsteffen.polite.data.RuleService
 import javax.inject.Inject
 
-class RenameDialogFragment : DaggerDialogFragment() {
+class RenameDialogFragment
+@Inject constructor(
+    private val ruleService: RuleService
+) : DialogFragment() {
 
-    @Inject lateinit var ruleService: RuleService
-
-    companion object {
-        const val FRAGMENT_TAG = "RenameDialogFragment"
-
-        fun newInstance(id: Long, name: String): RenameDialogFragment {
-            return RenameDialogFragment().apply {
-                arguments = bundleOf(
-                    "id" to id,
-                    "name" to name
-                )
-            }
-        }
+    fun setArguments(id: Long, name: String) {
+        arguments = bundleOf(
+            "id" to id,
+            "name" to name
+        )
     }
 
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {

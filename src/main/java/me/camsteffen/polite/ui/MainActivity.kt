@@ -18,6 +18,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.core.app.ActivityCompat
 import androidx.databinding.DataBindingUtil
+import androidx.fragment.app.FragmentFactory
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleObserver
 import androidx.lifecycle.LifecycleOwner
@@ -65,6 +66,7 @@ class MainActivity : AppCompatActivity(), HasAndroidInjector,
 
     @Inject lateinit var defaultRules: DefaultRules
     @Inject lateinit var dispatchingAndroidInjector: DispatchingAndroidInjector<Any>
+    @Inject lateinit var fragmentFactory: FragmentFactory
     private lateinit var navController: NavController
     @Inject lateinit var notificationManager: AppNotificationManager
     @Inject lateinit var politeModeManager: PoliteModeManager
@@ -75,17 +77,13 @@ class MainActivity : AppCompatActivity(), HasAndroidInjector,
     private lateinit var model: RuleMasterDetailViewModel
     private var onBackPressedListener: OnBackPressedListener? = null
 
-    @Inject
-    fun inject(preferences: AppPreferences) {
-        this.preferences = preferences
-    }
-
     override fun androidInjector() = dispatchingAndroidInjector
 
     override fun onCreate(savedInstanceState: Bundle?) {
         AndroidInjection.inject(this)
         setThemeFromPreference()
         super.onCreate(savedInstanceState)
+        supportFragmentManager.fragmentFactory = fragmentFactory
         model = ViewModelProviders
             .of(this, viewModelProviderFactory)[RuleMasterDetailViewModel::class.java]
         model.selectedRule.value = null

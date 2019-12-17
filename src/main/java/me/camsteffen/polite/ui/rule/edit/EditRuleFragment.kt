@@ -11,10 +11,10 @@ import android.view.ViewGroup
 import android.widget.ScrollView
 import androidx.appcompat.app.AlertDialog
 import androidx.databinding.DataBindingUtil
+import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.fragment.findNavController
-import dagger.android.support.DaggerFragment
 import me.camsteffen.polite.R
 import me.camsteffen.polite.data.RuleService
 import me.camsteffen.polite.data.model.Rule
@@ -23,13 +23,12 @@ import me.camsteffen.polite.ui.MainActivity
 import me.camsteffen.polite.ui.rule.RuleMasterDetailViewModel
 import me.camsteffen.polite.util.RateAppPromptFacade
 import me.camsteffen.polite.util.hideKeyboard
-import javax.inject.Inject
 
-abstract class EditRuleFragment<RuleType : Rule> : DaggerFragment() {
-
-    @Inject lateinit var rateAppPrompt: RateAppPromptFacade
-    @Inject lateinit var ruleService: RuleService
-    @Inject lateinit var viewModelProviderFactory: ViewModelProvider.Factory
+abstract class EditRuleFragment<RuleType : Rule>(
+    private val rateAppPrompt: RateAppPromptFacade,
+    private val ruleService: RuleService,
+    protected val viewModelProviderFactory: ViewModelProvider.Factory
+) : Fragment() {
 
     private lateinit var masterModel: RuleMasterDetailViewModel
     private lateinit var editRuleModel: EditRuleViewModel<RuleType>

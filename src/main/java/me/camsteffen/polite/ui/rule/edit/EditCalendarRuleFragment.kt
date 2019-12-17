@@ -11,21 +11,29 @@ import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.ViewModelProviders
 import me.camsteffen.polite.R
 import me.camsteffen.polite.data.CalendarDao
+import me.camsteffen.polite.data.RuleService
 import me.camsteffen.polite.data.model.CalendarEventMatchBy
 import me.camsteffen.polite.data.model.CalendarRule
 import me.camsteffen.polite.databinding.EditCalendarRuleBinding
+import me.camsteffen.polite.util.RateAppPromptFacade
 import java.util.Locale
 import javax.inject.Inject
 
-class EditCalendarRuleFragment : EditRuleFragment<CalendarRule>() {
+class EditCalendarRuleFragment
+@Inject constructor(
+    rateAppPrompt: RateAppPromptFacade,
+    ruleService: RuleService,
+    viewModelProviderFactory: ViewModelProvider.Factory,
+    private val calendarDao: CalendarDao
+) : EditRuleFragment<CalendarRule>(rateAppPrompt, ruleService, viewModelProviderFactory) {
 
     private lateinit var keywordsSection: View
     private lateinit var addKeywordEditText: EditText
     private lateinit var model: EditCalendarRuleViewModel
-    @Inject lateinit var calendarDao: CalendarDao
 
     override fun onCreateEditRuleViewModel(): EditCalendarRuleViewModel {
         model = ViewModelProviders

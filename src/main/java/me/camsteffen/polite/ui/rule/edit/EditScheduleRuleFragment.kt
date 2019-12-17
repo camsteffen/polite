@@ -7,17 +7,26 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.core.os.ConfigurationCompat.getLocales
 import androidx.databinding.DataBindingUtil
+import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.ViewModelProviders
 import me.camsteffen.polite.R
+import me.camsteffen.polite.data.RuleService
 import me.camsteffen.polite.data.model.ScheduleRule
 import me.camsteffen.polite.databinding.DayButtonBinding
 import me.camsteffen.polite.databinding.EditScheduleRuleBinding
 import me.camsteffen.polite.ui.TimePickerDialogFragment
+import me.camsteffen.polite.util.RateAppPromptFacade
 import org.threeten.bp.LocalTime
 import org.threeten.bp.format.TextStyle
 import org.threeten.bp.temporal.WeekFields
+import javax.inject.Inject
 
-class EditScheduleRuleFragment : EditRuleFragment<ScheduleRule>(),
+class EditScheduleRuleFragment
+@Inject constructor(
+    rateAppPrompt: RateAppPromptFacade,
+    ruleService: RuleService,
+    viewModelProviderFactory: ViewModelProvider.Factory
+) : EditRuleFragment<ScheduleRule>(rateAppPrompt, ruleService, viewModelProviderFactory),
     TimePickerDialogFragment.OnTimeSetListener {
 
     private lateinit var model: EditScheduleRuleViewModel

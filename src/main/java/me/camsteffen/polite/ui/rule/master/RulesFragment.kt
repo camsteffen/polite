@@ -13,11 +13,11 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.appcompat.app.AlertDialog
 import androidx.databinding.DataBindingUtil
+import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.fragment.findNavController
-import dagger.android.support.DaggerFragment
 import me.camsteffen.polite.Polite
 import me.camsteffen.polite.R
 import me.camsteffen.polite.data.AppPreferences
@@ -29,12 +29,15 @@ import me.camsteffen.polite.ui.MainActivity
 import me.camsteffen.polite.ui.rule.RenameDialogFragment
 import me.camsteffen.polite.ui.rule.RuleMasterDetailViewModel
 import javax.inject.Inject
+import javax.inject.Provider
 
-class RulesFragment : DaggerFragment() {
-
-    @Inject lateinit var preferences: AppPreferences
-    @Inject lateinit var ruleService: RuleService
-    @Inject lateinit var viewModelProviderFactory: ViewModelProvider.Factory
+class RulesFragment
+@Inject constructor(
+    private val preferences: AppPreferences,
+    private val ruleService: RuleService,
+    private val viewModelProviderFactory: ViewModelProvider.Factory,
+    private val renameDialogFragmentProvider: Provider<RenameDialogFragment>
+) : Fragment() {
 
     lateinit var model: RuleMasterDetailViewModel
     val polite: Polite
@@ -140,8 +143,9 @@ class RulesFragment : DaggerFragment() {
         val rule = info.rule
         when (item.itemId) {
             R.id.rename -> {
-                RenameDialogFragment.newInstance(rule.id, rule.name)
-                    .show(fragmentManager!!, RenameDialogFragment.FRAGMENT_TAG)
+                val fragment = renameDialogFragmentProvider.get()
+                fragment.setArguments(rule.id, rule.name)
+                fragment.show(fragmentManager!!, null)
             }
             R.id.delete -> {
                 ruleService.deleteRuleAsync(rule.id)
