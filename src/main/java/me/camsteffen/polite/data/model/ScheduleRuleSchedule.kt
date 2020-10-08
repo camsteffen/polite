@@ -111,7 +111,7 @@ data class ScheduleRuleSchedule(
             if (target.toLocalTime() <= beginTime) this else plusDays(1)
         }
         val soonestDay = soonestDate.dayOfWeek
-        val dayOfWeek = daysOfWeek.asSequence().minBy { it.daysAfter(soonestDay) }
+        val dayOfWeek = daysOfWeek.minBy { it.daysAfter(soonestDay) }
             ?: return null
         val beginDate = soonestDate.with(TemporalAdjusters.nextOrSame(dayOfWeek))
         val endDate = if (isOvernight) beginDate.plusDays(1) else beginDate
